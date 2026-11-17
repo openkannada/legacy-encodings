@@ -305,4 +305,4 @@ When a written result is clean, reading it back (section 5) gives the NFC form o
 
 This specification follows semantic versioning. A change that makes a conforming reader give different text for some input is a minor version before 1.0 and a major version after it. Every change to a table is listed in `CHANGELOG.md` with the evidence for it.
 
-A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, added as conformance cases with their sources.
+A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, added as conformance cases with their sources. Changes are proposed as GitHub issues in the specification's repository; organizations can also write to founders@luminik.io.

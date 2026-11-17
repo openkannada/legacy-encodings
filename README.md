@@ -33,6 +33,14 @@ python3 -m unittest discover -s tests
 
 and list the change in [CHANGELOG.md](CHANGELOG.md).
 
+## Proposing changes
+
+Open a GitHub issue for a change to the specification, a table entry, a new layout or a new test line. A table change needs evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources (section 10 of the specification). Bugs and sample documents go in issues too; send documents that cannot be public to support@luminik.io.
+
+Organizations that want to take part in the specification, such as KAGAPA or a government office, can write to founders@luminik.io.
+
 ## License
 
 The specification text is under [CC BY 4.0](LICENSE-CC-BY-4.0). The tables, schema and tools are under the [MIT license](LICENSE-MIT). See [NOTICE.md](NOTICE.md).
+
+Part of [Open Kannada](https://github.com/openkannada), free and open-source tools that make Kannada work properly on computers.
