@@ -82,7 +82,7 @@ class TableRules(unittest.TestCase):
         self.rejects("86\tliteral\t")
 
     def test_values_other_than_letters_and_signs_are_nfc(self):
-        self.rejects("86\tliteral\tಕ\u0cc6\u0cc2")
+        self.rejects("86\tliteral\tಕ\u0cc6\u0cc2\tread")
 
     def test_preferences_only_on_choosable_kinds(self):
         self.rejects("50\tbase\tಕ\ton ಕ")
