@@ -1,0 +1,209 @@
+# Shree-Lipi Kannada glyph table: Shree-Kan-0850.
+#
+# The format is described in src/legacy/table.rs. Codes are Windows-1252 bytes.
+#
+# Derived from documents, as no code page is published. The glyphs were rendered
+# from the Shree-Kan-0850 TrueType font (version 1.0 of 18 March 2000) that the
+# Udayavani newspaper served to readers of its web pages as
+# 199.74.239.15/udayavani/fonts/SHREE850.ttf, fetched from the Internet Archive
+# (capture of 10 April 2003). Each glyph was identified by eye and matched against
+# glyphs shaped with HarfBuzz from Noto Sans Kannada, then checked in context: the
+# Kannada text of 173 Udayavani story pages archived in 2003 and 2004, which name
+# Shree-Kan-0850 in their font tags, was converted, and every unknown glyph and
+# malformed syllable was read against the same text rendered in the font.
+# docs/shree-lipi.md has the method and results.
+#
+# Codes the font has but no page used are left out, and are reported as unknown,
+# except those at ASCII punctuation codes, which pass through as punctuation: 23 (ಓಂ),
+# 5D, 5F, 60 and 7D draw Kannada glyphs no page used.
+# Vowels
+41	letter	ಅ
+42	letter	ಆ
+43	letter	ಇ
+44	letter	ಈ
+45	letter	ಉ
+46	letter	ಊ
+47	letter	ಎ
+48	letter	ಏ
+49	letter	ಐ
+4A	letter	ಒ
+4B	letter	ಓ
+4C	letter	ಔ
+4D E1	letter	ಋ
+# Consonant bases
+50	base	ಕ
+54	base	ಖ
+57	base	ಗ
+5B	base	ಘ
+61	base	ಚ
+64	base	ಛ
+68	base	ಜ
+70	base	ಟ
+73	base	ಠ
+76	base	ಡ
+79	base	ಢ
+4F	base	ಣ
+F1	base	ತ
+A5	base	ಥ
+A8	base	ದ
+AB	base	ಧ
+AE	base	ನ
+B1	base	ಪ
+B4	base	ಫ
+B8	base	ಬ
+BB	base	ಭ
+CA	base	ವ
+C3	base	ರ
+C7	base	ಲ
+CD	base	ಶ
+D0	base	ಷ
+D3	base	ಸ
+D6	base	ಹ
+D9	base	ಳ
+FB	base	ಕ್ಷ	read
+FE	base	ಜ್ಞ	read
+FC	letter	ಕ್ಷಿ	read
+# Consonants drawn without the head stroke
+53	letter	ಖ
+5A	letter	ಘ
+67	letter	ಜ
+6F	letter	ಟ
+6D	letter	ಞ
+7C	letter	ಣ
+9F	letter	ಬ
+C6	letter	ಲ
+4E	letter	ಘೆ
+# Consonant with vowel sign i
+51	letter	ಕಿ
+55	letter	ಖಿ
+58	letter	ಗಿ
+5C	letter	ಘಿ
+62	letter	ಚಿ
+65	letter	ಛಿ
+69	letter	ಜಿ
+71	letter	ಟಿ
+74	letter	ಠಿ
+77	letter	ಡಿ
+7B	letter	ಢಿ
+7E	letter	ಣಿ
+A3	letter	ತಿ
+A6	letter	ಥಿ
+A9	letter	ದಿ
+97	letter	ಧಿ
+AF	letter	ನಿ
+B2	letter	ಪಿ
+B5	letter	ಫಿ
+B9	letter	ಬಿ
+BC	letter	ಭಿ
+CB	letter	ವಿ
+C4	letter	ರಿ
+C8	letter	ಲಿ
+CE	letter	ಶಿ
+D1	letter	ಷಿ
+D4	letter	ಸಿ
+D7	letter	ಹಿ
+DA	letter	ಳಿ
+# Consonants built from 2 to 4 glyphs: ಮ from ವ, ಝ from ರ, ಯ from bases of its own.
+# E1 is their tail, DE the tail with ಾ, E5 the tail before the virama.
+CA DC E1	letter	ಮ
+CA DC DE	letter	ಮಾ
+CA DC E5	base	ಮ
+CB E1	letter	ಮಿ
+CA E6 E1	letter	ಮೆ
+CA E6 E3	letter	ಮೊ
+BF E1	letter	ಯ
+BF DE	letter	ಯಾ
+C0 E1	letter	ಯಿ
+C1 E1	letter	ಯೆ
+C1 E3	letter	ಯೊ
+C1 E5	base	ಯ
+C3 DC 6B E1	letter	ಝ
+C3 DC 6B DE	letter	ಝಾ
+C3 E6 6B E3	letter	ಝೊ
+C3 E6 6B E1	letter	ಝೆ
+C3 DC 6B E5	base	ಝ
+C4 6B E1	letter	ಝಿ
+# Vowel signs. DC is the head stroke for the inherent a.
+DC	sign
+DD	sign	ಾ
+E1	sign	ು
+E2	sign	ು	on ಪ ಫ ವ
+E3	sign	ೂ
+E4	sign	ೂ	on ಪ ಫ ವ
+EA	sign	ೃ
+E6	sign	ೆ
+E0	sign	ೕ
+E7	sign	ೖ
+E8	sign	ೌ
+85	sign	್
+EF	sign	್
+F9	sign	ೖ	read
+# Typists put the wide blank 24 before a subscript or ೖ to move it right, and write
+# ಾ with ೖ for ೈ in names such as ಶಾಂಘೈ.
+24 C2	ottu	ಯ	read
+24 BE	ottu	ಮ	read
+24 D5	ottu	ಸ	read
+24 A1	ottu	ಣ	read
+24 CC	ottu	ವ	read
+24 E7	sign	ೖ	read
+DD E7	sign	ೈ	read
+# Modifiers
+ED	mod	ಂ
+40	mod	ಃ
+# Subscript consonants (ottu)
+52	ottu	ಕ
+56	ottu	ಖ
+59	ottu	ಗ
+5E	ottu	ಘ
+63	ottu	ಚ
+66	ottu	ಛ
+6A	ottu	ಜ
+6E	ottu	ಞ
+72	ottu	ಟ
+75	ottu	ಠ
+78	ottu	ಡ
+A1	ottu	ಣ
+A4	ottu	ತ
+A7	ottu	ಥ
+AA	ottu	ದ
+9C	ottu	ಧ
+B0	ottu	ನ
+B3	ottu	ಪ
+96	ottu	ಫ
+BA	ottu	ಬ
+BD	ottu	ಭ
+BE	ottu	ಮ
+C2	ottu	ಯ
+E9	ottu	ಯ	after-ottu
+C5	ottu	ರ
+86	ottu	ರ	after-ottu
+C9	ottu	ಲ
+CC	ottu	ವ
+CF	ottu	ಶ
+D2	ottu	ಷ
+D5	ottu	ಸ
+D8	ottu	ಹ
+DB	ottu	ಳ
+# Subscripts drawn as 1 glyph
+A2	ottu	ಕೃ
+F3	ottu	ಟರ
+F7	ottu	ತರ
+F4	ottu	ತೖ
+F0	ottu	ಕರ
+F5	ottu	ತೃ
+# Arkavattu
+EC	arka
+# Spacing glyphs with no text value. 2D draws nothing; typists used 26 for the hyphen.
+# 24 draws a wide blank, typed only to move the next glyph.
+2D	ignore
+24	ignore
+99	ignore
+# Punctuation drawn at codes ASCII uses for others. 3E draws a short bar, typed after
+# abbreviations and numbers, as in ಸಂ।ರದ.
+22	literal	‘
+27	literal	’
+26	literal	-
+3E	literal	।
+AD	literal	-
+B6	literal	–
+AC	literal	—

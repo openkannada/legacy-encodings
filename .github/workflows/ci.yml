@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tables:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.12.17"
+      - run: uv run --no-project --python 3.12 python tools/tables.py check
+      - run: uv run --no-project --python 3.12 --with jsonschema==4.25.1 python -m unittest discover -s tests -v

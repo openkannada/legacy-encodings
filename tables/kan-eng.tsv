@@ -1,0 +1,208 @@
+# Kan-Eng glyph table: Kan-EngPraja, Kan-EngDeepa, Kan-EngKarn, Kan-EngVani and
+# Kan-EngUsha, which share 1 layout. The fonts are bilingual: Latin letters and digits
+# at the ASCII codes, Kannada at the ASCII symbol codes $ & % < ] ^ ` { } ~ and from 81
+# up.
+#
+# The format is described in src/legacy/table.rs. Codes are Windows-1252 bytes; 81, 8D,
+# 8F, 90 and 9D, which Windows-1252 leaves undefined, stand for themselves.
+#
+# Derived from documents, as no code page is published. The glyphs were rendered from
+# the Kan-Eng TrueType fonts embedded in 45 Karnataka budget papers of 2002 to 2014 on
+# kar.nic.in/finance, made with Acrobat PDFMaker for Excel and Acrobat Distiller and
+# fetched from the Internet Archive. Acrobat put the glyphs at codes Windows-1252
+# leaves undefined, and at AD, in a second, CID-keyed copy of each font, whose
+# ToUnicode map gives the code (U+009D for 9D, U+2212 for AD). The copy's glyph IDs
+# are the code minus 30 (decimal), as in every subset's own cmap from 7E to C0.
+# Those codes were read from the words they appear in: 81 ಆ (ಆಯವ್ಯಯ), 9D ಚ
+# (ವೆಚ್ಚ), 90 subscript ಮ (ಚೆನ್ನಮ್ಮ), AD subscript ಣ (ಸಣ್ಣ, ಉಣ್ಣೆ, ಕೃಷ್ಣ); 8D ಃ by
+# its shape, as its 1 use is a typing error. Each glyph was identified by eye, then checked in context: the papers'
+# Kannada text, 833 distinct lines in drawing order, was converted, and every unknown
+# glyph and malformed syllable was read against the codes rendered with the embedded
+# glyphs.
+# docs/kan-eng.md has the method and results.
+#
+# Codes no document used are left out, and are reported as unknown.
+# Vowels
+24	letter	ಅ
+81	letter	ಆ
+F0	letter	ಇ
+F1	letter	ಈ
+F2 E1	letter	ಉ
+86	letter	ಎ
+F4	letter	ಎ
+87	letter	ಏ
+5E	letter	ಐ
+88	letter	ಐ
+3C	letter	ಒ
+89	letter	ಒ
+60	letter	ಓ
+# Bases
+DA	base	ಕ
+9D	base	ಚ
+9F	base	ಡ	read
+CE	base	ಷ	read
+93	base	ಕ
+F6	base	ಗ
+A7	base	ಟ
+F7	base	ಡ
+B3	base	ಣ
+B0	base	ತ
+B6	base	ದ
+B8	base	ನ
+BC EF	base	ಪ
+C9	base	ವ
+C4	base	ರ
+CB	base	ಶ
+D1 EF	base	ಸ
+CE EF	base	ಷ
+B6 FE FB	base	ಥ
+C4 FE	base	ಠ
+D4	base	ಹ
+D7	base	ಳ
+# Letters
+96	letter	ಖ
+F3	letter	ಖ
+A2	letter	ಜ
+C3	letter	ಯಿ
+9A	letter	ಗ	read
+A5	letter	ಟ
+AE	letter	ಣ
+BE	letter	ಬ
+C6	letter	ಲ
+# i
+94	letter	ಕಿ
+F8	letter	ಕಿ
+97	letter	ಖಿ
+7B	letter	ಗಿ
+26	letter	ಚಿ
+A3	letter	ಜಿ
+A6	letter	ಟಿ
+AB	letter	ಟಿ
+AC	letter	ಡಿ
+AF	letter	ಣಿ
+B1	letter	ತಿ
+B4	letter	ದಿ
+B9	letter	ನಿ
+BF	letter	ಬಿ
+C5	letter	ರಿ
+C7	letter	ಲಿ
+CA	letter	ವಿ
+CC	letter	ಶಿ
+D5	letter	ಹಿ
+D8	letter	ಳಿ
+# ಮ and ಯ
+C9 DC E1	letter	ಮ
+F9 E1 DC E1	letter	ಯ
+F9 E1 E5 E3	letter	ಯೊ
+8C E1 DC E1	letter	ಯ
+8C E1 E5 E3	letter	ಯೊ
+B4 FE FB	letter	ಥಿ
+BC EF FD	base	ಘ
+C9 E5 E1	letter	ಮೆ
+C9 E5 E1 DE	letter	ಮೊ
+C9 E5 E3	letter	ಮೊ	read
+CA E1	letter	ಮಿ
+F3 DC E1	letter	ಋ
+BC EF DC FD	letter	ಘ
+BC DF	letter	ಪಿ
+D1 DF	letter	ಸಿ
+CE DF	letter	ಷಿ
+# Signs
+DC	sign
+DE	sign	ಾ
+DD	sign	್
+E1	sign	ು
+E2	sign	ು	on ಪ ಫ ವ
+E3	sign	ೂ
+E4	sign	ೂ	on ಪ ಫ ವ
+E5	sign	ೆ
+E0	sign	ೕ
+ED	sign	ೃ
+E6	sign	ೖ
+E7	sign	ೌ
+F9	mod	ಂ
+8C	mod	ಂ
+8D	mod	ಃ
+FB	aspirate
+# Ottu
+7E	ottu	ಕ
+92	ottu	ಕ
+5D	ottu	ಗ
+98	ottu	ಗ
+7D	ottu	ಚ
+9C	ottu	ಚ
+A4	ottu	ಟ
+AA	ottu	ಡ
+E8	ottu	ತ
+B2	ottu	ಧ
+B5	ottu	ದ
+AD	ottu	ಣ
+B5 FA	ottu	ಧ
+BA FA	ottu	ಫ
+EA	ottu	ಲ
+BA	ottu	ಪ
+BD	ottu	ಬ
+E9	ottu	ನ
+90	ottu	ಮ
+25	ottu	ಞ
+C2	ottu	ಯ
+EB	ottu	ರ
+EC	ottu	ರ
+C8	ottu	ವ
+CD	ottu	ಷ
+D0	ottu	ಸ
+D6	ottu	ಳ
+C0	arka
+# Latin letters, drawn as themselves.
+41	literal	A
+42	literal	B
+43	literal	C
+44	literal	D
+45	literal	E
+46	literal	F
+47	literal	G
+48	literal	H
+49	literal	I
+4A	literal	J
+4B	literal	K
+4C	literal	L
+4D	literal	M
+4E	literal	N
+4F	literal	O
+50	literal	P
+51	literal	Q
+52	literal	R
+53	literal	S
+54	literal	T
+55	literal	U
+56	literal	V
+57	literal	W
+58	literal	X
+59	literal	Y
+5A	literal	Z
+61	literal	a
+62	literal	b
+63	literal	c
+64	literal	d
+65	literal	e
+66	literal	f
+67	literal	g
+68	literal	h
+69	literal	i
+6A	literal	j
+6B	literal	k
+6C	literal	l
+6D	literal	m
+6E	literal	n
+6F	literal	o
+70	literal	p
+71	literal	q
+72	literal	r
+73	literal	s
+74	literal	t
+75	literal	u
+76	literal	v
+77	literal	w
+78	literal	x
+79	literal	y
+7A	literal	z

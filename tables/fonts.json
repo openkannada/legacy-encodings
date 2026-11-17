@@ -1,0 +1,70 @@
+{
+  "normalize": "Keep the ASCII letters and digits of the font name, lowercased; drop everything else.",
+  "not_legacy": [
+    { "match": "uni", "why": "Unicode fonts, such as Nudi Unicode 01 and BRH Kannada Unicode" }
+  ],
+  "layout_rules": [
+    { "match": "^brh(devanagari|sanskrit|hindi|marathi|tamil|telugu|malayalam|bengali|gujarati|gurmukhi)", "layout": null, "why": "Baraha's BRH fonts for other scripts" },
+    { "match": "^brh", "layout": "nudi" },
+    { "match": "^nudibakshar", "layout": "nudi-b" },
+    { "match": "^kaneng", "layout": "kan-eng" },
+    { "match": "^akrutikndpadma", "layout": "akruti" },
+    { "match": "^shreekan0850([^0-9]|$)", "layout": "shree-lipi" },
+    { "match": "^nudi([0-9]{2}.|akshar)", "layout": "nudi" }
+  ],
+  "legacy_without_table": [
+    { "match": "^shreekan[0-9]", "why": "Other Shree-Lipi Shree-Kan fonts, such as Shree-Kan-0851" }
+  ],
+  "kannada_digits": [
+    { "match": "^nudi[0-9]{2}k", "why": "The k variants of the numbered Nudi fonts draw Kannada digits at the ASCII digit codes" }
+  ],
+  "examples": [
+    { "font": "Nudi 01 e", "layout": "nudi", "legacy": true, "kannada_digits": false },
+    { "font": "Nudi 05 k", "layout": "nudi", "legacy": true, "kannada_digits": true },
+    { "font": "NudiAkshara", "layout": "nudi", "legacy": true, "kannada_digits": false },
+    { "font": "Nudi Akshar-14", "layout": "nudi", "legacy": true },
+    { "font": "Nudi 05", "layout": null, "legacy": false },
+    { "font": "BRH Kannada", "layout": "nudi", "legacy": true, "kannada_digits": false },
+    { "font": "BRHKannada-Bold", "layout": "nudi", "legacy": true },
+    { "font": "\"BRH Sirigannada\"", "layout": "nudi", "legacy": true },
+    { "font": "brh kasturi", "layout": "nudi", "legacy": true },
+    { "font": "Kan-EngPraja", "layout": "kan-eng", "legacy": true },
+    { "font": "Kan-EngDeepa,Bold", "layout": "kan-eng", "legacy": true },
+    { "font": "Kan-EngPrajaBold", "layout": "kan-eng", "legacy": true },
+    { "font": "Kan-EngKarn", "layout": "kan-eng", "legacy": true },
+    { "font": "Kan-EngVani", "layout": "kan-eng", "legacy": true },
+    { "font": "KanDevraj", "layout": null, "legacy": false },
+    { "font": "NudiB-Akshar", "layout": "nudi-b", "legacy": true },
+    { "font": "Nudi B-Akshara", "layout": "nudi-b", "legacy": true },
+    { "font": "NudiB-Akshar,Bold", "layout": "nudi-b", "legacy": true },
+    { "font": "nudi b akshar", "layout": "nudi-b", "legacy": true },
+    { "font": "AkrutiKndPadma", "layout": "akruti", "legacy": true, "kannada_digits": false },
+    { "font": "AkrutiKndPadmaDemi", "layout": "akruti", "legacy": true },
+    { "font": "AkrutiKndPadma,Bold", "layout": "akruti", "legacy": true },
+    { "font": "Akruti Knd Padma Demib", "layout": "akruti", "legacy": true },
+    { "font": "Shree-Kan-0850", "layout": "shree-lipi", "legacy": true },
+    { "font": "SHREE-KAN-0850", "layout": "shree-lipi", "legacy": true },
+    { "font": "Shree Kan 0850 Bold", "layout": "shree-lipi", "legacy": true },
+    { "font": "SHREE-KAN-0851", "layout": null, "legacy": true },
+    { "font": "Shree Kan 0853 Bold", "layout": null, "legacy": true },
+    { "font": "Shree-Kan-08500", "layout": null, "legacy": true },
+    { "font": "Nudi Parijatha", "layout": null, "legacy": false },
+    { "font": "NudiUni01e", "layout": null, "legacy": false },
+    { "font": "Nudi Unicode 01", "layout": null, "legacy": false },
+    { "font": "BRH Devanagari", "layout": null, "legacy": false },
+    { "font": "BRH Telugu", "layout": null, "legacy": false },
+    { "font": "Tunga", "layout": null, "legacy": false },
+    { "font": "Noto Sans Kannada", "layout": null, "legacy": false },
+    { "font": "Arial", "layout": null, "legacy": false },
+    { "font": "AkrutiKndPadmini", "layout": null, "legacy": false },
+    { "font": "AkrutiDevPriya", "layout": null, "legacy": false },
+    { "font": "Shree Kannada", "layout": null, "legacy": false },
+    { "font": "Nudi 01 e Uni", "layout": null, "legacy": false },
+    { "font": "BRH Kannada Unicode", "layout": null, "legacy": false },
+    { "font": "Shree-Kan-0850 Unicode", "layout": null, "legacy": false },
+    { "font": "Nudi 04 k", "layout": "nudi", "kannada_digits": true },
+    { "font": "Nudi01k", "layout": "nudi", "kannada_digits": true },
+    { "font": "Nudi01k-Bold", "layout": "nudi", "kannada_digits": true },
+    { "font": "Nudi 05 k Bold", "layout": "nudi", "kannada_digits": true }
+  ]
+}

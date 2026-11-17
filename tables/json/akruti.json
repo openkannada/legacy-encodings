@@ -1,0 +1,1375 @@
+{
+ "$schema": "../../schema/layout.schema.json",
+ "spec_version": "0.1.0-draft",
+ "id": "akruti",
+ "name": "Akruti",
+ "aliases": [],
+ "description": "Akruti's Kannada fonts in the AkrutiKndPadma family and its weights.",
+ "fonts": [
+  "AkrutiKndPadma",
+  "AkrutiKndPadmaDemi"
+ ],
+ "byte_encoding": "windows-1252",
+ "draws_latin": false,
+ "source": {
+  "repository": "https://github.com/openkannada/kannadi",
+  "commit": "c786820bc3bf44e4dacef7338188a4381f4cdd0b",
+  "path": "crates/kannadi/data/akruti.tsv"
+ },
+ "notes": [
+  "Akruti Kannada glyph table: AkrutiKndPadma and its Bold, Demi and Demib weights,",
+  "which share 1 layout.",
+  "",
+  "The format is described in src/legacy/table.rs. Codes are Windows-1252 bytes.",
+  "",
+  "Derived from documents, as no code page is published. The glyphs were rendered",
+  "from the Akruti fonts embedded in public Karnataka PDFs: the full",
+  "AkrutiKndPadmaDemi0100 and AkrutiKndPadmaBold0100 programs in the Kannada Acts",
+  "on dpal.kar.nic.in, made with PageMaker 6.52 and Acrobat Distiller 5.0, where each",
+  "glyph's name G<n> gives its code n, and the TrueType subsets in the 2002 budget",
+  "highlights bh2002k.pdf (kar.nic.in/finance/bud2002-kan/), whose codes are the",
+  "bytes the page shows. Each glyph was identified by eye and matched against",
+  "glyphs shaped with HarfBuzz from Kannada Sangam MN and Noto Sans Kannada, then",
+  "checked in context: 16,857 lines of Akruti text in 33 Acts and Ordinances of 2001",
+  "to 2003 and the 2002 budget highlights and speech, all fetched from the Internet",
+  "Archive, were converted and every unknown glyph and malformed syllable was read",
+  "against the page image. Bold and Demi draw the same letter at every code.",
+  "docs/akruti.md has the method and results.",
+  "",
+  "Codes the fonts have but no document used are left out, and are reported as",
+  "unknown: 2A, 6A, A1, A2, A3, A6, A7, A8, B4, BF, E0, E1, E3, EC, ED, F0.",
+  "Vowels"
+ ],
+ "entries": [
+  {
+   "codes": [
+    "25"
+   ],
+   "kind": "letter",
+   "value": "ಅ"
+  },
+  {
+   "codes": [
+    "41"
+   ],
+   "kind": "letter",
+   "value": "ಆ"
+  },
+  {
+   "codes": [
+    "45"
+   ],
+   "kind": "letter",
+   "value": "ಇ"
+  },
+  {
+   "codes": [
+    "6F"
+   ],
+   "kind": "letter",
+   "value": "ಈ"
+  },
+  {
+   "codes": [
+    "49"
+   ],
+   "kind": "letter",
+   "value": "ಉ"
+  },
+  {
+   "codes": [
+    "4E"
+   ],
+   "kind": "letter",
+   "value": "ಊ"
+  },
+  {
+   "codes": [
+    "55"
+   ],
+   "kind": "letter",
+   "value": "ಎ"
+  },
+  {
+   "codes": [
+    "4F"
+   ],
+   "kind": "letter",
+   "value": "ಏ"
+  },
+  {
+   "codes": [
+    "59"
+   ],
+   "kind": "letter",
+   "value": "ಐ"
+  },
+  {
+   "codes": [
+    "61"
+   ],
+   "kind": "letter",
+   "value": "ಒ"
+  },
+  {
+   "codes": [
+    "65"
+   ],
+   "kind": "letter",
+   "value": "ಓ"
+  },
+  {
+   "codes": [
+    "69"
+   ],
+   "kind": "letter",
+   "value": "ಔ"
+  },
+  {
+   "codes": [
+    "64"
+   ],
+   "kind": "base",
+   "value": "ಕ"
+  },
+  {
+   "codes": [
+    "66"
+   ],
+   "kind": "base",
+   "value": "ಖ"
+  },
+  {
+   "codes": [
+    "67"
+   ],
+   "kind": "base",
+   "value": "ಗ"
+  },
+  {
+   "codes": [
+    "68"
+   ],
+   "kind": "base",
+   "value": "ಘ"
+  },
+  {
+   "codes": [
+    "6B"
+   ],
+   "kind": "base",
+   "value": "ಚ"
+  },
+  {
+   "codes": [
+    "6C"
+   ],
+   "kind": "base",
+   "value": "ಛ"
+  },
+  {
+   "codes": [
+    "75"
+   ],
+   "kind": "base",
+   "value": "ಜ"
+  },
+  {
+   "codes": [
+    "C2"
+   ],
+   "kind": "base",
+   "value": "ಟ"
+  },
+  {
+   "codes": [
+    "74"
+   ],
+   "kind": "base",
+   "value": "ಠ"
+  },
+  {
+   "codes": [
+    "76"
+   ],
+   "kind": "base",
+   "value": "ಡ"
+  },
+  {
+   "codes": [
+    "77"
+   ],
+   "kind": "base",
+   "value": "ಢ"
+  },
+  {
+   "codes": [
+    "C7"
+   ],
+   "kind": "base",
+   "value": "ಣ"
+  },
+  {
+   "codes": [
+    "79"
+   ],
+   "kind": "base",
+   "value": "ತ"
+  },
+  {
+   "codes": [
+    "7A"
+   ],
+   "kind": "base",
+   "value": "ಥ"
+  },
+  {
+   "codes": [
+    "7B"
+   ],
+   "kind": "base",
+   "value": "ದ"
+  },
+  {
+   "codes": [
+    "7C"
+   ],
+   "kind": "base",
+   "value": "ಧ"
+  },
+  {
+   "codes": [
+    "7D"
+   ],
+   "kind": "base",
+   "value": "ನ"
+  },
+  {
+   "codes": [
+    "7E"
+   ],
+   "kind": "base",
+   "value": "ಪ"
+  },
+  {
+   "codes": [
+    "C1"
+   ],
+   "kind": "base",
+   "value": "ಫ"
+  },
+  {
+   "codes": [
+    "CF"
+   ],
+   "kind": "base",
+   "value": "ಬ"
+  },
+  {
+   "codes": [
+    "C5"
+   ],
+   "kind": "base",
+   "value": "ಭ"
+  },
+  {
+   "codes": [
+    "C0"
+   ],
+   "kind": "base",
+   "value": "ವ"
+  },
+  {
+   "codes": [
+    "70"
+   ],
+   "kind": "base",
+   "value": "ರ"
+  },
+  {
+   "codes": [
+    "C8"
+   ],
+   "kind": "base",
+   "value": "ಲ"
+  },
+  {
+   "codes": [
+    "B5"
+   ],
+   "kind": "base",
+   "value": "ಶ"
+  },
+  {
+   "codes": [
+    "CD"
+   ],
+   "kind": "base",
+   "value": "ಷ"
+  },
+  {
+   "codes": [
+    "C9"
+   ],
+   "kind": "base",
+   "value": "ಸ"
+  },
+  {
+   "codes": [
+    "DD"
+   ],
+   "kind": "base",
+   "value": "ಹ"
+  },
+  {
+   "codes": [
+    "D4"
+   ],
+   "kind": "base",
+   "value": "ಳ"
+  },
+  {
+   "codes": [
+    "D9"
+   ],
+   "kind": "letter",
+   "value": "ಖ"
+  },
+  {
+   "codes": [
+    "6D"
+   ],
+   "kind": "letter",
+   "value": "ಜ"
+  },
+  {
+   "codes": [
+    "71"
+   ],
+   "kind": "letter",
+   "value": "ಞ"
+  },
+  {
+   "codes": [
+    "72"
+   ],
+   "kind": "letter",
+   "value": "ಟ"
+  },
+  {
+   "codes": [
+    "78"
+   ],
+   "kind": "letter",
+   "value": "ಣ"
+  },
+  {
+   "codes": [
+    "B1"
+   ],
+   "kind": "letter",
+   "value": "ಬ"
+  },
+  {
+   "codes": [
+    "B7"
+   ],
+   "kind": "letter",
+   "value": "ಲ"
+  },
+  {
+   "codes": [
+    "D1"
+   ],
+   "kind": "letter",
+   "value": "ಕಿ"
+  },
+  {
+   "codes": [
+    "D8"
+   ],
+   "kind": "letter",
+   "value": "ಖಿ"
+  },
+  {
+   "codes": [
+    "D0"
+   ],
+   "kind": "letter",
+   "value": "ಗಿ"
+  },
+  {
+   "codes": [
+    "DC"
+   ],
+   "kind": "letter",
+   "value": "ಘಿ"
+  },
+  {
+   "codes": [
+    "E4"
+   ],
+   "kind": "letter",
+   "value": "ಚಿ"
+  },
+  {
+   "codes": [
+    "D7"
+   ],
+   "kind": "letter",
+   "value": "ಚಿ"
+  },
+  {
+   "codes": [
+    "D3"
+   ],
+   "kind": "letter",
+   "value": "ಛಿ"
+  },
+  {
+   "codes": [
+    "CA"
+   ],
+   "kind": "letter",
+   "value": "ಜಿ"
+  },
+  {
+   "codes": [
+    "73"
+   ],
+   "kind": "letter",
+   "value": "ಟಿ"
+  },
+  {
+   "codes": [
+    "EF"
+   ],
+   "kind": "letter",
+   "value": "ಠಿ"
+  },
+  {
+   "codes": [
+    "DA"
+   ],
+   "kind": "letter",
+   "value": "ಡಿ"
+  },
+  {
+   "codes": [
+    "DB"
+   ],
+   "kind": "letter",
+   "value": "ಢಿ"
+  },
+  {
+   "codes": [
+    "B9"
+   ],
+   "kind": "letter",
+   "value": "ಣಿ"
+  },
+  {
+   "codes": [
+    "BB"
+   ],
+   "kind": "letter",
+   "value": "ತಿ"
+  },
+  {
+   "codes": [
+    "BC"
+   ],
+   "kind": "letter",
+   "value": "ಥಿ"
+  },
+  {
+   "codes": [
+    "AC"
+   ],
+   "kind": "letter",
+   "value": "ದಿ"
+  },
+  {
+   "codes": [
+    "BA"
+   ],
+   "kind": "letter",
+   "value": "ಧಿ"
+  },
+  {
+   "codes": [
+    "BE"
+   ],
+   "kind": "letter",
+   "value": "ನಿ"
+  },
+  {
+   "codes": [
+    "C4"
+   ],
+   "kind": "letter",
+   "value": "ಪಿ"
+  },
+  {
+   "codes": [
+    "D5"
+   ],
+   "kind": "letter",
+   "value": "ಫಿ"
+  },
+  {
+   "codes": [
+    "B2"
+   ],
+   "kind": "letter",
+   "value": "ಬಿ"
+  },
+  {
+   "codes": [
+    "AB"
+   ],
+   "kind": "letter",
+   "value": "ಭಿ"
+  },
+  {
+   "codes": [
+    "EE"
+   ],
+   "kind": "letter",
+   "value": "ರಿ"
+  },
+  {
+   "codes": [
+    "B6"
+   ],
+   "kind": "letter",
+   "value": "ಲಿ"
+  },
+  {
+   "codes": [
+    "C6"
+   ],
+   "kind": "letter",
+   "value": "ವಿ"
+  },
+  {
+   "codes": [
+    "FA"
+   ],
+   "kind": "letter",
+   "value": "ಶಿ"
+  },
+  {
+   "codes": [
+    "B8"
+   ],
+   "kind": "letter",
+   "value": "ಷಿ"
+  },
+  {
+   "codes": [
+    "FB"
+   ],
+   "kind": "letter",
+   "value": "ಸಿ"
+  },
+  {
+   "codes": [
+    "FE"
+   ],
+   "kind": "letter",
+   "value": "ಹಿ"
+  },
+  {
+   "codes": [
+    "FD"
+   ],
+   "kind": "letter",
+   "value": "ಹಿ"
+  },
+  {
+   "codes": [
+    "F9"
+   ],
+   "kind": "letter",
+   "value": "ಳಿ"
+  },
+  {
+   "codes": [
+    "C0",
+    "E2",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಮ"
+  },
+  {
+   "codes": [
+    "C0",
+    "E2",
+    "C3"
+   ],
+   "kind": "base",
+   "value": "ಮ"
+  },
+  {
+   "codes": [
+    "C0",
+    "EA",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಮೆ"
+  },
+  {
+   "codes": [
+    "C0",
+    "EA",
+    "B3"
+   ],
+   "kind": "letter",
+   "value": "ಮೊ"
+  },
+  {
+   "codes": [
+    "C6",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಮಿ"
+  },
+  {
+   "codes": [
+    "CC",
+    "E2",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಯ"
+  },
+  {
+   "codes": [
+    "CC",
+    "E2",
+    "C3"
+   ],
+   "kind": "base",
+   "value": "ಯ"
+  },
+  {
+   "codes": [
+    "CC",
+    "EA",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಯೆ"
+  },
+  {
+   "codes": [
+    "CC",
+    "EA",
+    "B3"
+   ],
+   "kind": "letter",
+   "value": "ಯೊ"
+  },
+  {
+   "codes": [
+    "CE",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಯಿ"
+  },
+  {
+   "codes": [
+    "DE"
+   ],
+   "kind": "letter",
+   "value": "ಶ್ರೀ"
+  },
+  {
+   "codes": [
+    "6E",
+    "B0"
+   ],
+   "kind": "letter",
+   "value": "ಋ"
+  },
+  {
+   "codes": [
+    "6E",
+    "B3"
+   ],
+   "kind": "letter",
+   "value": "ೠ"
+  },
+  {
+   "codes": [
+    "C0",
+    "C3"
+   ],
+   "kind": "base",
+   "value": "ಮ"
+  },
+  {
+   "codes": [
+    "CC",
+    "C3"
+   ],
+   "kind": "base",
+   "value": "ಯ"
+  },
+  {
+   "codes": [
+    "C6",
+    "B3"
+   ],
+   "kind": "letter",
+   "value": "ಮೀ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "CE",
+    "B3"
+   ],
+   "kind": "letter",
+   "value": "ಯೀ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "E2"
+   ],
+   "kind": "sign",
+   "value": ""
+  },
+  {
+   "codes": [
+    "D6"
+   ],
+   "kind": "sign",
+   "value": "ಾ"
+  },
+  {
+   "codes": [
+    "B0"
+   ],
+   "kind": "sign",
+   "value": "ು"
+  },
+  {
+   "codes": [
+    "F3"
+   ],
+   "kind": "sign",
+   "value": "ು",
+   "prefer": {
+    "type": "on",
+    "chars": [
+     "ಪ",
+     "ಫ",
+     "ವ"
+    ]
+   }
+  },
+  {
+   "codes": [
+    "B3"
+   ],
+   "kind": "sign",
+   "value": "ೂ"
+  },
+  {
+   "codes": [
+    "F2"
+   ],
+   "kind": "sign",
+   "value": "ೂ",
+   "prefer": {
+    "type": "on",
+    "chars": [
+     "ಪ",
+     "ಫ",
+     "ವ"
+    ]
+   }
+  },
+  {
+   "codes": [
+    "BD"
+   ],
+   "kind": "sign",
+   "value": "ೃ"
+  },
+  {
+   "codes": [
+    "EA"
+   ],
+   "kind": "sign",
+   "value": "ೆ"
+  },
+  {
+   "codes": [
+    "A9"
+   ],
+   "kind": "sign",
+   "value": "ೕ"
+  },
+  {
+   "codes": [
+    "F4"
+   ],
+   "kind": "sign",
+   "value": "ೖ"
+  },
+  {
+   "codes": [
+    "F1"
+   ],
+   "kind": "sign",
+   "value": "ೌ"
+  },
+  {
+   "codes": [
+    "20",
+    "BD"
+   ],
+   "kind": "sign",
+   "value": "ೃ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "20",
+    "F4"
+   ],
+   "kind": "sign",
+   "value": "ೖ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "20",
+    "58"
+   ],
+   "kind": "ottu",
+   "value": "ಯ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "20",
+    "57"
+   ],
+   "kind": "ottu",
+   "value": "ಮ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "A0",
+    "58"
+   ],
+   "kind": "ottu",
+   "value": "ಯ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "EA",
+    "BD"
+   ],
+   "kind": "sign",
+   "value": "ೈ",
+   "prefer": {
+    "type": "read"
+   }
+  },
+  {
+   "codes": [
+    "D2"
+   ],
+   "kind": "sign",
+   "value": "್"
+  },
+  {
+   "codes": [
+    "AA"
+   ],
+   "kind": "mod",
+   "value": "ಂ"
+  },
+  {
+   "codes": [
+    "FF"
+   ],
+   "kind": "mod",
+   "value": "ಃ"
+  },
+  {
+   "codes": [
+    "FC"
+   ],
+   "kind": "aspirate",
+   "value": ""
+  },
+  {
+   "codes": [
+    "22"
+   ],
+   "kind": "ottu",
+   "value": "ಕ"
+  },
+  {
+   "codes": [
+    "F8"
+   ],
+   "kind": "ottu",
+   "value": "ಕ"
+  },
+  {
+   "codes": [
+    "23"
+   ],
+   "kind": "ottu",
+   "value": "ಖ"
+  },
+  {
+   "codes": [
+    "24"
+   ],
+   "kind": "ottu",
+   "value": "ಗ"
+  },
+  {
+   "codes": [
+    "26"
+   ],
+   "kind": "ottu",
+   "value": "ಘ"
+  },
+  {
+   "codes": [
+    "E6"
+   ],
+   "kind": "ottu",
+   "value": "ಛ"
+  },
+  {
+   "codes": [
+    "2B"
+   ],
+   "kind": "ottu",
+   "value": "ಚ"
+  },
+  {
+   "codes": [
+    "40"
+   ],
+   "kind": "ottu",
+   "value": "ಜ"
+  },
+  {
+   "codes": [
+    "42"
+   ],
+   "kind": "ottu",
+   "value": "ಝ"
+  },
+  {
+   "codes": [
+    "43"
+   ],
+   "kind": "ottu",
+   "value": "ಞ"
+  },
+  {
+   "codes": [
+    "44"
+   ],
+   "kind": "ottu",
+   "value": "ಟ"
+  },
+  {
+   "codes": [
+    "46"
+   ],
+   "kind": "ottu",
+   "value": "ಠ"
+  },
+  {
+   "codes": [
+    "47"
+   ],
+   "kind": "ottu",
+   "value": "ಡ"
+  },
+  {
+   "codes": [
+    "48"
+   ],
+   "kind": "ottu",
+   "value": "ಢ"
+  },
+  {
+   "codes": [
+    "4A"
+   ],
+   "kind": "ottu",
+   "value": "ಣ"
+  },
+  {
+   "codes": [
+    "4B"
+   ],
+   "kind": "ottu",
+   "value": "ತ"
+  },
+  {
+   "codes": [
+    "4C"
+   ],
+   "kind": "ottu",
+   "value": "ಥ"
+  },
+  {
+   "codes": [
+    "4D"
+   ],
+   "kind": "ottu",
+   "value": "ದ"
+  },
+  {
+   "codes": [
+    "50"
+   ],
+   "kind": "ottu",
+   "value": "ಧ"
+  },
+  {
+   "codes": [
+    "51"
+   ],
+   "kind": "ottu",
+   "value": "ನ"
+  },
+  {
+   "codes": [
+    "52"
+   ],
+   "kind": "ottu",
+   "value": "ಪ"
+  },
+  {
+   "codes": [
+    "53"
+   ],
+   "kind": "ottu",
+   "value": "ಫ"
+  },
+  {
+   "codes": [
+    "54"
+   ],
+   "kind": "ottu",
+   "value": "ಬ"
+  },
+  {
+   "codes": [
+    "56"
+   ],
+   "kind": "ottu",
+   "value": "ಭ"
+  },
+  {
+   "codes": [
+    "57"
+   ],
+   "kind": "ottu",
+   "value": "ಮ"
+  },
+  {
+   "codes": [
+    "58"
+   ],
+   "kind": "ottu",
+   "value": "ಯ"
+  },
+  {
+   "codes": [
+    "5A"
+   ],
+   "kind": "ottu",
+   "value": "ರ"
+  },
+  {
+   "codes": [
+    "5B"
+   ],
+   "kind": "ottu",
+   "value": "ಲ"
+  },
+  {
+   "codes": [
+    "5C"
+   ],
+   "kind": "ottu",
+   "value": "ಳ"
+  },
+  {
+   "codes": [
+    "5D"
+   ],
+   "kind": "ottu",
+   "value": "ವ"
+  },
+  {
+   "codes": [
+    "5E"
+   ],
+   "kind": "ottu",
+   "value": "ಶ"
+  },
+  {
+   "codes": [
+    "5F"
+   ],
+   "kind": "ottu",
+   "value": "ಷ"
+  },
+  {
+   "codes": [
+    "62"
+   ],
+   "kind": "ottu",
+   "value": "ಸ"
+  },
+  {
+   "codes": [
+    "63"
+   ],
+   "kind": "ottu",
+   "value": "ಹ"
+  },
+  {
+   "codes": [
+    "E5"
+   ],
+   "kind": "ottu",
+   "value": "ಟರ"
+  },
+  {
+   "codes": [
+    "E7"
+   ],
+   "kind": "ottu",
+   "value": "ತರ"
+  },
+  {
+   "codes": [
+    "AD"
+   ],
+   "kind": "ottu",
+   "value": "ಕೃ"
+  },
+  {
+   "codes": [
+    "AE"
+   ],
+   "kind": "ottu",
+   "value": "ತವ"
+  },
+  {
+   "codes": [
+    "DF"
+   ],
+   "kind": "ottu",
+   "value": "ಪರ"
+  },
+  {
+   "codes": [
+    "E8"
+   ],
+   "kind": "ottu",
+   "value": "ತೖ"
+  },
+  {
+   "codes": [
+    "EB"
+   ],
+   "kind": "ottu",
+   "value": "ರೖ"
+  },
+  {
+   "codes": [
+    "AF"
+   ],
+   "kind": "ottu",
+   "value": "ಕೃ"
+  },
+  {
+   "codes": [
+    "CB"
+   ],
+   "kind": "arka",
+   "value": ""
+  },
+  {
+   "codes": [
+    "2D"
+   ],
+   "kind": "ignore",
+   "value": ""
+  },
+  {
+   "codes": [
+    "3C"
+   ],
+   "kind": "ignore",
+   "value": ""
+  },
+  {
+   "codes": [
+    "3E"
+   ],
+   "kind": "ignore",
+   "value": ""
+  },
+  {
+   "codes": [
+    "A4"
+   ],
+   "kind": "ignore",
+   "value": ""
+  },
+  {
+   "codes": [
+    "F7"
+   ],
+   "kind": "ignore",
+   "value": ""
+  },
+  {
+   "codes": [
+    "27"
+   ],
+   "kind": "literal",
+   "value": "’"
+  },
+  {
+   "codes": [
+    "60"
+   ],
+   "kind": "literal",
+   "value": "‘"
+  },
+  {
+   "codes": [
+    "A5"
+   ],
+   "kind": "literal",
+   "value": "-"
+  },
+  {
+   "codes": [
+    "F5"
+   ],
+   "kind": "literal",
+   "value": "—"
+  },
+  {
+   "codes": [
+    "F6"
+   ],
+   "kind": "literal",
+   "value": "–"
+  },
+  {
+   "codes": [
+    "E9"
+   ],
+   "kind": "literal",
+   "value": "।"
+  },
+  {
+   "codes": [
+    "81"
+   ],
+   "kind": "literal",
+   "value": "೧"
+  },
+  {
+   "codes": [
+    "82"
+   ],
+   "kind": "literal",
+   "value": "೨"
+  },
+  {
+   "codes": [
+    "83"
+   ],
+   "kind": "literal",
+   "value": "೩"
+  },
+  {
+   "codes": [
+    "84"
+   ],
+   "kind": "literal",
+   "value": "೪"
+  },
+  {
+   "codes": [
+    "85"
+   ],
+   "kind": "literal",
+   "value": "೫"
+  },
+  {
+   "codes": [
+    "86"
+   ],
+   "kind": "literal",
+   "value": "೬"
+  },
+  {
+   "codes": [
+    "87"
+   ],
+   "kind": "literal",
+   "value": "೭"
+  },
+  {
+   "codes": [
+    "88"
+   ],
+   "kind": "literal",
+   "value": "೮"
+  },
+  {
+   "codes": [
+    "89"
+   ],
+   "kind": "literal",
+   "value": "೯"
+  }
+ ]
+}

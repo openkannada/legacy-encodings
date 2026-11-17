@@ -1,0 +1,39 @@
+{
+  "layouts": [
+    {
+      "id": "nudi",
+      "name": "Nudi",
+      "aliases": ["baraha"],
+      "description": "The numbered ANSI Nudi fonts up to version 5, such as Nudi 01 e and Nudi 05 k, Nudi Akshara, and Baraha's BRH fonts for Kannada, which share 1 layout.",
+      "fonts": ["Nudi 01 e", "Nudi 05 k", "NudiAkshara", "BRH Kannada", "BRH Sirigannada", "BRH Kasturi"]
+    },
+    {
+      "id": "akruti",
+      "name": "Akruti",
+      "aliases": [],
+      "description": "Akruti's Kannada fonts in the AkrutiKndPadma family and its weights.",
+      "fonts": ["AkrutiKndPadma", "AkrutiKndPadmaDemi"]
+    },
+    {
+      "id": "shree-lipi",
+      "name": "Shree-Lipi",
+      "aliases": [],
+      "description": "Shree-Lipi's Shree-Kan-0850 font and its styles. Other Shree-Kan numbers have layouts of their own with no table yet.",
+      "fonts": ["Shree-Kan-0850"]
+    },
+    {
+      "id": "nudi-b",
+      "name": "Nudi B-Akshara",
+      "aliases": [],
+      "description": "Nudi B-Akshara (NudiB-Akshar), the bilingual Nudi font: Latin at the ASCII codes, Kannada from 81 up.",
+      "fonts": ["NudiB-Akshar"]
+    },
+    {
+      "id": "kan-eng",
+      "name": "Kan-Eng",
+      "aliases": [],
+      "description": "The bilingual Kan-Eng fonts, which share 1 layout: Latin at the ASCII letter codes and Kannada at the other codes.",
+      "fonts": ["Kan-EngPraja", "Kan-EngDeepa", "Kan-EngKarn", "Kan-EngVani", "Kan-EngUsha"]
+    }
+  ]
+}
