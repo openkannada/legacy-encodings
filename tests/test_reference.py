@@ -122,6 +122,61 @@ class Runner(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("Conforming (section 8): yes.", r.stdout)
 
+    def test_wrong_detection_does_not_conform(self):
+        script = (
+            "import json,subprocess,sys\n"
+            f"ref = subprocess.Popen([sys.executable, {str(ROOT / 'reference' / 'adapter.py')!r}], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)\n"
+            "for line in sys.stdin:\n"
+            "    ref.stdin.write(line); ref.stdin.flush()\n"
+            "    resp = json.loads(ref.stdout.readline())\n"
+            "    req = json.loads(line)\n"
+            "    if req['op'] == 'detect' and not req['id'].startswith('edge-'):\n"
+            "        resp['layout'] = 'nudi'\n"
+            "    print(json.dumps(resp), flush=True)\n"
+        )
+        r = self.run_with(script)
+        self.assertEqual(r.returncode, 1, r.stderr)
+        self.assertIn("Edge cases: 64 of 64", r.stdout)
+        self.assertIn("Conforming (section 8): no.", r.stdout)
+
+    def test_a_silent_converter_times_out(self):
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--timeout", "1", "--", sys.executable, "-c", "import time; time.sleep(30)"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("within 1", r.stderr)
+
+    def test_the_reference_adapter_answers_bad_requests_with_errors(self):
+        lines = [
+            '{"id": "1", "op": "read", "layout": "baraha", "codes": "50 C0"}',
+            '{"id": "2", "op": "read", "layout": "nope", "codes": "50"}',
+            '{"id": "3", "op": "read", "layout": "nudi", "codes": "ZZ"}',
+            '{"id": "4", "op": "read", "layout": "nudi", "codes": "1FF"}',
+            "not json",
+        ]
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "reference" / "adapter.py")],
+            input="\n".join(lines) + "\n",
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        out = [json.loads(line) for line in r.stdout.splitlines()]
+        self.assertEqual(out[0]["text"], "ಕ")
+        self.assertEqual([("error" in o) for o in out], [False, True, True, True, True])
+
+    def test_each_condition_of_section_8_is_needed(self):
+        row = {"group": "checked", "lines": 10, "exact": 10, "detected": 10}
+        self.assertTrue(run.conforming([row], (5, 5), [], []))
+        self.assertFalse(run.conforming([row], (4, 5), [], []))
+        self.assertFalse(run.conforming([row], (5, 5), [{}], ["edge-000"]))
+        self.assertFalse(run.conforming([dict(row, exact=9)], (5, 5), [], []))
+        self.assertFalse(run.conforming([dict(row, detected=9)], (5, 5), [], []))
+        self.assertTrue(run.conforming([dict(row, group="all", exact=9)], (5, 5), [], []))
+
     def test_extra_fields_are_ignored(self):
         responses = {("detect", "x"): {"id": "x", "layout": "nudi", "clean": True}}
         self.assertEqual(run.answer(responses, "detect", "x"), {"layout": "nudi"})

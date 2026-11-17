@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Runs the conformance cases against a converter and reports its accuracy.
 
-  run.py [--out FILE] [--markdown] -- COMMAND [ARGS...]
+  run.py [--out FILE] [--markdown] [--timeout SECONDS] -- COMMAND [ARGS...]
 
 COMMAND speaks the line protocol in conformance/README.md on stdin and stdout.
 --out saves every response, so 2 converters can be compared with --compare.
@@ -215,10 +215,11 @@ def main(argv):
     split = argv.index("--")
     opts, command = argv[:split], argv[split + 1 :]
     out = opts[opts.index("--out") + 1] if "--out" in opts else None
+    timeout = float(opts[opts.index("--timeout") + 1]) if "--timeout" in opts else 30
     fonts = json.loads((ROOT / "tables" / "fonts.json").read_text(encoding="utf-8"))
     cases = load_cases()
     edges = load_edge_cases()
-    responses = run(command, requests(cases, fonts, edges))
+    responses = run(command, requests(cases, fonts, edges), timeout)
     if out:
         saved = {f"{op} {rid}": {k: v for k, v in r.items() if k != "id"} for (op, rid), r in responses.items()}
         Path(out).write_text(json.dumps(saved, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8")
