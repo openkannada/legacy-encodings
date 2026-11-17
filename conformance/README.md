@@ -8,7 +8,7 @@ These tests show how closely a converter follows the specification, as accuracy 
 |---|---|---|
 | Lines | `cases/<layout>.tsv` | 772 lines from public documents: the converter's text against the expected text |
 | Edge cases | `edge-cases.tsv` | 52 short inputs that reach every reading rule of sections 5 and 7.2, including the error reports |
-| Font names | `../tables/fonts.json` | 46 font names: layout, legacy flag and Kannada digit flag (section 7.1) |
+| Font names | `../tables/fonts.json` | 47 font names: layout, legacy flag and Kannada digit flag (section 7.1) |
 | Detection | the lines | the layout found from each whole line, and from its first 8, 16 and 32 codes (section 7.2) |
 
 ### Lines

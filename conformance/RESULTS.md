@@ -4,7 +4,7 @@ Measured on 17 November 2026 with the cases copied from kannadi c786820.
 
 ## Reference reader and kannadi
 
-The Python reference reader (`reference/kle.py`), written from the specification, and kannadi give the same response to every request: 3,696 of 3,696, counting text, unknown positions, malformed ranges, detected layouts and font answers. On random code sequences (`differential.py`, 5 seeds of 3,000 sequences per layout), 82,500 of 82,500 responses are the same.
+The Python reference reader (`reference/kle.py`), written from the specification, and kannadi give the same response to every request: 3,697 of 3,697, counting text, unknown positions, malformed ranges, detected layouts and font answers. On random code sequences (`differential.py`, 5 seeds of 3,000 sequences per layout), 82,500 of 82,500 responses are the same.
 
 | Layout | Lines | Exact | Character accuracy | Clean | Layout found, whole line | 8 codes | 16 codes | 32 codes |
 |---|---|---|---|---|---|---|---|---|
@@ -15,7 +15,7 @@ The Python reference reader (`reference/kle.py`), written from the specification
 | nudi-b | 190 | 190 (100.0%) | 100.00% | 190 | 100.0% | 81.5% | 95.4% | 99.0% |
 | kan-eng | 118 | 118 (100.0%) | 100.00% | 118 | 100.0% | 83.1% | 95.9% | 97.4% |
 
-Font names: 46 of 46. Edge cases: 52 of 52.
+Font names: 47 of 47. Edge cases: 52 of 52.
 
 ### Reading these figures
 

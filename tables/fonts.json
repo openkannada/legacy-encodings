@@ -23,6 +23,7 @@
     { "font": "Nudi 05 k", "layout": "nudi", "legacy": true, "kannada_digits": true },
     { "font": "NudiAkshara", "layout": "nudi", "legacy": true, "kannada_digits": false },
     { "font": "Nudi Akshar-14", "layout": "nudi", "legacy": true },
+    { "font": "Nudi 05", "layout": null, "legacy": false },
     { "font": "BRH Kannada", "layout": "nudi", "legacy": true, "kannada_digits": false },
     { "font": "BRHKannada-Bold", "layout": "nudi", "legacy": true },
     { "font": "\"BRH Sirigannada\"", "layout": "nudi", "legacy": true },
