@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Licenses: tables, schema, tools, tests, the reference reader, the conformance runner and the adapters are under MIT OR Apache-2.0, and the prose under CC BY 4.0, with "The Open Kannada Authors" as copyright holder. `NOTICE.md` names the license of every directory, `REUSE.toml` that of every file, and `TRADEMARKS.md` says how the names may be used.
+- The Shree-Lipi conformance lines are 140 lines written for kannadi and encoded with its table, in place of 130 lines of Udayavani newspaper pages. A new status, `written`, marks them, and the headline figures count it with `verified` and `read`. Cases copied from kannadi 3148ffb.
+- Contributions are signed off under the Developer Certificate of Origin. CI checks the `Signed-off-by` line of each commit in a pull request, and runs `reuse lint`.
+
 ## 0.1.0, draft
 
 - Specification draft: layout tables, reading rules, reports, layout detection from font names and from text, and an outline of writing back.

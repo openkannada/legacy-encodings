@@ -224,6 +224,16 @@ class Runner(unittest.TestCase):
         responses = {("detect", "x"): {"id": "x", "layout": "nudi", "clean": True}}
         self.assertEqual(run.answer(responses, "detect", "x"), {"layout": "nudi"})
 
+    def test_written_lines_count_as_checked(self):
+        cases = [
+            {"id": f"x-{status}", "layout": "nudi", "status": status, "codes": "50 C0", "expected": "ಕ"}
+            for status in ("verified", "read", "written", "pending", "unchecked")
+        ]
+        responses = {("read", c["id"]): {"text": "ಕ", "unknown": [], "malformed": []} for c in cases}
+        rows, _ = run.summarize(cases, responses, {"examples": []})
+        checked = [r for r in rows if r["group"] == "checked"]
+        self.assertEqual([r["lines"] for r in checked], [3])
+
     def test_distance(self):
         self.assertEqual(run.distance("ಕನ್ನಡ", "ಕನ್ನಡ"), 0)
         self.assertEqual(run.distance("ಕನಡ", "ಕನ್ನಡ"), 2)

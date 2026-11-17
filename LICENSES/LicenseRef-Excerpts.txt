@@ -1,0 +1,13 @@
+Short excerpts of third-party documents
+
+The files marked with this identifier hold short excerpts of documents by others,
+mostly works of the Government of Karnataka. The sources carry no license statement,
+and the licenses of this repository do not cover the excerpted text.
+
+They are kept, each line with the URL of its source, for research on and testing of
+text converters. No document is stored in full. Keeping short excerpts with their
+sources for research and testing is meant as fair dealing under the Indian Copyright
+Act, 1957.
+
+To ask for an excerpt to be removed, write to support@luminik.io or open an issue in
+the repository.

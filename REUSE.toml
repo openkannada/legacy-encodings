@@ -1,0 +1,26 @@
+version = 1
+SPDX-PackageName = "legacy-encodings"
+SPDX-PackageDownloadLocation = "https://github.com/openkannada/legacy-encodings"
+
+# Tables, schema, tools, tests, reference reader, conformance runner and adapters.
+[[annotations]]
+path = "**"
+SPDX-FileCopyrightText = "2026 The Open Kannada Authors"
+SPDX-License-Identifier = "MIT OR Apache-2.0"
+
+# The specification and the other prose documents.
+[[annotations]]
+path = "**/*.md"
+SPDX-FileCopyrightText = "2026 The Open Kannada Authors"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Short excerpts of Karnataka government documents, kept for testing with their sources.
+[[annotations]]
+path = [
+  "conformance/cases/nudi.tsv",
+  "conformance/cases/akruti.tsv",
+  "conformance/cases/nudi-b.tsv",
+  "conformance/cases/kan-eng.tsv",
+]
+SPDX-FileCopyrightText = "Government of Karnataka"
+SPDX-License-Identifier = "LicenseRef-Excerpts"

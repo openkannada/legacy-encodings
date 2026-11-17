@@ -22,7 +22,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 LAYOUTS = ["nudi", "akruti", "shree-lipi", "nudi-b", "kan-eng"]
 SNIPPETS = [8, 16, 32]
-CHECKED = ("verified", "read")
+CHECKED = ("verified", "read", "written")
 KEYS = {"read": ("text", "unknown", "malformed"), "detect": ("layout",), "font": ("layout", "legacy", "kannada_digits")}
 
 

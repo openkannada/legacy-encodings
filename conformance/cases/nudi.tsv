@@ -1,10 +1,11 @@
-# Conformance cases for the nudi layout, copied from kannadi c786820.
+# Conformance cases for the nudi layout, copied from kannadi 3148ffb.
 # Columns: id, status, codes (hex, Windows-1252), expected Unicode, source.
 # status: verified (a Kannada reader checked the expected text), read (the expected
 # text was read against the codes rendered in the font, pending a Kannada reader),
+# written (the line was written for the tests and encoded with the layout's table),
 # pending or unchecked (the expected text is a converter's output, not yet read).
 # The expected text keeps the source's own typing, errors included.
-# Short excerpts of the sources, kept for testing; see conformance/README.md.
+# Lines from documents are short excerpts, kept for testing; see conformance/README.md.
 nudi-001	read	A6 C3 6A 50 C9 20 67 C1 64 E5 7A C0 B0 E8 A3 C0 20 55 C1 E6 AB C4 C3 74 20 A5 C0 E6 7A C9 C3 B1 C0 55 C0 BC C0 20 43 A9 FC AA C0 C8 A2 DD 41 69 C0 C4 C4 20 55 C1 E6 AB C4 C3 74	ಪೀರಿಕೆ ರಾಜ್ಯದಲ್ಲಿನ ಗ್ರಾಮೀಣ ಪ್ರದೇಶಗಳ ಅಭಿವೃದ್ದಿಯು ಗ್ರಾಮೀಣ	https://web.archive.org/web/20021218215751/http://www.kar.nic.in:80/rdpr/kan-www/aboutrdpr.html
 nudi-002	read	A5 C0 E6 7A C9 C3 B1 C0 55 C0 BC C0 20 50 C0 C8 B6 47 76 C1 E0 7A C0 50 C0 76 C9 20 AA C0 C4 76 C0 C4 DB 20 45 76 C0 67 C9 20 44 79 F0 50 C0 20 5A C0 6C C4 AA C0 6E 50 C9 55 C0 BC C0	ಪ್ರದೇಶಗಳ ಕೃಷಿಉತ್ಪಾದಕತೆ ಮತ್ತು ಇತರೆ ಆರ್ಥಿಕ ಚಟುವಟಿಕೆಗಳ	https://web.archive.org/web/20021218215751/http://www.kar.nic.in:80/rdpr/kan-www/aboutrdpr.html
 nudi-003	read	B8 C0 C4 7A 73 C1 67 C0 75 C9 41 69 C0 C4 A3 C0 C4 DF 20 43 AA C0 AE 41 A9 B9 7A C0 C4 DD 2C 20 AA C0 69 C1 A3 C0 AA C0 20 B8 C0 41 A5 C0 A3 C0 C6 E4 AE 55 C0 BC C0 20 55 C0 C4 74 AA C0 C4 6C D6 AA C0 A3 C0 C4 DF	ಸುಧಾರಣೆಯನ್ನು ಅವಲಂಬಿಸಿದ್ದು, ಮಾನವ ಸಂಪನ್ಮೂಲಗಳ ಗುಣಮಟ್ಟವನ್ನು	https://web.archive.org/web/20021218215751/http://www.kar.nic.in:80/rdpr/kan-www/aboutrdpr.html

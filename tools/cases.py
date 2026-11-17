@@ -21,9 +21,10 @@ HEADER = """\
 # Columns: id, status, codes (hex, Windows-1252), expected Unicode, source.
 # status: verified (a Kannada reader checked the expected text), read (the expected
 # text was read against the codes rendered in the font, pending a Kannada reader),
+# written (the line was written for the tests and encoded with the layout's table),
 # pending or unchecked (the expected text is a converter's output, not yet read).
 # The expected text keeps the source's own typing, errors included.
-# Short excerpts of the sources, kept for testing; see conformance/README.md.
+# Lines from documents are short excerpts, kept for testing; see conformance/README.md.
 """
 
 
@@ -54,7 +55,8 @@ def main(argv):
         fixture = git_show(checkout, commit, f"crates/kannadi/tests/fixtures/{layout}.tsv")
         for n, (codes, expected, source) in enumerate(rows(fixture), 1):
             seen.add(codes)
-            out.append((f"{layout}-{n:03}", "read", codes, expected, source))
+            status = "written" if source.startswith("written for") else "read"
+            out.append((f"{layout}-{n:03}", status, codes, expected, source))
         if layout == "nudi":
             corpus = git_show(checkout, commit, "corpus/nudi-2002.tsv")
             for cid, status, source, codes, expected, _note in rows(corpus):
