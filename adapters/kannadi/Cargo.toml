@@ -1,0 +1,11 @@
+[package]
+name = "kle-kannadi-adapter"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "MIT"
+description = "kannadi behind the KLE conformance protocol"
+
+[dependencies]
+kannadi = { git = "https://github.com/openkannada/kannadi", rev = "c786820bc3bf44e4dacef7338188a4381f4cdd0b" }
+serde_json = "1.0.154"

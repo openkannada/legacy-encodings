@@ -71,8 +71,8 @@ Alternatives considered:
 
 | Step | Content | State |
 |---|---|---|
-| 1 | Proposal, specification draft, schema, generated tables, font rules | This pull request |
-| 2 | Conformance cases, runner, Python reference reader, kannadi adapter, detection accuracy | Next pull request |
+| 1 | Proposal, specification draft, schema, generated tables, font rules | Pull request 1 |
+| 2 | Conformance cases, runner, Python reference reader, kannadi adapter, detection accuracy | Pull request 2 |
 | 3 | Kannada reader's check of the test lines; writing-back cases | After Prasad's review |
 | 4 | Make the repository public; tell converter authors and KAGAPA | Prasad's call |
 

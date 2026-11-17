@@ -1,0 +1,55 @@
+# Edge cases: inputs that reach every reading rule of sections 5 and 7.2, chosen by
+# tools/edge_cases.py, with the expected result from kannadi.
+# Columns: id, op, layout, options, codes, expected (JSON), section, rule.
+edge-000	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.2	longest entry
+edge-001	read	nudi	zero_as_anusvara	41 69 C9 C4 FC FD 23 20 31 55 55 E4	{"malformed": [[7, 8], [8, 11]], "text": "ಯೆüಽ# 1ಗಗ್ಮ", "unknown": [4]}	5.2	longest entry
+edge-002	read	akruti	kannada_digits	20 BD	{"malformed": [[1, 2]], "text": " ೃ", "unknown": []}	5.2	white space starts no match outside a syllable
+edge-003	read	akruti	zero_as_anusvara	20 F4 DE C6 C6 A4	{"malformed": [[1, 2]], "text": " ೖಶ್ರೀವಿವಿ", "unknown": []}	5.2	white space starts no match outside a syllable
+edge-004	read	akruti		CF D2 D2 39 4F 65 65 39 AD	{"malformed": [[8, 11]], "text": "ಬ್Ò9ಏಓಓ9್ಕೃ", "unknown": [2]}	5.3	a second virama is rejected
+edge-005	read	shree-lipi	kannada_digits,zero_as_anusvara	D7 EF EF 20 31 6F 20 BF E1	{"malformed": [], "text": "ಹಿ್ï ೧ಟ ಯ", "unknown": [2]}	5.3	a second virama is rejected
+edge-006	read	nudi	zero_as_anusvara	BF 75 F0 F0 20 F0 E3 56 D5	{"malformed": [[1, 5], [7, 9]], "text": "ೞರ್ಣð ð್ಭಗ್ಞಿ", "unknown": [3, 5]}	5.3	a second arkavattu is rejected
+edge-007	read	kan-eng	zero_as_anusvara	F9 E1 DC E1 31 80 58 49 89 C0 C0 12 20	{"malformed": [[5, 9]], "text": "ಯ1€XIರ್ಒÀ\u0012 ", "unknown": [5, 10, 11]}	5.3	a second arkavattu is rejected
+edge-008	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.3	a mahaprana stroke on another letter is rejected
+edge-009	read	nudi	zero_as_anusvara	41 69 C9 C4 FC FD 23 20 31 55 55 E4	{"malformed": [[7, 8], [8, 11]], "text": "ಯೆüಽ# 1ಗಗ್ಮ", "unknown": [4]}	5.3	a mahaprana stroke on another letter is rejected
+edge-010	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.3	a subscript that carries a vowel sign signs the syllable
+edge-011	read	akruti	zero_as_anusvara	7C D6 30 D6 D6 76 AF 52 52 52	{"malformed": [[3, 4], [4, 5]], "text": "ಧಾ0ಾಾಡ್ಕ್ಪ್ಪ್ಪೃ", "unknown": []}	5.3	a subscript that carries a vowel sign signs the syllable
+edge-012	read	akruti	kannada_digits,zero_as_anusvara	81 CF 20 F7 B5 C8 30	{"malformed": [[1, 2], [3, 4], [4, 5]], "text": "೧ಬ ಶಲ೦", "unknown": []}	5.3	ignore entries write nothing
+edge-013	read	shree-lipi	zero_as_anusvara	22 22 40 C4 6B E1 2D	{"malformed": [[2, 3]], "text": "‘‘ಃಝಿ", "unknown": []}	5.3	ignore entries write nothing
+edge-014	read	kan-eng	zero_as_anusvara	F3 57 79	{"malformed": [], "text": "ಖWy", "unknown": []}	5.3	a literal closes the syllable
+edge-015	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.3	a literal closes the syllable
+edge-016	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.3	rejected codes are kept
+edge-017	read	nudi	zero_as_anusvara	41 69 C9 C4 FC FD 23 20 31 55 55 E4	{"malformed": [[7, 8], [8, 11]], "text": "ಯೆüಽ# 1ಗಗ್ಮ", "unknown": [4]}	5.3	rejected codes are kept
+edge-018	read	akruti	kannada_digits	20 BD	{"malformed": [[1, 2]], "text": " ೃ", "unknown": []}	5.4	a stray sign is written
+edge-019	read	nudi	zero_as_anusvara	42 CB E1 E1	{"malformed": [[0, 1], [1, 2], [2, 4], [4, 6]], "text": "ಃೌ್ಫ್ಫ", "unknown": []}	5.4	a stray sign is written
+edge-020	read	kan-eng		9C	{"malformed": [[0, 2]], "text": "್ಚ", "unknown": []}	5.4	a stray subscript is written with viramas
+edge-021	read	akruti	zero_as_anusvara	4D CC EA B3	{"malformed": [[0, 2]], "text": "್ದಯೊ", "unknown": []}	5.4	a stray subscript is written with viramas
+edge-022	read	shree-lipi	zero_as_anusvara	AA 12 7B 44 4B CE FB CF 39 30	{"malformed": [[0, 2], [9, 14]], "text": "್ದ\u0012ಢಿಈಓಶಿಕ್ಷ್ಶ90", "unknown": [1]}	5.5	the cluster takes consonants joined by the virama
+edge-023	read	shree-lipi	zero_as_anusvara	FE A1 C3 DC 6B E1 AA C3 DC 6B E5 CA DC E5 BA B5 BD	{"malformed": [[0, 5], [8, 9], [9, 12]], "text": "ಜ್ಞ್ಣಝ್ದಝಮ್ಬಫ್ಭಿ", "unknown": []}	5.5	the cluster takes consonants joined by the virama
+edge-024	read	akruti	zero_as_anusvara	5C 32 B7 45 DE 5B	{"malformed": [[0, 2]], "text": "್ಳ2ಲಇಶ್ಲ್ರೀ", "unknown": []}	5.5	a final ra stays after the subscripts
+edge-025	read	akruti	zero_as_anusvara	5D 43 4B DE 56 6A D9 3E C0 E2 B0 FF	{"malformed": [[0, 2], [2, 4], [4, 6]], "text": "್ವ್ಞ್ತಶ್ಭ್ರೀjಖಮಃ", "unknown": [5]}	5.5	a final ra stays after the subscripts
+edge-026	read	nudi	zero_as_anusvara	BF 75 F0 F0 20 F0 E3 56 D5	{"malformed": [[1, 5], [7, 9]], "text": "ೞರ್ಣð ð್ಭಗ್ಞಿ", "unknown": [3, 5]}	5.5	the arkavattu is written first
+edge-027	read	akruti	zero_as_anusvara	DB D3 3C CB CC EA B0	{"malformed": [], "text": "ಢಿರ್ಛಿಯೆ", "unknown": []}	5.5	the arkavattu is written first
+edge-028	read	shree-lipi	zero_as_anusvara	24 C2 50 20 C1 E1 C1 E1 E0 C3 31 AB 43	{"malformed": [[0, 2], [2, 3], [8, 9], [10, 11]], "text": "್ಯಕ ಯೆಯೇರ1ಧಇ", "unknown": []}	5.5	the syllable is normalized to NFC
+edge-029	read	nudi-b	zero_as_anusvara	81 A6 D9 D6 D3 D3 F3 9C 64	{"malformed": [[0, 5]], "text": "ಯ್ಮೋೕಚಿd", "unknown": []}	5.5	the syllable is normalized to NFC
+edge-030	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.5	a shape that needs a sign is malformed without one
+edge-031	read	nudi	zero_as_anusvara	41 69 C9 C4 FC FD 23 20 31 55 55 E4	{"malformed": [[7, 8], [8, 11]], "text": "ಯೆüಽ# 1ಗಗ್ಮ", "unknown": [4]}	5.5	a shape that needs a sign is malformed without one
+edge-032	read	nudi	zero_as_anusvara	20 E8 E8 81 87 58 D7 C7 C7	{"malformed": [[1, 3], [3, 5], [7, 13]], "text": " ್ಲ್ಲ॥ಘ್ಠಿೂೂ", "unknown": [3]}	5.5	2 vowel signs are malformed
+edge-033	read	nudi	zero_as_anusvara	AA C0 C4 BC B2 41 69 C9 C4 C5	{"malformed": [[1, 2], [4, 7]], "text": "ಮಳಶಿಯೆು", "unknown": []}	5.5	2 vowel signs are malformed
+edge-034	read	kan-eng	kannada_digits,zero_as_anusvara	BC EF 88 D0 20 90 30 20 60 5A	{"malformed": [[0, 1], [1, 4], [5, 7]], "text": "ಪಐ್ಸ ್ಮ೦ ಓZ", "unknown": []}	5.5	marks on a vowel letter are malformed
+edge-035	read	akruti	zero_as_anusvara	E6 D5 B9 61 EA	{"malformed": [[0, 2], [6, 8]], "text": "್ಛಫಿಣಿಒೆ", "unknown": []}	5.5	marks on a vowel letter are malformed
+edge-036	read	akruti	zero_as_anusvara	6B AF 84 C0 E2 C3 FC AC	{"malformed": [[5, 7]], "text": "ಚ್ಕೃ೪ಮüದಿ", "unknown": [6]}	5.5	the malformed range includes the rejected codes
+edge-037	read	nudi	zero_as_anusvara	5A 20 BC 73 DB DE	{"malformed": [[0, 1], [2, 8]], "text": "ಚ ಳ್ತ್ಧs", "unknown": [3]}	5.5	the malformed range includes the rejected codes
+edge-038	read	nudi	zero_as_anusvara	67 30 62 E6 31 61 61 61 86	{"malformed": [[0, 1], [2, 5]], "text": "ರಂಛ್ರ1ಚಿಚಿಚಿ।", "unknown": []}	5.6	zero as anusvara
+edge-039	read	nudi-b	zero_as_anusvara	98 30 98	{"malformed": [[0, 1], [2, 3]], "text": "ಘಂಘ", "unknown": []}	5.6	zero as anusvara
+edge-040	read	kan-eng	zero_as_anusvara	F9 E1 E5 E3 30 20 B6 FE FB	{"malformed": [[4, 5]], "text": "ಯೊ0 ಥ", "unknown": []}	5.6	zero as anusvara needs a letter or base next
+edge-041	read	akruti	kannada_digits,zero_as_anusvara	81 CF 20 F7 B5 C8 30	{"malformed": [[1, 2], [3, 4], [4, 5]], "text": "೧ಬ ಶಲ೦", "unknown": []}	5.6	zero as anusvara needs a letter or base next
+edge-042	read	kan-eng	zero_as_anusvara	30 A6 89	{"malformed": [], "text": "0ಟಿಒ", "unknown": []}	5.6	zero as anusvara needs a letter character before
+edge-043	read	nudi-b	zero_as_anusvara	30 C1 C1 C0 D0 D4 61	{"malformed": [], "text": "0ವಿವಿಮa", "unknown": []}	5.6	zero as anusvara needs a letter character before
+edge-044	read	akruti	kannada_digits,zero_as_anusvara	81 CF 20 F7 B5 C8 30	{"malformed": [[1, 2], [3, 4], [4, 5]], "text": "೧ಬ ಶಲ೦", "unknown": []}	5.6	Kannada digits
+edge-045	read	akruti	kannada_digits,zero_as_anusvara	A5 39 C0 E2 B0 E2 20 31	{"malformed": [], "text": "-೯ಮ ೧", "unknown": []}	5.6	Kannada digits
+edge-046	read	akruti	kannada_digits	20 BD	{"malformed": [[1, 2]], "text": " ೃ", "unknown": []}	5.6	passing characters are not reported
+edge-047	read	nudi-b	zero_as_anusvara	20	{"malformed": [], "text": " ", "unknown": []}	5.6	passing characters are not reported
+edge-048	detect			71 85 44 E2 E0 50	{"layout": "shree-lipi"}	7.2	fewer Latin letters wins a tie
+edge-049	detect			D4 BD 20 54	{"layout": "nudi"}	7.2	fewer Latin letters wins a tie
+edge-050	detect			BC DF	{"layout": "kan-eng"}	7.2	fewer viramas wins a tie
+edge-051	detect			E6 D5 B9 61 EA	{"layout": "akruti"}	7.2	fewer viramas wins a tie
