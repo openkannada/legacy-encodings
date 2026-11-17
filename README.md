@@ -13,6 +13,9 @@ Draft 0.1.0. The repository is private while the draft is reviewed. [PROPOSAL.md
 | [tables/fonts.json](tables/fonts.json) | Font-name rules for finding a layout, with examples |
 | [schema/layout.schema.json](schema/layout.schema.json) | JSON Schema for the JSON tables |
 | [tools/tables.py](tools/tables.py) | Copies the tables from kannadi, builds the JSON and checks every table rule |
+| [conformance/](conformance/) | 772 lines from public documents, 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
+| [reference/kle.py](reference/kle.py) | A reference reader in Python, written from the specification |
+| [adapters/kannadi](adapters/kannadi) | kannadi behind the conformance protocol |
 
 ## Using the tables
 
@@ -30,6 +33,14 @@ python3 -m unittest discover -s tests
 
 and list the change in [CHANGELOG.md](CHANGELOG.md).
 
+## Proposing changes
+
+Open a GitHub issue for a change to the specification, a table entry, a new layout or a new test line. A table change needs evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources (section 10 of the specification). Bugs and sample documents go in issues too; send documents that cannot be public to support@luminik.io.
+
+Organizations that want to take part in the specification, such as KAGAPA or a government office, can write to founders@luminik.io.
+
 ## License
 
 The specification text is under [CC BY 4.0](LICENSE-CC-BY-4.0). The tables, schema and tools are under the [MIT license](LICENSE-MIT). See [NOTICE.md](NOTICE.md).
+
+Part of [Open Kannada](https://github.com/openkannada), free and open-source tools that make Kannada work properly on computers.

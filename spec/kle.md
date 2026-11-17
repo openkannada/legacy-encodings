@@ -277,9 +277,22 @@ The second number prefers a layout that reads the text as Kannada, because a lay
 
 Short text can read cleanly in more than 1 layout, so the choice grows surer with length. A converter SHOULD prefer the font name when it has one, and SHOULD let the user override the guess.
 
+### 7.3 Measured accuracy
+
+On the 772 lines of the conformance cases, the method finds the right layout for every whole line. Counting only the lines longer than the snippet: from the first 32 codes it is right for 95 of 96 Nudi B-Akshara lines, 38 of 39 Kan-Eng lines and every line of the other layouts; from the first 8 codes, about 2 or 3 syllables, for 81.5% of Nudi B-Akshara and 83.1% of Kan-Eng lines, and 93.5% or more for the others. Most mistakes on short text choose Akruti for a bilingual layout. `conformance/RESULTS.md` has the details.
+
 ## 8. Conformance
 
-A conforming reader follows section 5 and reports as section 6 says. Conformance cases, a runner and measured results are planned for a later revision of this draft.
+A conforming reader follows section 5 and reports as section 6 says. The conformance tests check this on real and constructed inputs, and are measured and reported as figures, because the expected texts keep the source documents' own typing errors and some still wait for a Kannada reader's check.
+
+A **conforming reader**:
+
+1. gives the expected result for every edge case in `conformance/edge-cases.tsv`, including the unknown positions and malformed ranges;
+2. gives the expected text for every line of `conformance/cases/` whose status is verified or read;
+3. gives the expected answer for every font-name example in `tables/fonts.json`, if it reads font names;
+4. finds the right layout for every whole line of `conformance/cases/` whose status is verified or read, if it detects layouts from text.
+
+A converter that does not conform SHOULD still publish its figures from `conformance/run.py`, with the version of this specification and the kannadi commit in `conformance/cases/SOURCE.json` it was measured against. The cases, the protocol a converter speaks to the runner, and the figures reported are described in `conformance/README.md`.
 
 ## 9. Writing legacy text
 
@@ -293,4 +306,4 @@ When a written result is clean, reading it back (section 5) gives the NFC form o
 
 This specification follows semantic versioning. A change that makes a conforming reader give different text for some input is a minor version before 1.0 and a major version after it. Every change to a table is listed in `CHANGELOG.md` with the evidence for it.
 
-A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources, to be added as test lines.
+A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, added as conformance cases with their sources. Changes are proposed as GitHub issues in the specification's repository; organizations can also write to founders@luminik.io.
