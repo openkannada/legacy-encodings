@@ -42,6 +42,26 @@ class WorkedExamples(unittest.TestCase):
             self.assertTrue(r.clean, hexes)
 
 
+class Clarifications(unittest.TestCase):
+    """Inputs where a looser reading of the specification would differ from kannadi."""
+
+    def check(self, layout, hexes, text, unknown, malformed):
+        r = kle.read(codes(hexes), TABLES[layout])
+        self.assertEqual((r.text, r.unknown, [list(m) for m in r.malformed]), (text, unknown, malformed))
+
+    def test_no_break_space_starts_no_match_outside_a_syllable(self):
+        self.check("akruti", "A0 58", "\u00a0\u0ccd\u0caf", [], [[1, 3]])
+
+    def test_the_zero_lookahead_skips_the_white_space_refusal(self):
+        self.check("nudi-b", "83 30 20 A6 D0 D4", "ಅಂ ಯ", [], [])
+
+    def test_stray_marks_are_not_normalized(self):
+        self.check("nudi", "C9 C3", "\u0cc6\u0cd5", [], [[0, 1], [1, 2]])
+
+    def test_unknown_positions_count_codes(self):
+        self.check("nudi", "50 C0 68", "ಕh", [2], [])
+
+
 class Cases(unittest.TestCase):
     def test_every_case_reads_as_expected(self):
         for case in run.load_cases():
