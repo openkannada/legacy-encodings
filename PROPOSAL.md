@@ -1,6 +1,6 @@
 # Proposal: an open specification for legacy Kannada encodings
 
-Status: draft for Prasad's review. Nothing here is public yet.
+Status: draft.
 
 ## The problem
 
@@ -66,7 +66,7 @@ Alternatives considered:
 
 - Semantic versions. A change that gives different output for some input is a minor version before 1.0 and a major version after it.
 - 1.0 needs: a Kannada reader's check of the test lines; 1 independent reader in another language passing the tests; writing-back cases (section 9).
-- Changes come as pull requests with evidence. Prasad decides until there are other maintainers.
+- Changes come as pull requests with evidence. Until there are other maintainers, I decide.
 
 ## Plan
 
@@ -74,13 +74,12 @@ Alternatives considered:
 |---|---|---|
 | 1 | Proposal, specification draft, schema, generated tables, font rules | Pull request 1 |
 | 2 | Conformance cases, runner, Python reference reader, kannadi adapter, detection accuracy | Pull request 2 |
-| 3 | Kannada reader's check of the test lines; writing-back cases | After Prasad's review |
-| 4 | Make the repository public; tell converter authors and KAGAPA | Prasad's call |
+| 3 | Kannada reader's check of the test lines; writing-back cases | After this proposal is settled |
+| 4 | Make the repository public; tell converter authors and KAGAPA | Once the open decisions are settled |
 
-## Decisions for Prasad
+## Open decisions
 
 1. **Name and home**: KLE in `openkannada/legacy-encodings`, or another name.
 2. **Table license**: decided on 17 November 2026: MIT OR Apache-2.0, like kannadi.
 3. **Source of truth**: for now kannadi's tables are the source and this repository copies them at a pinned commit. Once the specification is public, the source could move here, with kannadi reading the tables from this repository.
 4. **When to go public**, and whether to invite KAGAPA and the authors of other converters to review the draft first.
-5. **Names in the drafts**: the proposal and its decisions name Prasad; they should be reworded before the repository is public.
