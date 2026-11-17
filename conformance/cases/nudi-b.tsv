@@ -1,4 +1,4 @@
-# Conformance cases for the nudi-b layout, copied from kannadi 3148ffb.
+# Conformance cases for the nudi-b layout, copied from kannadi e350d5d.
 # Columns: id, status, codes (hex, Windows-1252), expected Unicode, source.
 # status: verified (a Kannada reader checked the expected text), read (the expected
 # text was read against the codes rendered in the font, pending a Kannada reader),

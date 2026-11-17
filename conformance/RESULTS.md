@@ -1,6 +1,6 @@
 # Results
 
-Measured on 17 November 2026 with the cases copied from kannadi 3148ffb and the tables and adapter at kannadi c786820. Between those commits, kannadi's tables changed only in their license comment lines, and its test lines only for Shree-Lipi.
+Measured on 17 November 2026 with the cases copied from kannadi e350d5d and the tables and adapter at kannadi c786820. Between those commits, kannadi's tables changed only in their license comment lines, and its test lines only for Shree-Lipi.
 
 ## Reference reader and kannadi
 
