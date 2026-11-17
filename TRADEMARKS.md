@@ -1,11 +1,11 @@
 # Names and logos
 
-Open Kannada, kannadi and Neha Sans are the names of this project and its work. The code and fonts are open for anyone to use. The names tell people where the original comes from.
+Open Kannada, kannadi and Neha Sans are the names of this project and its work. The code, fonts and data are open for anyone to use. The names tell people where the original comes from.
 
 You may:
 
 - say your product is "built with kannadi" or "uses Open Kannada";
-- use the names and logos to refer to the project, in articles, talks, listings and docs.
+- use the names and logos to refer to the project, in articles, talks, reviews, listings and docs.
 
 Please do not:
 
@@ -14,4 +14,4 @@ Please do not:
 
 If you fork the project, give the fork its own name and keep the copyright and license notices.
 
-Questions: support@luminik.io.
+Questions: open an issue, or write to support@luminik.io.

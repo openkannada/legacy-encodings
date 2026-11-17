@@ -10,13 +10,13 @@ Years of Kannada documents were typed before Unicode: government orders, budget 
 |---|---|---|
 | Nudi, and Baraha's ANSI fonts | Karnataka government web pages and documents | The state's own standard. Vowel signs split into 2 or 3 glyphs. |
 | Akruti | Karnataka Acts and budget highlights | Other codes; some signs typed after a space. |
-| Shree-Lipi | The Udayavani newspaper's web pages, 2003 and 2004 | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
+| Shree-Lipi | The Udayavani newspaper's web pages, 2003 and 2004; the test lines are now written by us | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
 | Nudi B-Akshara | Legislative Assembly and budget PDFs | Bilingual: Latin at the ASCII codes, Kannada above 80. |
 | Kan-Eng | Budget papers, 2002 to 2014 | Bilingual, with yet another Kannada layout. |
 
 Text in these fonts cannot be searched, indexed, read aloud by a screen reader, used to train a language model, or copied into a modern document. Converters exist (aravindavk/ascii2unicode, KAGAPA's KannadaAsciiUnicodeSDK, a Python package, Baraha's own tool, Google Docs add-ons), but each keeps its own tables and rules, and none publishes a verified test set or an accuracy figure. A user cannot tell which converter is right, and a converter author has to rediscover every layout from scratch.
 
-kannadi, the Rust library under openkannada, has now derived tables for all 5 layouts from the font files and public documents, with 445 test lines read against the rendered glyphs and 140 Shree-Lipi lines written for the tests and a 207-line Nudi benchmark corpus. This proposal turns that work into a shared, open reference.
+kannadi, the Rust library under openkannada, has now derived tables for all 5 layouts from the font files and public documents, with 445 test lines read against the rendered glyphs, 140 Shree-Lipi lines written for the tests, and a 207-line Nudi benchmark corpus. This proposal turns that work into a shared, open reference.
 
 ## What we propose
 
