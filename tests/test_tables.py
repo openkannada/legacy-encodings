@@ -43,8 +43,8 @@ class TableRules(unittest.TestCase):
         self.rejects("c0\tsign\t")
 
     def test_a_sequence_after_a_space_is_read_only(self):
-        self.rejects("20 BD\tsign\tೃ")
-        self.rejects("A0 58\tottu\tಯ")
+        for code in ["09", "0A", "0B", "0C", "0D", "20", "A0"]:
+            self.rejects(f"{code} BD\tsign\tೃ")
         self.assertEqual(len(parse("A0 58\tottu\tಯ\tread")), 1)
 
     def test_a_written_literal_is_1_character(self):
@@ -148,7 +148,8 @@ class Generated(unittest.TestCase):
             return validator.is_valid(dict(doc, entries=[entry]))
 
         read = {"type": "read"}
-        self.assertFalse(valid({"codes": ["20", "BD"], "kind": "sign", "value": "ೃ"}))
+        for code in ["09", "0A", "0B", "0C", "0D", "20", "A0"]:
+            self.assertFalse(valid({"codes": [code, "BD"], "kind": "sign", "value": "ೃ"}), code)
         self.assertTrue(valid({"codes": ["20", "BD"], "kind": "sign", "value": "ೃ", "prefer": read}))
         self.assertFalse(valid({"codes": ["C0"], "kind": "sign", "value": "", "prefer": {"type": "on", "chars": ["ಕ"]}}))
         self.assertFalse(valid({"codes": ["C0"], "kind": "sign", "value": "ಾಾ"}))
