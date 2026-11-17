@@ -4,17 +4,17 @@ Status: draft for Prasad's review. Nothing here is public yet.
 
 ## The problem
 
-Millions of pages of Kannada were typed before Unicode: government orders, budget papers, Acts, newspapers, school textbooks. They were typed in fonts that draw Kannada shapes at the codes of Latin letters. At least 5 families of such fonts are in public documents, and each family stores text in its own way:
+Years of Kannada documents were typed before Unicode: government orders, budget papers, Acts, newspapers, school textbooks. They were typed in fonts that draw Kannada shapes at the codes of Latin letters. At least 5 families of such fonts are in public documents, and each family stores text in its own way:
 
 | Layout | Where it is found | How it differs |
 |---|---|---|
 | Nudi, and Baraha's ANSI fonts | Karnataka government web pages and documents | The state's own standard. Vowel signs split into 2 or 3 glyphs. |
-| Akruti | Acts and budget highlights | Other codes; ಮ and ಯ built from 3 glyphs; some signs typed after a space. |
-| Shree-Lipi | Newspapers such as Udayavani | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
+| Akruti | Karnataka Acts and budget highlights | Other codes; some signs typed after a space. |
+| Shree-Lipi | The Udayavani newspaper's web pages, 2003 and 2004 | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
 | Nudi B-Akshara | Legislative Assembly and budget PDFs | Bilingual: Latin at the ASCII codes, Kannada above 80. |
 | Kan-Eng | Budget papers, 2002 to 2014 | Bilingual, with yet another Kannada layout. |
 
-Text in these fonts cannot be searched, indexed, read aloud by a screen reader, used to train a language model, or copied into a modern document. Converters exist (aravindavk/ascii2unicode, KannadaAsciiUnicodeSDK, a Python package, Baraha's own tool, Google Docs add-ons), but each keeps its own tables and rules, and none publishes a test set or an accuracy figure. A user cannot tell which converter is right, and a converter author has to rediscover every layout from scratch.
+Text in these fonts cannot be searched, indexed, read aloud by a screen reader, used to train a language model, or copied into a modern document. Converters exist (aravindavk/ascii2unicode, KAGAPA's KannadaAsciiUnicodeSDK, a Python package, Baraha's own tool, Google Docs add-ons), but each keeps its own tables and rules, and none publishes a verified test set or an accuracy figure. A user cannot tell which converter is right, and a converter author has to rediscover every layout from scratch.
 
 kannadi, the Rust library under openkannada, has now derived tables for all 5 layouts from the font files and public documents, with 575 test lines read against the rendered glyphs and a 207-line Nudi benchmark corpus. This proposal turns that work into a shared, open reference.
 
@@ -33,14 +33,14 @@ A small open specification, **Kannada Legacy Encodings (KLE)**, with 4 parts, in
 - **Archives and digitization projects**: know which converter to trust for which layout, and what the remaining errors are.
 - **Font and standards bodies** (KAGAPA, the Kannada Development Authority): a neutral reference to point to, and a place to add layouts they hold the fonts for.
 
-### Why a specification and tables, and not only a library
+### Why a specification and tables as well as a library
 
 A library helps people who can use that language. Tables and a test set help every converter, including ones built into word processors, OCR pipelines and web tools. The reading rules are small (section 5 is about 2 pages), so a faithful reader in another language is a few hundred lines; the Python reference reader in the next pull request will show how small.
 
 ## Design choices
 
-- **Drawing order is data, not code.** Each layout's quirks (split vowel signs, multi-glyph letters, signs typed after a space, subscripts that carry a vowel sign) are expressed as table entries of a few kinds, and 1 set of reading rules serves every layout. A new layout should need only a new table.
-- **Report, don't guess.** A conforming reader reports every code it cannot place and every syllable that is not valid. A clean result can be trusted; an unclean one says where to look.
+- **Drawing order lives in the tables.** Each layout's quirks (split vowel signs, multi-glyph letters, signs typed after a space, subscripts that carry a vowel sign) are expressed as table entries of a few kinds, and 1 set of reading rules serves every layout. A new layout should need only a new table.
+- **Every problem is reported.** A conforming reader reports every code it cannot place and every syllable that is not valid. A clean result can be trusted; an unclean one says where to look.
 - **Evidence for every entry.** A table change needs the font's glyph and lines from public documents, added as test cases with sources.
 - **Windows-1252 as the code space.** Documents and web pages give legacy text as Windows-1252 characters, so tables key on those codes, including the 5 codes Windows-1252 leaves undefined.
 - **Portable detection rules.** Font-name rules are regular expressions limited to syntax every common engine shares.
@@ -82,3 +82,4 @@ Alternatives considered:
 2. **Table license**: MIT, as now, or CC0.
 3. **Source of truth**: for now kannadi's tables are the source and this repository copies them at a pinned commit. Once the specification is public, the source could move here, with kannadi reading the tables from this repository.
 4. **When to go public**, and whether to invite KAGAPA and the authors of other converters to review the draft first.
+5. **Names in the drafts**: the proposal and its decisions name Prasad; they should be reworded before the repository is public.

@@ -278,14 +278,9 @@ def font_key(name):
 def font_info(name, fonts):
     """Layout, legacy flag and Kannada digit flag of a font name (7.1)."""
     key = font_key(name)
-    layout, matched_first = None, False
-    for n, rule in enumerate(fonts["layout_rules"]):
-        if re.search(rule["match"], key):
-            layout = rule["layout"]
-            matched_first = n == 0
-            break
-    legacy = layout is not None or (
-        not matched_first and any(re.search(r["match"], key) for r in fonts["legacy_without_table"])
-    )
     digits = any(re.search(r["match"], key) for r in fonts["kannada_digits"])
+    if any(re.search(r["match"], key) for r in fonts["not_legacy"]):
+        return None, False, digits
+    layout = next((r["layout"] for r in fonts["layout_rules"] if re.search(r["match"], key)), None)
+    legacy = layout is not None or any(re.search(r["match"], key) for r in fonts["legacy_without_table"])
     return layout, legacy, digits
