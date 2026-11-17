@@ -1,0 +1,221 @@
+# Nudi B-Akshara glyph table: NudiB-Akshar and Nudi B-Akshara, the bilingual Nudi
+# font, which draws Latin letters and digits at the ASCII codes and Kannada from 81 up.
+#
+# The format is described in src/legacy/table.rs. Codes are Windows-1252 bytes; 81, a
+# code Windows-1252 leaves undefined, stands for itself.
+#
+# Derived from documents, as no code page is published. The glyphs were rendered from
+# the TrueType subsets of the font embedded in public PDFs, all fetched from the
+# Internet Archive:
+# - the 13th Karnataka Legislative Assembly's member pages on kla.kar.nic.in
+#   (13mem/50.pdf and 75.pdf, assembly/member/13mem/40.pdf, 52.pdf and 62.pdf), made
+#   with PScript5 and Ghostscript 8.15 in October 2011. Ghostscript dropped the font's
+#   name and renumbered its codes, but kept glyph names (currency, Eth, c129 and so on)
+#   that give each glyph's original code.
+# - 18 Karnataka budget papers of 2007 to 2014 on kar.nic.in/finance and 4 Assembly
+#   papers that name the font NudiB-Akshar, such as the 2011 budget speech
+#   bspkan2011.pdf. Its subset has the same
+#   outline as the member pages' font at 78 of the 82 codes both use.
+# Each glyph was identified by eye, then checked in context: the text of the member
+# pages and of 10,214 distinct lines of the budget papers was converted, and every
+# unknown glyph and malformed syllable was read against the codes rendered with the
+# embedded glyphs. docs/nudi-b.md has the method and results.
+#
+# 8F (ಓ) and 9D (ಛ) were read from the words they appear in (ಓದುವ, ಓವರ್; ಕಛೇರಿ,
+# ಛಾಯಾಚಿತ್ರ), as no embedded subset holds them. Codes no document used are left out,
+# and are reported as unknown.
+# Vowels
+83	letter	ಅ
+84	letter	ಆ
+85	letter	ಇ
+86	letter	ಈ
+87	letter	ಉ
+8A	letter	ಎ
+8C	letter	ಐ
+8D	letter	ಒ
+8F	letter	ಓ
+90	letter	ಔ
+89 D4	letter	ಋ
+8B	letter	ಏ
+# Bases
+91	base	ಕ
+96	base	ಗ
+98	base	ಘ
+9B	base	ಚ
+9D	base	ಛ
+A2	base	ಜ
+AA	base	ಟ
+AC	base	ಠ
+AE	base	ಡ
+B2	base	ಣ
+B3	base	ತ
+B5	base	ಥ
+B7	base	ದ
+B9	base	ನ
+BB	base	ಪ
+BE	base	ಬ
+C0	base	ವ
+A4	base	ರ
+C4	base	ಲ
+C6	base	ಶ
+C8	base	ಷ
+CA	base	ಸ
+CC	base	ಹ
+CE	base	ಳ
+# Letters with no head stroke
+94	letter	ಖ
+93	letter	ಖ
+A1	letter	ಜ
+A9	letter	ಟ
+B1	letter	ಣ
+BD	letter	ಬ
+C3	letter	ಲ
+# i
+92	letter	ಕಿ
+95	letter	ಖಿ
+97	letter	ಗಿ
+9C	letter	ಚಿ
+A3	letter	ಜಿ
+AB	letter	ಟಿ
+AF	letter	ಡಿ
+B4	letter	ತಿ
+B6	letter	ಥಿ
+B8	letter	ದಿ
+BA	letter	ನಿ
+BC	letter	ಪಿ
+BF	letter	ಬಿ
+C1	letter	ವಿ
+A7	letter	ರಿ
+C5	letter	ಲಿ
+C7	letter	ಶಿ
+C9	letter	ಷಿ
+CB	letter	ಸಿ
+CD	letter	ಹಿ
+CF	letter	ಳಿ
+# ಮ and ಯ
+C0 D0 D4	letter	ಮ
+C0 D0 A6	base	ಮ
+C1 D4	letter	ಮಿ
+C0 D9 D4	letter	ಮೆ
+C0 D9 D6	letter	ಮೊ
+81 A6 D0 D4	letter	ಯ
+81 A6 D9 D4	letter	ಯೆ
+81 A6 D9 D6	letter	ಯೊ
+81 A6 D0 A6	base	ಯ
+# Many PDFs, made with Acrobat Distiller or an Oracle PDF driver, have no glyph for code
+# 81, which Windows-1252 leaves undefined, and write a space for it, so ಯ shows without
+# its circle after a gap, inside a word as at its start. After a syllable the space
+# is read as the lost circle; elsewhere the rest of the glyph still reads as ಯ.
+20 A6 D0 D4	letter	ಯ	read
+20 A6 D9 D4	letter	ಯೆ	read
+20 A6 D9 D6	letter	ಯೊ	read
+20 A6 D0 A6	base	ಯ	read
+A6 D0 D4	letter	ಯ	read
+A6 D9 D4	letter	ಯೆ	read
+A6 D9 D6	letter	ಯೊ	read
+A6 D0 A6	base	ಯ	read
+C2 D4	letter	ಯಿ
+A4 D0 A5 D4	letter	ಝ
+# Signs
+D0	sign
+D1	sign	ಾ
+D2	sign	ಿ
+D4	sign	ು
+D5	sign	ು	on ಪ ಫ ವ
+D7	sign	ೂ	on ಪ ಫ ವ
+D6	sign	ೂ
+D8	sign	ೃ
+D9	sign	ೆ
+D3	sign	ೕ
+DA	sign	ೖ
+DB	sign	ೌ
+FD	sign	್
+81	mod	ಂ
+82	mod	ಃ
+B0	aspirate
+# Ottu
+DC	ottu	ಕ
+DE	ottu	ಗ
+DF	ottu	ಘ
+E0	ottu	ಚ
+E1	ottu	ಛ
+E2	ottu	ಜ
+E4	ottu	ಞ
+E5	ottu	ಟ
+E6	ottu	ಠ
+E7	ottu	ಡ
+E8	ottu	ಢ
+E9	ottu	ಣ
+EA	ottu	ತ
+EB	ottu	ಥ
+EC	ottu	ದ
+ED	ottu	ಧ
+EE	ottu	ನ
+EF	ottu	ಪ
+F0	ottu	ಫ
+F1	ottu	ಬ
+F2	ottu	ಭ
+F3	ottu	ಮ
+F4	ottu	ಯ
+F5	ottu	ರ
+F6	ottu	ಲ
+F7	ottu	ವ
+F9	ottu	ಷ
+FA	ottu	ಸ
+FB	ottu	ಹ
+FC	ottu	ಳ
+FE	arka
+FF	ignore
+# Latin letters, drawn as themselves: the font sets English and Kannada.
+41	literal	A
+42	literal	B
+43	literal	C
+44	literal	D
+45	literal	E
+46	literal	F
+47	literal	G
+48	literal	H
+49	literal	I
+4A	literal	J
+4B	literal	K
+4C	literal	L
+4D	literal	M
+4E	literal	N
+4F	literal	O
+50	literal	P
+51	literal	Q
+52	literal	R
+53	literal	S
+54	literal	T
+55	literal	U
+56	literal	V
+57	literal	W
+58	literal	X
+59	literal	Y
+5A	literal	Z
+61	literal	a
+62	literal	b
+63	literal	c
+64	literal	d
+65	literal	e
+66	literal	f
+67	literal	g
+68	literal	h
+69	literal	i
+6A	literal	j
+6B	literal	k
+6C	literal	l
+6D	literal	m
+6E	literal	n
+6F	literal	o
+70	literal	p
+71	literal	q
+72	literal	r
+73	literal	s
+74	literal	t
+75	literal	u
+76	literal	v
+77	literal	w
+78	literal	x
+79	literal	y
+7A	literal	z

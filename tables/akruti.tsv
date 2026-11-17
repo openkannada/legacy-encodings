@@ -1,0 +1,218 @@
+# Akruti Kannada glyph table: AkrutiKndPadma and its Bold, Demi and Demib weights,
+# which share 1 layout.
+#
+# The format is described in src/legacy/table.rs. Codes are Windows-1252 bytes.
+#
+# Derived from documents, as no code page is published. The glyphs were rendered
+# from the Akruti fonts embedded in public Karnataka PDFs: the full
+# AkrutiKndPadmaDemi0100 and AkrutiKndPadmaBold0100 programs in the Kannada Acts
+# on dpal.kar.nic.in, made with PageMaker 6.52 and Acrobat Distiller 5.0, where each
+# glyph's name G<n> gives its code n, and the TrueType subsets in the 2002 budget
+# highlights bh2002k.pdf (kar.nic.in/finance/bud2002-kan/), whose codes are the
+# bytes the page shows. Each glyph was identified by eye and matched against
+# glyphs shaped with HarfBuzz from Kannada Sangam MN and Noto Sans Kannada, then
+# checked in context: 16,857 lines of Akruti text in 33 Acts and Ordinances of 2001
+# to 2003 and the 2002 budget highlights and speech, all fetched from the Internet
+# Archive, were converted and every unknown glyph and malformed syllable was read
+# against the page image. Bold and Demi draw the same letter at every code.
+# docs/akruti.md has the method and results.
+#
+# Codes the fonts have but no document used are left out, and are reported as
+# unknown: 2A, 6A, A1, A2, A3, A6, A7, A8, B4, BF, E0, E1, E3, EC, ED, F0.
+# Vowels
+25	letter	ಅ
+41	letter	ಆ
+45	letter	ಇ
+6F	letter	ಈ
+49	letter	ಉ
+4E	letter	ಊ
+55	letter	ಎ
+4F	letter	ಏ
+59	letter	ಐ
+61	letter	ಒ
+65	letter	ಓ
+69	letter	ಔ
+# Consonant bases
+64	base	ಕ
+66	base	ಖ
+67	base	ಗ
+68	base	ಘ
+6B	base	ಚ
+6C	base	ಛ
+75	base	ಜ
+C2	base	ಟ
+74	base	ಠ
+76	base	ಡ
+77	base	ಢ
+C7	base	ಣ
+79	base	ತ
+7A	base	ಥ
+7B	base	ದ
+7C	base	ಧ
+7D	base	ನ
+7E	base	ಪ
+C1	base	ಫ
+CF	base	ಬ
+C5	base	ಭ
+C0	base	ವ
+70	base	ರ
+C8	base	ಲ
+B5	base	ಶ
+CD	base	ಷ
+C9	base	ಸ
+DD	base	ಹ
+D4	base	ಳ
+# Consonants drawn without the head stroke
+D9	letter	ಖ
+6D	letter	ಜ
+71	letter	ಞ
+72	letter	ಟ
+78	letter	ಣ
+B1	letter	ಬ
+B7	letter	ಲ
+# Consonant with vowel sign i
+D1	letter	ಕಿ
+D8	letter	ಖಿ
+D0	letter	ಗಿ
+DC	letter	ಘಿ
+E4	letter	ಚಿ
+D7	letter	ಚಿ
+D3	letter	ಛಿ
+CA	letter	ಜಿ
+73	letter	ಟಿ
+EF	letter	ಠಿ
+DA	letter	ಡಿ
+DB	letter	ಢಿ
+B9	letter	ಣಿ
+BB	letter	ತಿ
+BC	letter	ಥಿ
+AC	letter	ದಿ
+BA	letter	ಧಿ
+BE	letter	ನಿ
+C4	letter	ಪಿ
+D5	letter	ಫಿ
+B2	letter	ಬಿ
+AB	letter	ಭಿ
+EE	letter	ರಿ
+B6	letter	ಲಿ
+C6	letter	ವಿ
+FA	letter	ಶಿ
+B8	letter	ಷಿ
+FB	letter	ಸಿ
+FE	letter	ಹಿ
+FD	letter	ಹಿ
+F9	letter	ಳಿ
+# Consonants built from 2 or 3 glyphs: ಮ from ವ, ಯ from a base of its own
+C0 E2 B0	letter	ಮ
+C0 E2 C3	base	ಮ
+C0 EA B0	letter	ಮೆ
+C0 EA B3	letter	ಮೊ
+C6 B0	letter	ಮಿ
+CC E2 B0	letter	ಯ
+CC E2 C3	base	ಯ
+CC EA B0	letter	ಯೆ
+CC EA B3	letter	ಯೊ
+CE B0	letter	ಯಿ
+DE	letter	ಶ್ರೀ
+6E B0	letter	ಋ
+6E B3	letter	ೠ
+C0 C3	base	ಮ
+CC C3	base	ಯ
+C6 B3	letter	ಮೀ	read
+CE B3	letter	ಯೀ	read
+# Vowel signs. E2 is the head stroke for the inherent a.
+E2	sign
+D6	sign	ಾ
+B0	sign	ು
+F3	sign	ು	on ಪ ಫ ವ
+B3	sign	ೂ
+F2	sign	ೂ	on ಪ ಫ ವ
+BD	sign	ೃ
+EA	sign	ೆ
+A9	sign	ೕ
+F4	sign	ೖ
+F1	sign	ೌ
+# Typists often put a space (20, or the no-break space A0) before ೃ, ೖ and the
+# subscripts ಯ and ಮ, which draw under the glyph before them. After a syllable, the space
+# is not text.
+20 BD	sign	ೃ	read
+20 F4	sign	ೖ	read
+20 58	ottu	ಯ	read
+20 57	ottu	ಮ	read
+A0 58	ottu	ಯ	read
+# ೆ with the ೃ glyph under it reads as ೈ: ವೆೃರ್ is typed for ವೈರ್.
+EA BD	sign	ೈ	read
+D2	sign	್
+# Modifiers
+AA	mod	ಂ
+FF	mod	ಃ
+# Mahaprana mark
+FC	aspirate
+# Subscript consonants (ottu)
+22	ottu	ಕ
+F8	ottu	ಕ
+23	ottu	ಖ
+24	ottu	ಗ
+26	ottu	ಘ
+E6	ottu	ಛ
+2B	ottu	ಚ
+40	ottu	ಜ
+42	ottu	ಝ
+43	ottu	ಞ
+44	ottu	ಟ
+46	ottu	ಠ
+47	ottu	ಡ
+48	ottu	ಢ
+4A	ottu	ಣ
+4B	ottu	ತ
+4C	ottu	ಥ
+4D	ottu	ದ
+50	ottu	ಧ
+51	ottu	ನ
+52	ottu	ಪ
+53	ottu	ಫ
+54	ottu	ಬ
+56	ottu	ಭ
+57	ottu	ಮ
+58	ottu	ಯ
+5A	ottu	ರ
+5B	ottu	ಲ
+5C	ottu	ಳ
+5D	ottu	ವ
+5E	ottu	ಶ
+5F	ottu	ಷ
+62	ottu	ಸ
+63	ottu	ಹ
+# Subscripts drawn as 1 glyph
+E5	ottu	ಟರ
+E7	ottu	ತರ
+AD	ottu	ಕೃ
+AE	ottu	ತವ
+DF	ottu	ಪರ
+E8	ottu	ತೖ
+EB	ottu	ರೖ
+AF	ottu	ಕೃ
+# Arkavattu
+CB	arka
+# Spacing glyphs with no text value
+2D	ignore
+3C	ignore
+3E	ignore
+A4	ignore
+F7	ignore
+# Punctuation and digits
+27	literal	’
+60	literal	‘
+A5	literal	-
+F5	literal	—
+F6	literal	–
+E9	literal	।
+81	literal	೧
+82	literal	೨
+83	literal	೩
+84	literal	೪
+85	literal	೫
+86	literal	೬
+87	literal	೭
+88	literal	೮
+89	literal	೯
