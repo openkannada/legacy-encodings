@@ -13,7 +13,7 @@ Draft 0.1.0. The repository is private while the draft is reviewed. [PROPOSAL.md
 | [tables/fonts.json](tables/fonts.json) | Font-name rules for finding a layout, with examples |
 | [schema/layout.schema.json](schema/layout.schema.json) | JSON Schema for the JSON tables |
 | [tools/tables.py](tools/tables.py) | Copies the tables from kannadi, builds the JSON and checks every table rule |
-| [conformance/](conformance/) | 772 lines from public documents, 52 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
+| [conformance/](conformance/) | 772 lines from public documents, 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
 | [reference/kle.py](reference/kle.py) | A reference reader in Python, written from the specification |
 | [adapters/kannadi](adapters/kannadi) | kannadi behind the conformance protocol |
 

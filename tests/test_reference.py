@@ -1,4 +1,5 @@
 import json
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -74,10 +75,8 @@ class Cases(unittest.TestCase):
 
     def test_font_examples(self):
         for ex in FONTS["examples"]:
-            layout, legacy, digits = kle.font_info(ex["font"], FONTS)
-            self.assertEqual(layout, ex["layout"], ex["font"])
-            self.assertEqual(legacy, ex.get("legacy", legacy), ex["font"])
-            self.assertEqual(digits, ex.get("kannada_digits", digits), ex["font"])
+            got = kle.font_info(ex["font"], FONTS)
+            self.assertEqual(got, (ex["layout"], ex["legacy"], ex["kannada_digits"]), ex["font"])
 
 
 class EdgeCasesCoverEveryRule(unittest.TestCase):
@@ -93,6 +92,40 @@ class EdgeCasesCoverEveryRule(unittest.TestCase):
 
 
 class Runner(unittest.TestCase):
+    def run_with(self, script):
+        return subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--markdown", "--", sys.executable, "-c", script],
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+
+    def test_error_answers_count_as_wrong(self):
+        script = (
+            "import json,sys\n"
+            "for line in sys.stdin:\n"
+            "    print(json.dumps({'id': json.loads(line)['id'], 'error': 'not supported'}), flush=True)\n"
+        )
+        r = self.run_with(script)
+        self.assertEqual(r.returncode, 1, r.stderr)
+        self.assertIn("Edge cases: 0 of", r.stdout)
+        self.assertIn("Font names: 0 of", r.stdout)
+        self.assertIn("Conforming (section 8): no.", r.stdout)
+
+    def test_the_reference_reader_conforms(self):
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--markdown", "--", sys.executable, str(ROOT / "reference" / "adapter.py")],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Conforming (section 8): yes.", r.stdout)
+
+    def test_extra_fields_are_ignored(self):
+        responses = {("detect", "x"): {"id": "x", "layout": "nudi", "clean": True}}
+        self.assertEqual(run.answer(responses, "detect", "x"), {"layout": "nudi"})
+
     def test_distance(self):
         self.assertEqual(run.distance("ಕನ್ನಡ", "ಕನ್ನಡ"), 0)
         self.assertEqual(run.distance("ಕನಡ", "ಕನ್ನಡ"), 2)

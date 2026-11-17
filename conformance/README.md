@@ -7,7 +7,7 @@ These tests show how closely a converter follows the specification, as accuracy 
 | Set | File | What it checks |
 |---|---|---|
 | Lines | `cases/<layout>.tsv` | 772 lines from public documents: the converter's text against the expected text |
-| Edge cases | `edge-cases.tsv` | 52 short inputs that reach every reading rule of sections 5 and 7.2, including the error reports |
+| Edge cases | `edge-cases.tsv` | 64 short inputs that reach the 32 rules listed in `tools/edge_cases.py`, from sections 3.3, 5 and 7.2, including the error reports |
 | Font names | `../tables/fonts.json` | 47 font names: layout, legacy flag and Kannada digit flag (section 7.1) |
 | Detection | the lines | the layout found from each whole line, and from its first 8, 16 and 32 codes (section 7.2) |
 
@@ -34,7 +34,7 @@ The headline figures count verified and read lines only.
 
 ### Edge cases
 
-`tools/edge_cases.py` breaks each of the 26 rules of the reference reader in turn and keeps 2 random inputs whose result changes, so every rule is tested by at least 2 cases. The expected result of each, including the unknown positions and malformed ranges, comes from kannadi. A test checks that breaking any rule still fails at least 1 edge case. The cases also exercise the 2 reading options.
+`tools/edge_cases.py` breaks each of 32 rules of the reference reader in turn and keeps 2 random inputs whose result changes, so each of those rules is tested by at least 2 cases. The expected result of each, including the unknown positions and malformed ranges, comes from kannadi. A test checks that breaking any listed rule still fails at least 1 edge case. The cases also exercise the 2 reading options. A rule that is not in the list is not guaranteed a case; adding one means adding its mutation to the list.
 
 ## The protocol
 
@@ -50,6 +50,8 @@ A converter takes part through a small program that reads 1 JSON request per lin
 - `options` may be missing; the defaults are those of section 5.7.
 - `unknown` lists the positions of unknown codes, counting codes from 0. `malformed` lists `[start, end)` ranges of the output text, counting code points from 0.
 - A converter that does not support an operation answers `{"id": ..., "error": "..."}`, and the runner counts it as wrong.
+- The runner compares only the fields above; a response may carry others.
+- Input is always given as glyph codes. The rules of section 5.1 for text given as a string, such as characters with no Windows-1252 code, are not tested yet.
 
 2 programs speak the protocol here:
 
@@ -64,7 +66,7 @@ cargo build --release --manifest-path adapters/kannadi/Cargo.toml
 python3 conformance/run.py --markdown -- adapters/kannadi/target/release/kle-kannadi-adapter
 ```
 
-`--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
+The exit code is 0 when the converter conforms (section 8 of the specification) and 1 otherwise. `--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
 
 ```bash
 python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/adapter.py -- adapters/kannadi/target/release/kle-kannadi-adapter
@@ -75,8 +77,9 @@ python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/a
 - **Exact**: lines whose text equals the expected text.
 - **Character accuracy**: 1 minus the Levenshtein distance between output and expected text, summed over the lines, divided by the expected length, in code points.
 - **Clean**: lines with no unknown codes and no malformed ranges.
-- **Layout found**: lines whose detected layout is the right one, from the whole line and from its first 8, 16 and 32 codes.
+- **Layout found**: lines whose detected layout is the right one, from the whole line and from its first 8, 16 and 32 codes. A snippet figure counts only the lines longer than the snippet, and says how many.
 - **Edge cases** and **font names**: responses equal to the expected ones.
+- **Conforming**: yes when all 4 conditions of section 8 hold. Cite the specification version and the kannadi commit in `cases/SOURCE.json` with the figures.
 
 [RESULTS.md](RESULTS.md) has the figures for the 2 programs here.
 

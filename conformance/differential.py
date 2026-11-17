@@ -31,10 +31,11 @@ def sequences(count, seed):
                 elif pick < 0.85:
                     codes.append(f"{rng.randint(0, 255):02X}")
                 elif pick < 0.93:
-                    codes.append("20")
+                    codes.append(rng.choice(["20", "20", "20", "09", "0A", "A0"]))
                 else:
                     codes.append(rng.choice(["30", "31", "39"]))
-            yield {"id": f"{layout}-{n}", "op": "read", "layout": layout, "codes": " ".join(codes)}
+            options = {"zero_as_anusvara": rng.random() > 0.1, "kannada_digits": rng.random() < 0.1}
+            yield {"id": f"{layout}-{n}", "op": "read", "layout": layout, "codes": " ".join(codes), "options": options}
             if n % 10 == 0:
                 yield {"id": f"{layout}-{n}", "op": "detect", "codes": " ".join(codes)}
 
@@ -45,7 +46,10 @@ def run(command, reqs):
     for req in reqs:
         proc.stdin.write(json.dumps(req) + "\n")
         proc.stdin.flush()
-        out.append(json.loads(proc.stdout.readline()))
+        line = proc.stdout.readline()
+        if not line:
+            raise SystemExit(f"{command[0]} stopped at {req['id']}")
+        out.append(json.loads(line))
     proc.stdin.close()
     proc.wait()
     return out

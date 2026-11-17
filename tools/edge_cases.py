@@ -50,6 +50,12 @@ RULES = [
     ("5.6", "zero as anusvara needs a letter character before", "prev is not None and is_letter_char(prev)", "True"),
     ("5.6", "Kannada digits", "                    out.append(chr(0x0CE6 + int(c)))", "                    out.append(c)"),
     ("5.6", "passing characters are not reported", "                if not is_passing(c):", "                if True:"),
+    ("3.3", "only syllables are normalized", '    return Result("".join(out), unknown, malformed)', '    return Result(unicodedata.normalize("NFC", "".join(out)), unknown, malformed)'),
+    ("5.2", "every white-space code starts no match outside a syllable", "if match and is_white_space(code_char(codes[i])) and syllable is None:", "if match and codes[i] == 0x20 and syllable is None:"),
+    ("5.5", "modifiers come after the virama", '        s += letter[end:] + self.signs + (VIRAMA if self.virama else "") + self.mods', '        s += letter[end:] + self.signs + self.mods + (VIRAMA if self.virama else "")'),
+    ("5.6", "the zero lookahead skips the white-space refusal", "            nxt = table.longest_entry(codes, i + 1)", "            nxt = None if i + 1 < len(codes) and is_white_space(code_char(codes[i + 1])) else table.longest_entry(codes, i + 1)"),
+    ("5.6", "a vowel sign counts as a letter character", '    return char_class(c) in ("vowel", "consonant", "vowel-sign")', '    return char_class(c) in ("vowel", "consonant")'),
+    ("7.2", "malformed syllables count against a layout", "        return (len(r.unknown) + len(r.malformed), latin, r.text.count(VIRAMA))", "        return (len(r.unknown), latin, r.text.count(VIRAMA))"),
     ("7.2", "fewer Latin letters wins a tie", "        latin = sum(c.isascii() and c.isalpha() for c in r.text)", "        latin = 0"),
     ("7.2", "fewer viramas wins a tie", "        return (len(r.unknown) + len(r.malformed), latin, r.text.count(VIRAMA))", "        return (len(r.unknown) + len(r.malformed), latin, 0)"),
 ]
@@ -82,7 +88,7 @@ def random_inputs(tables):
             elif pick < 0.82:
                 codes.append(rng.randint(0, 255))
             elif pick < 0.9:
-                codes.append(0x20)
+                codes.append(rng.choice([0x20, 0x20, 0x20, 0x09, 0x0A, 0xA0]))
             else:
                 codes.append(rng.choice([0x30, 0x31, 0x39]))
         options = {"zero_as_anusvara": rng.random() > 0.1, "kannada_digits": rng.random() < 0.1}
@@ -103,7 +109,10 @@ def query(command, reqs):
     for req in reqs:
         proc.stdin.write(json.dumps(req) + "\n")
         proc.stdin.flush()
-        out.append(json.loads(proc.stdout.readline()))
+        line = proc.stdout.readline()
+        if not line:
+            raise SystemExit(f"the converter stopped at {req['id']}")
+        out.append(json.loads(line))
     proc.stdin.close()
     proc.wait()
     return out

@@ -279,7 +279,7 @@ Short text can read cleanly in more than 1 layout, so the choice grows surer wit
 
 ### 7.3 Measured accuracy
 
-On the 772 lines of the conformance cases, the method finds the right layout for every whole line. From the first 32 codes of each line it is right for 99.0% of Nudi B-Akshara lines, 97.4% of Kan-Eng lines and every line of the other layouts; from the first 8 codes, about 2 or 3 syllables, for 81.5% of Nudi B-Akshara and 83.1% of Kan-Eng lines, and 93.5% or more for the others. Most mistakes on short text choose Akruti for a bilingual layout. `conformance/RESULTS.md` has the details.
+On the 772 lines of the conformance cases, the method finds the right layout for every whole line. Counting only the lines longer than the snippet: from the first 32 codes it is right for 95 of 96 Nudi B-Akshara lines, 38 of 39 Kan-Eng lines and every line of the other layouts; from the first 8 codes, about 2 or 3 syllables, for 81.5% of Nudi B-Akshara and 83.1% of Kan-Eng lines, and 93.5% or more for the others. Most mistakes on short text choose Akruti for a bilingual layout. `conformance/RESULTS.md` has the details.
 
 ## 8. Conformance
 
@@ -289,9 +289,10 @@ A **conforming reader**:
 
 1. gives the expected result for every edge case in `conformance/edge-cases.tsv`, including the unknown positions and malformed ranges;
 2. gives the expected text for every line of `conformance/cases/` whose status is verified or read;
-3. gives the expected answer for every font-name example in `tables/fonts.json`, if it reads font names.
+3. gives the expected answer for every font-name example in `tables/fonts.json`, if it reads font names;
+4. finds the right layout for every whole line of `conformance/cases/` whose status is verified or read, if it detects layouts from text.
 
-A converter that does not conform SHOULD still publish its figures from `conformance/run.py`, with the version of this specification and of the cases it was measured against. The cases, the protocol a converter speaks to the runner, and the figures reported are described in `conformance/README.md`.
+A converter that does not conform SHOULD still publish its figures from `conformance/run.py`, with the version of this specification and the kannadi commit in `conformance/cases/SOURCE.json` it was measured against. The cases, the protocol a converter speaks to the runner, and the figures reported are described in `conformance/README.md`.
 
 ## 9. Writing legacy text
 
