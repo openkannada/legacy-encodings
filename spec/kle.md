@@ -96,7 +96,7 @@ The JSON form holds the same entries in the same order, with these fields:
 - `value`;
 - `prefer`, when the entry has a preference: `{"type": "on", "chars": ["ಪ", "ಫ", "ವ"]}`, `{"type": "with", "chars": ["ಿ"]}`, `{"type": "after-ottu"}` or `{"type": "read"}`.
 
-The file also carries the layout's `id`, `name`, `aliases`, `description`, example `fonts`, the `byte_encoding` (always `windows-1252` in this version), `draws_latin` (section 4.6), the `source` it was generated from, and the `notes`. The notes are copied from the source table, so file paths in them are paths in the source repository.
+The file also carries the layout's `id`, `name`, `aliases`, `description`, example `fonts`, the `byte_encoding` (always `windows-1252` in this version), `draws_latin` (section 4.6), the `source` it was generated from, and the `notes`. The notes are copied from the source table, so file paths in them are paths in the source repository. The schema checks the structure of the file and the rules it can express; `tools/tables.py` checks all the rules of section 4.5.
 
 ### 4.3 Kinds
 
@@ -133,7 +133,7 @@ A table MUST follow these rules. `tools/tables.py check` tests every one of them
 6. A `letter` value starts with a vowel or a consonant.
 7. A `mod` value is 1 modifier.
 8. `arka`, `aspirate` and `ignore` have an empty value. A `literal` has a value; a `literal` that is not marked `read` has a value of exactly 1 character.
-9. Only `sign` (with a value), `ottu`, `arka` and `aspirate` entries have an `on`, `with` or `after-ottu` preference, and each of its characters is 1 character, separated from the next by a space.
+9. Only `sign` (with a value), `ottu`, `arka` and `aspirate` entries have an `on`, `with` or `after-ottu` preference, and its characters are single characters separated by spaces.
 10. Every value except a `letter` or `sign` value is in NFC.
 
 ### 4.6 Bilingual layouts
@@ -142,7 +142,7 @@ A layout **draws Latin** when it has a `literal` entry whose value is 1 or more 
 
 ## 5. Reading legacy text
 
-This section is normative. A reader MUST give the same text and the same reports (section 6) as these steps for every input; it MAY be built any way it likes.
+This section is normative. A reader MUST give the same text and the same reports (section 6, in the units section 6 allows) as these steps for every input; it MAY be built any way it likes.
 
 ### 5.1 Input
 
@@ -246,7 +246,7 @@ A conversion gives 3 results:
 - **unknown**: each code that could not be placed, with its position: codes with no entry and no passing meaning (section 5.6), rejected codes (section 5.3), and stray head strokes, arkavattus and mahaprana strokes (section 5.4);
 - **malformed**: each range of the output text that is not a valid syllable: stray marks (section 5.4) and malformed syllables (section 5.5).
 
-A conversion is **clean** when both lists are empty. A reader MUST NOT drop a code without a report, and MUST NOT change unknown codes into something else. The codes of a matched entry are not dropped: they stand for its value, which is empty for an `ignore` entry and takes in the leading space of an entry that starts with white space. Positions in the unknown list count codes from 0, and malformed ranges count Unicode code points of the output from 0, end excluded. A reader MAY report both in other units, such as UTF-8 bytes, if it says so; the conformance protocol (section 8) uses codes and code points.
+A conversion is **clean** when both lists are empty. A reader MUST NOT drop a code without a report, and MUST NOT change unknown codes into something else. The codes of a matched entry are not dropped: they stand for its value, which is empty for an `ignore` entry and takes in the leading space of an entry that starts with white space. Positions in the unknown list count codes from 0, and malformed ranges count Unicode code points of the output from 0, end excluded. A reader MAY report both in other units, such as UTF-8 bytes, if it says so; conformance tests use codes and code points.
 
 These reports are what make a conversion checkable: a reader that guesses silently gives text that looks right and is wrong.
 
@@ -295,7 +295,7 @@ A converter that does not conform SHOULD still publish its figures from `conform
 
 ## 9. Writing legacy text
 
-This section describes writing Unicode back into a layout, for documents that must still be printed in a legacy font. It is informative in this version; conformance cases for it are planned for 0.2.
+This section describes writing Unicode back into a layout, for documents that must still be printed in a legacy font. It is informative in this version; conformance cases for it are planned for a later revision of this draft.
 
 A writer splits the text into syllables and writes each one in the order typists stored it: the consonant shape, the vowel sign, the subscript consonants, ೃ and the length marks ೕ ೖ, the arkavattu, and then ಂ or ಃ. Entries marked `read` are never written. Where a layout has more than 1 entry for the same sign, subscript, arkavattu or mahaprana stroke, the writer uses the first entry whose preference holds for the syllable, or else the first entry with no preference. Where a layout has no entry for a subscript consonant, the writer splits the syllable before it, ending the first part with a visible virama; both read back as the same Unicode. Characters a layout cannot write, such as the zero-width joiners and the nukta, are reported.
 
