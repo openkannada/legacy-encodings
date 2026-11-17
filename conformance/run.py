@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 """Runs the conformance cases against a converter and reports its accuracy.
 
-  run.py [--out FILE] [--markdown] [--timeout SECONDS] -- COMMAND [ARGS...]
+  run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts] -- COMMAND [ARGS...]
 
 COMMAND speaks the line protocol in conformance/README.md on stdin and stdout.
 --out saves every response, so 2 converters can be compared with --compare.
 The exit code is 0 when the converter conforms (section 8 of the specification), else 1.
+--no-detect and --no-fonts leave out the operations a converter does not offer.
 
   run.py --compare A.json B.json
 """
 
 import json
-import selectors
+import queue
 import subprocess
+import threading
 import sys
 from pathlib import Path
 
@@ -51,33 +53,54 @@ def load_edge_cases():
     return edges
 
 
-def requests(cases, fonts, edges):
+def requests(cases, fonts, edges, ops):
     for e in edges:
         yield e["request"]
     for c in cases:
         yield {"id": c["id"], "op": "read", "layout": c["layout"], "codes": c["codes"]}
-        yield {"id": c["id"], "op": "detect", "codes": c["codes"]}
-        codes = c["codes"].split()
-        for n in SNIPPETS:
-            if len(codes) > n:
-                yield {"id": f"{c['id']}@{n}", "op": "detect", "codes": " ".join(codes[:n])}
-    for n, ex in enumerate(fonts["examples"]):
-        yield {"id": f"font-{n}", "op": "font", "name": ex["font"]}
+        if "detect" in ops:
+            yield {"id": c["id"], "op": "detect", "codes": c["codes"]}
+            codes = c["codes"].split()
+            for n in SNIPPETS:
+                if len(codes) > n:
+                    yield {"id": f"{c['id']}@{n}", "op": "detect", "codes": " ".join(codes[:n])}
+    if "font" in ops:
+        for n, ex in enumerate(fonts["examples"]):
+            yield {"id": f"font-{n}", "op": "font", "name": ex["font"]}
+
+
+def start(command):
+    try:
+        proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, encoding="utf-8")
+    except OSError as e:
+        raise SystemExit(f"cannot start {command[0]}: {e}")
+    lines = queue.Queue()
+
+    def pump():
+        for line in proc.stdout:
+            lines.put(line)
+        lines.put(None)
+
+    threading.Thread(target=pump, daemon=True).start()
+    return proc, lines
 
 
 def run(command, reqs, timeout=30):
-    proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, encoding="utf-8")
-    ready = selectors.DefaultSelector()
-    ready.register(proc.stdout, selectors.EVENT_READ)
+    """Sends each request and waits for its 1 response line, `timeout` seconds at most."""
+    proc, lines = start(command)
     responses = {}
     for req in reqs:
-        proc.stdin.write(json.dumps(req, ensure_ascii=False) + "\n")
-        proc.stdin.flush()
-        if not ready.select(timeout):
+        try:
+            proc.stdin.write(json.dumps(req, ensure_ascii=False) + "\n")
+            proc.stdin.flush()
+        except BrokenPipeError:
+            raise SystemExit(f"the converter stopped before {req['id']} (exit code {proc.wait()})")
+        try:
+            line = lines.get(timeout=timeout)
+        except queue.Empty:
             proc.kill()
             raise SystemExit(f"no response to {req['id']} within {timeout} seconds")
-        line = proc.stdout.readline()
-        if not line:
+        if line is None:
             raise SystemExit(f"the converter stopped at {req['id']} (exit code {proc.wait()})")
         try:
             resp = json.loads(line)
@@ -133,7 +156,8 @@ def summarize(cases, responses, fonts):
                 errors += distance(text, c["expected"])
                 chars += len(c["expected"])
                 clean += r["unknown"] == [] and r["malformed"] == []
-                detected += answer(responses, "detect", c["id"])["layout"] == layout
+                if ("detect", c["id"]) in responses:
+                    detected += answer(responses, "detect", c["id"])["layout"] == layout
                 for n in SNIPPETS:
                     if ("detect", f"{c['id']}@{n}") in responses:
                         snip[n][0] += answer(responses, "detect", f"{c['id']}@{n}")["layout"] == layout
@@ -148,19 +172,20 @@ def summarize(cases, responses, fonts):
                 "detected": detected,
                 "snippets": {n: tuple(v) for n, v in snip.items()},
             })
+    asked = [n for n in range(len(fonts["examples"])) if ("font", f"font-{n}") in responses]
     fonts_right = sum(
-        answer(responses, "font", f"font-{n}") == {k: ex[k] for k in KEYS["font"]}
-        for n, ex in enumerate(fonts["examples"])
+        answer(responses, "font", f"font-{n}") == {k: fonts["examples"][n][k] for k in KEYS["font"]} for n in asked
     )
-    return rows, (fonts_right, len(fonts["examples"]))
+    return rows, (fonts_right, len(asked))
 
 
-def conforming(rows, fonts_score, edges, failed):
-    """Section 8: every edge case, every checked line, every font example and every whole line's layout."""
+def conforming(rows, fonts_score, edges, failed, ops=("read", "detect", "font")):
+    """Section 8: every edge case, every checked line, and every font example and whole line's layout for the operations tested."""
     checked = [r for r in rows if r["group"] == "checked"]
     return (
         not failed
-        and all(r["exact"] == r["lines"] and r["detected"] == r["lines"] for r in checked)
+        and all(r["exact"] == r["lines"] for r in checked)
+        and ("detect" not in ops or all(r["detected"] == r["lines"] for r in checked))
         and fonts_score[0] == fonts_score[1]
     )
 
@@ -173,7 +198,7 @@ def snippet(score):
     return f"{pct(*score)} of {score[1]}"
 
 
-def markdown(rows, fonts_score, edges, failed):
+def markdown(rows, fonts_score, edges, failed, ops):
     lines = [
         "| Layout | Lines | Exact | Character accuracy | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |",
         "|---|---|---|---|---|---|---|---|---|",
@@ -189,10 +214,15 @@ def markdown(rows, fonts_score, edges, failed):
             f"| {r['clean']} | {pct(r['detected'], r['lines'])} | {snippet(s[8])} | {snippet(s[16])} | {snippet(s[32])} |"
         )
     lines.append("")
-    lines.append(f"Font names: {fonts_score[0]} of {fonts_score[1]} examples right.")
+    if "font" in ops:
+        lines.append(f"Font names: {fonts_score[0]} of {fonts_score[1]} examples right.")
+    else:
+        lines.append("Font names: not tested.")
+    if "detect" not in ops:
+        lines.append("Detection: not tested.")
     lines.append(f"Edge cases: {len(edges) - len(failed)} of {len(edges)} exact.")
     lines.extend(f"- failed: {f}" for f in failed)
-    lines.append(f"Conforming (section 8): {'yes' if conforming(rows, fonts_score, edges, failed) else 'no'}.")
+    lines.append(f"Conforming (section 8): {'yes' if conforming(rows, fonts_score, edges, failed, ops) else 'no'}.")
     return "\n".join(lines)
 
 
@@ -216,20 +246,22 @@ def main(argv):
     opts, command = argv[:split], argv[split + 1 :]
     out = opts[opts.index("--out") + 1] if "--out" in opts else None
     timeout = float(opts[opts.index("--timeout") + 1]) if "--timeout" in opts else 30
+    ops = ("read",) + (() if "--no-detect" in opts else ("detect",)) + (() if "--no-fonts" in opts else ("font",))
     fonts = json.loads((ROOT / "tables" / "fonts.json").read_text(encoding="utf-8"))
     cases = load_cases()
     edges = load_edge_cases()
-    responses = run(command, requests(cases, fonts, edges), timeout)
+    edges = [e for e in edges if e["request"]["op"] in ops]
+    responses = run(command, requests(cases, fonts, edges, ops), timeout)
     if out:
         saved = {f"{op} {rid}": {k: v for k, v in r.items() if k != "id"} for (op, rid), r in responses.items()}
         Path(out).write_text(json.dumps(saved, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8")
     rows, fonts_score = summarize(cases, responses, fonts)
     failed = edge_failures(edges, responses)
     if "--markdown" in opts:
-        print(markdown(rows, fonts_score, edges, failed))
+        print(markdown(rows, fonts_score, edges, failed, ops))
     else:
-        print(json.dumps({"rows": rows, "fonts": fonts_score, "edge_cases": [len(edges) - len(failed), len(edges)], "conforming": conforming(rows, fonts_score, edges, failed)}, indent=1))
-    return 0 if conforming(rows, fonts_score, edges, failed) else 1
+        print(json.dumps({"rows": rows, "fonts": fonts_score, "edge_cases": [len(edges) - len(failed), len(edges)], "conforming": conforming(rows, fonts_score, edges, failed, ops)}, indent=1))
+    return 0 if conforming(rows, fonts_score, edges, failed, ops) else 1
 
 
 if __name__ == "__main__":

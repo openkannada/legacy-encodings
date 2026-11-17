@@ -177,6 +177,49 @@ class Runner(unittest.TestCase):
         self.assertFalse(run.conforming([dict(row, detected=9)], (5, 5), [], []))
         self.assertTrue(run.conforming([dict(row, group="all", exact=9)], (5, 5), [], []))
 
+    def test_a_partial_line_times_out(self):
+        script = "import sys,time; sys.stdout.write('{\"id\": \"x'); sys.stdout.flush(); time.sleep(30)"
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--timeout", "1", "--", sys.executable, "-c", script],
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("within 1", r.stderr)
+
+    def test_a_missing_command_is_reported(self):
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--", str(ROOT / "no-such-converter")],
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("cannot start", r.stderr)
+        self.assertNotIn("Traceback", r.stderr)
+
+    def test_a_reader_without_detection_or_fonts_can_conform(self):
+        script = (
+            "import json,subprocess,sys\n"
+            f"ref = subprocess.Popen([sys.executable, {str(ROOT / 'reference' / 'adapter.py')!r}], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)\n"
+            "for line in sys.stdin:\n"
+            "    req = json.loads(line)\n"
+            "    if req['op'] != 'read':\n"
+            "        sys.exit(3)\n"
+            "    ref.stdin.write(line); ref.stdin.flush()\n"
+            "    print(ref.stdout.readline().strip(), flush=True)\n"
+        )
+        self.assertIn("stopped", self.run_with(script).stderr)
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "conformance" / "run.py"), "--markdown", "--no-detect", "--no-fonts", "--", sys.executable, "-c", script],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Detection: not tested.", r.stdout)
+
     def test_extra_fields_are_ignored(self):
         responses = {("detect", "x"): {"id": "x", "layout": "nudi", "clean": True}}
         self.assertEqual(run.answer(responses, "detect", "x"), {"layout": "nudi"})

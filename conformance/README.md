@@ -66,7 +66,7 @@ cargo build --release --manifest-path adapters/kannadi/Cargo.toml
 python3 conformance/run.py --markdown -- adapters/kannadi/target/release/kle-kannadi-adapter
 ```
 
-The exit code is 0 when the converter conforms (section 8 of the specification) and 1 otherwise. `--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
+The exit code is 0 when the converter conforms (section 8 of the specification) and 1 otherwise. A converter that does not detect layouts or read font names is run with `--no-detect` or `--no-fonts`, which leave those operations out of the run and of the verdict. `--timeout SECONDS` (default 30) bounds the wait for each response. `--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
 
 ```bash
 python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/adapter.py -- adapters/kannadi/target/release/kle-kannadi-adapter
