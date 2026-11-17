@@ -6,7 +6,7 @@
  "aliases": [
   "baraha"
  ],
- "description": "The ANSI Nudi fonts up to version 5 (Nudi 01 e to Nudi 05, Nudi Akshara) and Baraha's BRH fonts for Kannada, which share 1 layout.",
+ "description": "The numbered ANSI Nudi fonts up to version 5, such as Nudi 01 e and Nudi 05 k, Nudi Akshara, and Baraha's BRH fonts for Kannada, which share 1 layout.",
  "fonts": [
   "Nudi 01 e",
   "Nudi 05 k",

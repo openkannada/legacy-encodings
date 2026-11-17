@@ -20,6 +20,7 @@ KANNADI_URL = "https://github.com/openkannada/kannadi"
 KANNADI_DATA = "crates/kannadi/data"
 
 KINDS = {"letter", "base", "sign", "ottu", "arka", "mod", "aspirate", "ignore", "literal"}
+WHITE_SPACE_CODES = {"09", "0A", "0B", "0C", "0D", "20", "A0"}
 VIRAMA = "್"
 
 
@@ -66,6 +67,8 @@ def parse_prefer(column, where):
         return {"type": column}
     kind, _, chars = column.partition(" ")
     if kind in ("on", "with") and chars.strip():
+        if any(len(c) != 1 for c in chars.split()):
+            raise ValueError(f"{where}: preference characters must be separated by spaces")
         return {"type": kind, "chars": chars.split()}
     raise ValueError(f"{where}: unknown preference {column!r}")
 
@@ -98,8 +101,8 @@ def parse_table(text, name):
             raise ValueError(f"{where}: unknown kind {kind!r}")
         prefer = parse_prefer(prefer_col, where)
         check_value(kind, value, prefer, where)
-        if len(codes) > 1 and codes[0] == "20" and (prefer or {}).get("type") != "read":
-            raise ValueError(f"{where}: a sequence that starts with a space must be marked read")
+        if len(codes) > 1 and codes[0] in WHITE_SPACE_CODES and (prefer or {}).get("type") != "read":
+            raise ValueError(f"{where}: a sequence that starts with white space must be marked read")
         entry = {"codes": codes, "kind": kind, "value": value}
         if prefer:
             entry["prefer"] = prefer
@@ -141,6 +144,8 @@ def check_value(kind, value, prefer, where):
     elif kind == "literal":
         if not value:
             raise ValueError(f"{where}: literal needs a value")
+        if len(value) > 1 and (prefer or {}).get("type") != "read":
+            raise ValueError(f"{where}: a literal written back must be 1 character, or else marked read")
     if prefer and prefer["type"] != "read" and kind not in ("sign", "ottu", "arka", "aspirate"):
         raise ValueError(f"{where}: a {prefer['type']} preference has no effect on {kind}")
     if prefer and prefer["type"] != "read" and kind == "sign" and value == "":
@@ -188,8 +193,9 @@ def rendered():
 def check_fonts():
     fonts = json.loads((TABLES / "fonts.json").read_text(encoding="utf-8"))
     ids = {m["id"] for m in layouts()}
-    for rule in fonts["layout_rules"]:
+    for rule in fonts["not_legacy"] + fonts["layout_rules"] + fonts["legacy_without_table"] + fonts["kannada_digits"]:
         re.compile(rule["match"])
+    for rule in fonts["layout_rules"]:
         if rule["layout"] is not None and rule["layout"] not in ids:
             raise ValueError(f"fonts.json: unknown layout {rule['layout']!r}")
     for ex in fonts["examples"]:
@@ -208,6 +214,8 @@ def font_key(name):
 
 def font_layout(fonts, name):
     key = font_key(name)
+    if any(re.search(r["match"], key) for r in fonts["not_legacy"]):
+        return None
     for rule in fonts["layout_rules"]:
         if re.search(rule["match"], key):
             return rule["layout"]
@@ -218,7 +226,7 @@ def is_legacy(fonts, name):
     if font_layout(fonts, name) is not None:
         return True
     key = font_key(name)
-    if re.search(fonts["layout_rules"][0]["match"], key):
+    if any(re.search(r["match"], key) for r in fonts["not_legacy"]):
         return False
     return any(re.search(r["match"], key) for r in fonts["legacy_without_table"])
 

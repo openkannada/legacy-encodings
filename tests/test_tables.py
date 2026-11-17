@@ -44,6 +44,15 @@ class TableRules(unittest.TestCase):
 
     def test_a_sequence_after_a_space_is_read_only(self):
         self.rejects("20 BD\tsign\tೃ")
+        self.rejects("A0 58\tottu\tಯ")
+        self.assertEqual(len(parse("A0 58\tottu\tಯ\tread")), 1)
+
+    def test_a_written_literal_is_1_character(self):
+        self.rejects("F5\tliteral\t--")
+        self.assertEqual(len(parse("F5\tliteral\t--\tread")), 1)
+
+    def test_preference_characters_are_single(self):
+        self.rejects("DF\tottu\tನ\ton ಪಫ")
 
     def test_a_base_is_a_consonant_or_cluster(self):
         self.rejects("50\tbase\tಅ")
@@ -93,6 +102,7 @@ class Fonts(unittest.TestCase):
 
     def test_unicode_fonts_are_not_legacy(self):
         self.assertIsNone(tables.font_layout(self.fonts, "Nudi Unicode 01"))
+        self.assertIsNone(tables.font_layout(self.fonts, "BRH Kannada Unicode"))
         self.assertFalse(tables.is_legacy(self.fonts, "Shree-Kan-0851 Unicode"))
 
     def test_other_shree_kan_fonts_are_legacy_with_no_table(self):
@@ -124,6 +134,33 @@ class Generated(unittest.TestCase):
         for path in (ROOT / "tables" / "json").glob("*.json"):
             errors = list(validator.iter_errors(json.loads(path.read_text(encoding="utf-8"))))
             self.assertEqual(errors, [], path.name)
+
+    def test_the_schema_rejects_entries_that_break_the_rules(self):
+        try:
+            import jsonschema
+        except ImportError:
+            self.skipTest("jsonschema is not installed")
+        schema = json.loads((ROOT / "schema" / "layout.schema.json").read_text(encoding="utf-8"))
+        validator = jsonschema.Draft202012Validator(schema)
+        doc = json.loads((ROOT / "tables" / "json" / "nudi.json").read_text(encoding="utf-8"))
+
+        def valid(entry):
+            return validator.is_valid(dict(doc, entries=[entry]))
+
+        read = {"type": "read"}
+        self.assertFalse(valid({"codes": ["20", "BD"], "kind": "sign", "value": "ೃ"}))
+        self.assertTrue(valid({"codes": ["20", "BD"], "kind": "sign", "value": "ೃ", "prefer": read}))
+        self.assertFalse(valid({"codes": ["C0"], "kind": "sign", "value": "", "prefer": {"type": "on", "chars": ["ಕ"]}}))
+        self.assertFalse(valid({"codes": ["C0"], "kind": "sign", "value": "ಾಾ"}))
+        self.assertFalse(valid({"codes": ["FB"], "kind": "base", "value": "ಕ್ಷ"}))
+        self.assertTrue(valid({"codes": ["FB"], "kind": "base", "value": "ಕ್ಷ", "prefer": read}))
+        self.assertFalse(valid({"codes": ["50"], "kind": "base", "value": "ಕ", "prefer": {"type": "after-ottu"}}))
+        self.assertFalse(valid({"codes": ["F0"], "kind": "arka", "value": "ರ"}))
+        self.assertFalse(valid({"codes": ["DF"], "kind": "ottu", "value": "ನ", "prefer": {"type": "on", "chars": ["ಪಫ"]}}))
+        self.assertFalse(valid({"codes": ["df"], "kind": "ottu", "value": "ನ"}))
+        self.assertFalse(valid({"codes": ["50"], "kind": "base", "value": ""}))
+        self.assertFalse(valid({"codes": ["C9"], "kind": "sign", "value": "ೆ", "prefer": {"type": "on"}}))
+        self.assertFalse(valid({"codes": ["C9"], "kind": "sign", "value": "ೆ", "prefer": {"type": "read", "chars": ["ಕ"]}}))
 
 
 if __name__ == "__main__":

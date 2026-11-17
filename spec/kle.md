@@ -26,7 +26,7 @@ Glyph codes are written as 2 hexadecimal digits, such as `C0`. Unicode character
 
 | Id | Name | Fonts |
 |---|---|---|
-| `nudi` | Nudi | Nudi 01 e to Nudi 05 and Nudi Akshara (the ANSI Nudi fonts up to version 5), and Baraha's BRH fonts for Kannada |
+| `nudi` | Nudi | The numbered ANSI Nudi fonts up to version 5, such as Nudi 01 e and Nudi 05 k, Nudi Akshara, and Baraha's BRH fonts for Kannada |
 | `akruti` | Akruti | AkrutiKndPadma and its weights |
 | `shree-lipi` | Shree-Lipi | Shree-Kan-0850 and its styles |
 | `nudi-b` | Nudi B-Akshara | NudiB-Akshar, the bilingual Nudi font |
@@ -68,11 +68,11 @@ The **mahaprana pairs** are ಪ and ಫ, ಬ and ಭ, ಡ and ಢ, ದ and ಧ. 
 
 ### 3.2 Passing characters
 
-These characters carry no Kannada and pass through a conversion unchanged without being reported: white space (the Unicode White_Space property), ASCII punctuation (U+0021 to U+002F, U+003A to U+0040, U+005B to U+0060, U+007B to U+007E), U+2010 to U+2027, and U+00A0.
+These characters carry no Kannada and pass through a conversion unchanged without being reported: white space (the Unicode White_Space property; among glyph codes, 09 to 0D, 20 and A0), ASCII punctuation (U+0021 to U+002F, U+003A to U+0040, U+005B to U+0060, U+007B to U+007E), U+2010 to U+2027, and U+00A0.
 
 ### 3.3 Normalization
 
-Converted text is in Unicode Normalization Form C (NFC), syllable by syllable (section 5.5). In Kannada this joins split vowel signs: U+0CC6 with U+0CD5 becomes ೇ U+0CC7, U+0CC6 with U+0CC2 becomes ೊ U+0CCA, and so on.
+Each syllable is normalized to Unicode Normalization Form C (NFC) when it is written (section 5.5). Nothing else is normalized: stray marks (section 5.4) and other output are written as they are, so a reader MUST NOT normalize the whole output. In Kannada, NFC joins split vowel signs: U+0CC6 with U+0CD5 becomes ೇ U+0CC7, U+0CC6 with U+0CC2 becomes ೊ U+0CCA, and so on.
 
 ## 4. Layout tables
 
@@ -96,7 +96,7 @@ The JSON form holds the same entries in the same order, with these fields:
 - `value`;
 - `prefer`, when the entry has a preference: `{"type": "on", "chars": ["ಪ", "ಫ", "ವ"]}`, `{"type": "with", "chars": ["ಿ"]}`, `{"type": "after-ottu"}` or `{"type": "read"}`.
 
-The file also carries the layout's `id`, `name`, `aliases`, `description`, example `fonts`, the `byte_encoding` (always `windows-1252` in this version), `draws_latin` (section 4.6), the `source` it was generated from, and the `notes`.
+The file also carries the layout's `id`, `name`, `aliases`, `description`, example `fonts`, the `byte_encoding` (always `windows-1252` in this version), `draws_latin` (section 4.6), the `source` it was generated from, and the `notes`. The notes are copied from the source table, so file paths in them are paths in the source repository.
 
 ### 4.3 Kinds
 
@@ -114,26 +114,27 @@ The file also carries the layout's `id`, `name`, `aliases`, `description`, examp
 
 ### 4.4 Preferences
 
-A preference tells a writer (section 9) which of several entries with the same meaning to use. Readers ignore preferences, apart from `read`, which writers also skip.
+A preference tells a writer (section 9) which of several entries with the same meaning to use. Readers ignore preferences: an entry marked `read` is read like any other.
 
 - `on X Y ...`: use this entry when the syllable's consonant is one of the listed characters.
 - `with X Y ...`: use this entry when the syllable's vowel sign contains one of the listed characters.
 - `after-ottu`: use this entry right after a subscript consonant.
-- `read`: a way of typing that is read but never written, such as a sign typed after a space.
+- `read`: a way of typing that is read but never written, such as a sign typed after a space. Writers skip these entries.
 
 ### 4.5 Rules
 
 A table MUST follow these rules. `tools/tables.py check` tests every one of them.
 
 1. No 2 entries have the same codes.
-2. An entry whose codes start with 20 (space) and have more than 1 code is marked `read`.
+2. An entry of more than 1 code whose first code is white space (09 to 0D, 20 or A0) is marked `read`.
 3. A `base` value is a consonant, or consonants joined by the virama. A `base` that is not marked `read` has a value of exactly 1 consonant.
 4. An `ottu` value is 1 or more consonants followed by at most 1 vowel sign.
 5. A `sign` value is empty, 1 vowel sign, or the virama.
 6. A `letter` value starts with a vowel or a consonant.
 7. A `mod` value is 1 modifier.
-8. `arka`, `aspirate` and `ignore` have an empty value; `literal` has a value.
-9. Only `sign` (with a value), `ottu`, `arka` and `aspirate` entries have an `on`, `with` or `after-ottu` preference.
+8. `arka`, `aspirate` and `ignore` have an empty value. A `literal` has a value; a `literal` that is not marked `read` has a value of exactly 1 character.
+9. Only `sign` (with a value), `ottu`, `arka` and `aspirate` entries have an `on`, `with` or `after-ottu` preference, and each of its characters is 1 character, separated from the next by a space.
+10. Every value except a `letter` or `sign` value is in NFC.
 
 ### 4.6 Bilingual layouts
 
@@ -141,11 +142,11 @@ A layout **draws Latin** when it has a `literal` entry whose value is 1 or more 
 
 ## 5. Reading legacy text
 
-This section is normative. A conforming reader MUST give the same text as these steps for every input; it MAY be built any way it likes.
+This section is normative. A reader MUST give the same text and the same reports (section 6) as these steps for every input; it MAY be built any way it likes.
 
 ### 5.1 Input
 
-The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result.
+The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result. A character with no Windows-1252 code, such as ಕ or U+3000, matches no entry: it is a plain code (section 5.6), written as itself, and reported as unknown unless it is a passing character.
 
 Text taken from a PDF needs the font's own encoding applied first. Getting codes out of a PDF is out of scope, but 1 pitfall is common enough to note: when Acrobat cannot keep a glyph at an undefined Windows-1252 code, it moves the glyph into a second copy of the font, which a text extractor reports as a separate run. Those runs belong back in the line at the original codes.
 
@@ -153,7 +154,7 @@ Below, a **position** is an index into the code sequence, starting at 0.
 
 ### 5.2 Matching
 
-At each position, the reader finds the **longest entry**: the entry with the most codes whose codes equal the codes at that position. A match is refused when the code at the position is white space and no syllable is open (section 5.3); the reader then treats the position as if no entry matched.
+At each position, the reader finds the **longest entry**: the entry with the most codes whose codes equal the codes at that position. A match is refused when the code at the position is white space (09 to 0D, 20 or A0) and no syllable is open (section 5.3); the reader then treats the position as if no entry matched. Entries that start with white space are typing habits, such as a vowel sign typed after a space, and they only continue a syllable.
 
 - If an entry matches, the reader applies it (section 5.3) and moves past all its codes.
 - If none matches, the code is a **plain code** (section 5.6), and the reader moves 1 position on.
@@ -203,19 +204,19 @@ A syllable is closed when another starts, when a `literal` or plain code is writ
 
 The **cluster** is the letter text's first character, extended while it is followed by the virama and a consonant. If the cluster then has at least 3 characters and ends in the virama and ರ, that final virama and ರ are left out of the cluster. So subscripts typed after ಕ್ಷಿ join after ಕ್ಷ, while subscripts typed after a letter ending in ್ರ go before it, because Unicode keeps ್ರ last.
 
-The text is normalized to NFC and written, followed by the rejected codes. The syllable is **malformed** when any of these hold:
+The text is normalized to NFC and written, followed by the rejected codes as their Windows-1252 characters. The syllable is **malformed** when any of these hold:
 
 - its shape needs a sign and it has none;
 - the NFC text has more than 1 vowel sign;
 - its letter text starts with a vowel, and it has an arkavattu, a sign or a subscript.
 
-The range of the written syllable, without the rejected codes, is reported as malformed.
+The range of the written syllable, including the rejected codes after it, is reported as malformed.
 
 ### 5.6 Plain codes
 
 A code with no entry is written by these rules, after closing the open syllable:
 
-1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and the longest entry at the next position is a `letter` or `base`, write the anusvara ಂ U+0C82. Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
+1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and the longest entry at the next position is a `letter` or `base`, write the anusvara ಂ U+0C82. That longest entry is found without the white-space refusal of section 5.2. Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
 2. A passing character (section 3.2): write it.
 3. Anything else: write it as its Windows-1252 character and report it as unknown.
 
@@ -245,7 +246,7 @@ A conversion gives 3 results:
 - **unknown**: each code that could not be placed, with its position: codes with no entry and no passing meaning (section 5.6), rejected codes (section 5.3), and stray head strokes, arkavattus and mahaprana strokes (section 5.4);
 - **malformed**: each range of the output text that is not a valid syllable: stray marks (section 5.4) and malformed syllables (section 5.5).
 
-A conversion is **clean** when both lists are empty. A reader MUST NOT drop a code without a report, except for `ignore` entries, and MUST NOT change unknown codes into something else. Positions in the unknown list count codes from 0. Malformed ranges count Unicode code points of the output from 0; a reader MAY report them in other units, such as UTF-8 bytes, if it says so.
+A conversion is **clean** when both lists are empty. A reader MUST NOT drop a code without a report, and MUST NOT change unknown codes into something else. The codes of a matched entry are not dropped: they stand for its value, which is empty for an `ignore` entry and takes in the leading space of an entry that starts with white space. Positions in the unknown list count codes from 0, and malformed ranges count Unicode code points of the output from 0, end excluded. A reader MAY report both in other units, such as UTF-8 bytes, if it says so; the conformance protocol (section 8) uses codes and code points.
 
 These reports are what make a conversion checkable: a reader that guesses silently gives text that looks right and is wrong.
 
@@ -256,10 +257,11 @@ These reports are what make a conversion checkable: a reader that guesses silent
 When the font is known, as in a word processor document, a PDF or styled HTML, the layout comes from its name. `tables/fonts.json` holds the rules:
 
 1. Make the **key**: keep the ASCII letters and digits of the name, lowercased, and drop everything else. `"BRH Kannada"` becomes `brhkannada`, and `Shree-Kan-0850 Bold` becomes `shreekan0850bold`.
-2. Try each rule in `layout_rules` in order. A rule whose regular expression is found in the key gives its layout, which is `null` for a font that is not a legacy Kannada font. The first rule that matches decides.
-3. If no rule matches, the font has no layout in this version.
+2. If a rule in `not_legacy` is found in the key, the font is not a legacy font: it has no layout, and the steps stop. These are Unicode fonts.
+3. Try each rule in `layout_rules` in order. A rule whose regular expression is found in the key gives its layout, which is `null` for a font that is not a legacy Kannada font. The first rule that matches decides.
+4. If no rule matches, the font has no layout in this version.
 
-A font is a **legacy font** when it has a layout, or when, without matching the first rule, it matches a rule in `legacy_without_table`; text in such a font is legacy text in a layout this version has no table for, and a converter SHOULD say so instead of passing it through. A font **draws Kannada digits** when a rule in `kannada_digits` matches; the reader then turns the Kannada digits option on (section 5.7).
+A font is a **legacy font** when it has a layout, or when it matches no `not_legacy` rule and matches a rule in `legacy_without_table`; text in such a font is legacy text in a layout this version has no table for, and a converter SHOULD say so instead of passing it through. A font **draws Kannada digits** when a rule in `kannada_digits` matches; the reader then turns the Kannada digits option on (section 5.7).
 
 The regular expressions use only syntax shared by the regular expression engines of common languages: anchors, classes, groups, alternation and counted repeats.
 
@@ -277,7 +279,7 @@ Short text can read cleanly in more than 1 layout, so the choice grows surer wit
 
 ## 8. Conformance
 
-A conforming reader converts every case in `conformance/cases/` to its expected text. Conformance is measured, and reported as accuracy figures, because the expected texts keep the source documents' own typing errors and some cases have open questions. The cases, the runner and the measured results are described in `conformance/README.md`.
+A conforming reader follows section 5 and reports as section 6 says. Conformance cases, a runner and measured results are planned for the next revision of this draft.
 
 ## 9. Writing legacy text
 

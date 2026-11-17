@@ -1,7 +1,9 @@
 {
   "normalize": "Keep the ASCII letters and digits of the font name, lowercased; drop everything else.",
+  "not_legacy": [
+    { "match": "uni", "why": "Unicode fonts, such as Nudi Unicode 01 and BRH Kannada Unicode" }
+  ],
   "layout_rules": [
-    { "match": "uni", "layout": null, "why": "Unicode fonts, such as Nudi Unicode 01 and BRH Kannada Unicode" },
     { "match": "^brh(devanagari|sanskrit|hindi|marathi|tamil|telugu|malayalam|bengali|gujarati|gurmukhi)", "layout": null, "why": "Baraha's BRH fonts for other scripts" },
     { "match": "^brh", "layout": "nudi" },
     { "match": "^nudibakshar", "layout": "nudi-b" },
