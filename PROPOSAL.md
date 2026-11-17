@@ -10,13 +10,13 @@ Years of Kannada documents were typed before Unicode: government orders, budget 
 |---|---|---|
 | Nudi, and Baraha's ANSI fonts | Karnataka government web pages and documents | The state's own standard. Vowel signs split into 2 or 3 glyphs. |
 | Akruti | Karnataka Acts and budget highlights | Other codes; some signs typed after a space. |
-| Shree-Lipi | The Udayavani newspaper's web pages, 2003 and 2004 | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
+| Shree-Lipi | The Udayavani newspaper's web pages, 2003 and 2004; the test lines are now written by us | Other codes, and cluster glyphs such as ಕ್ಷ and ಜ್ಞ. |
 | Nudi B-Akshara | Legislative Assembly and budget PDFs | Bilingual: Latin at the ASCII codes, Kannada above 80. |
 | Kan-Eng | Budget papers, 2002 to 2014 | Bilingual, with yet another Kannada layout. |
 
 Text in these fonts cannot be searched, indexed, read aloud by a screen reader, used to train a language model, or copied into a modern document. Converters exist (aravindavk/ascii2unicode, KAGAPA's KannadaAsciiUnicodeSDK, a Python package, Baraha's own tool, Google Docs add-ons), but each keeps its own tables and rules, and none publishes a verified test set or an accuracy figure. A user cannot tell which converter is right, and a converter author has to rediscover every layout from scratch.
 
-kannadi, the Rust library under openkannada, has now derived tables for all 5 layouts from the font files and public documents, with 575 test lines read against the rendered glyphs and a 207-line Nudi benchmark corpus. This proposal turns that work into a shared, open reference.
+kannadi, the Rust library under openkannada, has now derived tables for all 5 layouts from the font files and public documents, with 445 test lines read against the rendered glyphs, 140 Shree-Lipi lines written for the tests, and a 207-line Nudi benchmark corpus. This proposal turns that work into a shared, open reference.
 
 ## What we propose
 
@@ -58,8 +58,9 @@ Alternatives considered:
 ## License
 
 - Specification text: **CC BY 4.0**, so others can quote and adapt it with credit.
-- Tables, schema, tools and runner: **MIT**, the same license kannadi's tables already have, so there is no relicensing. **CC0** for the tables would let fonts, products and standards bodies copy them with no notice at all; that is a choice for Prasad (see below).
-- Test lines: short excerpts of Karnataka government and newspaper documents, kept with their sources for testing, as kannadi already does. Neither license covers them.
+- Tables, schema, tools, reference reader, runner and adapters: **MIT OR Apache-2.0**, the same license kannadi has, so the tables are copied with no relicensing. Decided on 17 November 2026, in place of CC0.
+- Test lines: short excerpts of Karnataka government documents, kept with their sources for testing, as kannadi already does; neither license covers them. The Shree-Lipi lines were written for kannadi, encoded with its table, and are under the code license; no newspaper text is kept.
+- Contributions: signed off under the Developer Certificate of Origin, with no contributor license agreement.
 
 ## Versions and governance
 
@@ -79,7 +80,7 @@ Alternatives considered:
 ## Decisions for Prasad
 
 1. **Name and home**: KLE in `openkannada/legacy-encodings`, or another name.
-2. **Table license**: MIT, as now, or CC0.
+2. **Table license**: decided on 17 November 2026: MIT OR Apache-2.0, like kannadi.
 3. **Source of truth**: for now kannadi's tables are the source and this repository copies them at a pinned commit. Once the specification is public, the source could move here, with kannadi reading the tables from this repository.
 4. **When to go public**, and whether to invite KAGAPA and the authors of other converters to review the draft first.
 5. **Names in the drafts**: the proposal and its decisions name Prasad; they should be reworded before the repository is public.

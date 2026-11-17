@@ -1,10 +1,10 @@
 {
  "repository": "https://github.com/openkannada/kannadi",
- "commit": "c786820bc3bf44e4dacef7338188a4381f4cdd0b",
+ "commit": "e350d5d15587057d9931ae8317e87739d37c2a38",
  "cases": {
   "nudi": 209,
   "akruti": 125,
-  "shree-lipi": 130,
+  "shree-lipi": 140,
   "nudi-b": 190,
   "kan-eng": 118
  }

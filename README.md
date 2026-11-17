@@ -13,7 +13,7 @@ Draft 0.1.0. The repository is private while the draft is reviewed. [PROPOSAL.md
 | [tables/fonts.json](tables/fonts.json) | Font-name rules for finding a layout, with examples |
 | [schema/layout.schema.json](schema/layout.schema.json) | JSON Schema for the JSON tables |
 | [tools/tables.py](tools/tables.py) | Copies the tables from kannadi, builds the JSON and checks every table rule |
-| [conformance/](conformance/) | 772 lines from public documents, 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
+| [conformance/](conformance/) | 782 test lines (642 from public documents, 140 written for the tests), 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
 | [reference/kle.py](reference/kle.py) | A reference reader in Python, written from the specification |
 | [adapters/kannadi](adapters/kannadi) | kannadi behind the conformance protocol |
 
@@ -37,10 +37,12 @@ and list the change in [CHANGELOG.md](CHANGELOG.md).
 
 Open a GitHub issue for a change to the specification, a table entry, a new layout or a new test line. A table change needs evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources (section 10 of the specification). Bugs and sample documents go in issues too; send documents that cannot be public to support@luminik.io.
 
+Every commit needs a `Signed-off-by` line (`git commit -s`) under the [Developer Certificate of Origin](https://developercertificate.org/); see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 Organizations that want to take part in the specification, such as KAGAPA or a government office, can write to founders@luminik.io.
 
 ## License
 
-The specification text is under [CC BY 4.0](LICENSE-CC-BY-4.0). The tables, schema and tools are under the [MIT license](LICENSE-MIT). See [NOTICE.md](NOTICE.md).
+The specification and the other prose documents are under [CC BY 4.0](LICENSES/CC-BY-4.0.txt). The tables, schema, tools, tests, reference reader, conformance runner and adapters are under the MIT license or the Apache License 2.0, at your choice: see [LICENSE-MIT](LICENSE-MIT) and [LICENSE-APACHE](LICENSE-APACHE). The test lines from government documents are short excerpts that neither license covers. [NOTICE.md](NOTICE.md) gives the license of each directory and credits the sources, and [REUSE.toml](REUSE.toml) gives the license of every file. The names Open Kannada and kannadi are covered by [TRADEMARKS.md](TRADEMARKS.md).
 
 Part of [Open Kannada](https://github.com/openkannada), free and open-source tools that make Kannada work properly on computers.

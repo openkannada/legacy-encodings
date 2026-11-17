@@ -1,10 +1,11 @@
-# Conformance cases for the akruti layout, copied from kannadi c786820.
+# Conformance cases for the akruti layout, copied from kannadi e350d5d.
 # Columns: id, status, codes (hex, Windows-1252), expected Unicode, source.
 # status: verified (a Kannada reader checked the expected text), read (the expected
 # text was read against the codes rendered in the font, pending a Kannada reader),
+# written (the line was written for the tests and encoded with the layout's table),
 # pending or unchecked (the expected text is a converter's output, not yet read).
 # The expected text keeps the source's own typing, errors included.
-# Short excerpts of the sources, kept for testing; see conformance/README.md.
+# Lines from documents are short excerpts, kept for testing; see conformance/README.md.
 akruti-001	read	FA 64 E2 5F 78 2C 20 41 70 EA B3 A9 67 E2 58 2C 20 C0 EA F4 7B E2 58 D1 A9 CC E2 B0 20 FA 64 E2 5F 78 2C 20 BE A9 70 E2 B0 20 C9 E2 70 E2 B1 70 D6 6D B0 2C 20 C0 E2 B0 79 E2 B0 4B	ಶಿಕ್ಷಣ, ಆರೋಗ್ಯ, ವೈದ್ಯಕೀಯ ಶಿಕ್ಷಣ, ನೀರು ಸರಬರಾಜು, ಮತ್ತು	https://web.archive.org/web/20040822015443/http://www.kar.nic.in:80/finance/bud2002-kan/bh2002k.pdf page 2
 akruti-002	read	C8 EA B3 A9 64 EA B3 A9 7E E2 CC EA B3 A9 D0 20 45 C8 D6 66 EA 67 E2 F9 67 E2 B3 20 C9 E2 DD E2 20 C0 E2 B0 7C E2 58 C0 E2 C3 D6 C0 E2 BA 20 CC EA B3 A9 6D 7D EA CC E2 B0	ಲೋಕೋಪಯೋಗಿ ಇಲಾಖೆಗಳಿಗೂ ಸಹ ಮಧ್ಯಮಾವಧಿ ಯೋಜನೆಯ	https://web.archive.org/web/20040822015443/http://www.kar.nic.in:80/finance/bud2002-kan/bh2002k.pdf page 2
 akruti-003	read	70 E2 6B E2 7D EA 2E	ರಚನೆ.	https://web.archive.org/web/20040822015443/http://www.kar.nic.in:80/finance/bud2002-kan/bh2002k.pdf page 2

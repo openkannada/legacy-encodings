@@ -1,10 +1,11 @@
-# Conformance cases for the kan-eng layout, copied from kannadi c786820.
+# Conformance cases for the kan-eng layout, copied from kannadi e350d5d.
 # Columns: id, status, codes (hex, Windows-1252), expected Unicode, source.
 # status: verified (a Kannada reader checked the expected text), read (the expected
 # text was read against the codes rendered in the font, pending a Kannada reader),
+# written (the line was written for the tests and encoded with the layout's table),
 # pending or unchecked (the expected text is a converter's output, not yet read).
 # The expected text keeps the source's own typing, errors included.
-# Short excerpts of the sources, kept for testing; see conformance/README.md.
+# Lines from documents are short excerpts, kept for testing; see conformance/README.md.
 kan-eng-001	read	C4 DE A2 D1 EF DC C8 20 DA E5 E3 C4 DC B0 E5	ರಾಜಸ್ವ ಕೊರತೆ	https://web.archive.org/web/20051212212136/http://kar.nic.in:80/finance/bud2005/budover05-06.pdf
 kan-eng-002	read	C9 DC E1 B0 DC E1 E8 20 F2 E1 B3 E5 AD	ಮತ್ತು ಉಣ್ಣೆ	https://web.archive.org/web/20060819043246/http://www.kar.nic.in:80/finance/bud2006/errata2006-07.pdf
 kan-eng-003	read	A2 E1 C9 DC E1 DE EA 20 2D 31 30 34	ಜುಮ್ಲಾ -104	https://web.archive.org/web/20030812181515/http://www.kar.nic.in:80/finance/bud2003/errata2003-04.pdf

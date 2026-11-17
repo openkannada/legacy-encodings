@@ -279,7 +279,7 @@ Short text can read cleanly in more than 1 layout, so the choice grows surer wit
 
 ### 7.3 Measured accuracy
 
-On the 772 lines of the conformance cases, the method finds the right layout for every whole line. Counting only the lines longer than the snippet: from the first 32 codes it is right for 95 of 96 Nudi B-Akshara lines, 38 of 39 Kan-Eng lines and every line of the other layouts; from the first 8 codes, about 2 or 3 syllables, for 81.5% of Nudi B-Akshara and 83.1% of Kan-Eng lines, and 93.5% or more for the others. Most mistakes on short text choose Akruti for a bilingual layout. `conformance/RESULTS.md` has the details.
+On the 782 lines of the conformance cases, the method finds the right layout for every whole line. Counting only the lines longer than the snippet: from the first 32 codes it is right for 95 of 96 Nudi B-Akshara lines, 38 of 39 Kan-Eng lines and every line of the other layouts; from the first 8 codes, about 2 or 3 syllables, for 81.5% of Nudi B-Akshara and 83.1% of Kan-Eng lines, and 93.5% or more for the others. Most mistakes on short text choose Akruti for a bilingual layout. `conformance/RESULTS.md` has the details.
 
 ## 8. Conformance
 
@@ -288,9 +288,9 @@ A conforming reader follows section 5 and reports as section 6 says. The conform
 A **conforming reader**:
 
 1. gives the expected result for every edge case in `conformance/edge-cases.tsv`, including the unknown positions and malformed ranges;
-2. gives the expected text for every line of `conformance/cases/` whose status is verified or read;
+2. gives the expected text for every line of `conformance/cases/` whose status is verified, read or written;
 3. gives the expected answer for every font-name example in `tables/fonts.json`, if it reads font names;
-4. finds the right layout for every whole line of `conformance/cases/` whose status is verified or read, if it detects layouts from text.
+4. finds the right layout for every whole line of `conformance/cases/` whose status is verified, read or written, if it detects layouts from text.
 
 A converter that does not conform SHOULD still publish its figures from `conformance/run.py`, with the version of this specification and the kannadi commit in `conformance/cases/SOURCE.json` it was measured against. The cases, the protocol a converter speaks to the runner, and the figures reported are described in `conformance/README.md`.
 
@@ -306,4 +306,4 @@ When a written result is clean, reading it back (section 5) gives the NFC form o
 
 This specification follows semantic versioning. A change that makes a conforming reader give different text for some input is a minor version before 1.0 and a major version after it. Every change to a table is listed in `CHANGELOG.md` with the evidence for it.
 
-A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, added as conformance cases with their sources. Changes are proposed as GitHub issues in the specification's repository; organizations can also write to founders@luminik.io.
+A proposed change to a table MUST come with evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, added as conformance cases with their sources. Where no public document can be kept, such as newspaper text, the lines are written for the tests and encoded with the table, with the typing habits seen in the documents retyped by hand. Changes are proposed as GitHub issues in the specification's repository; organizations can also write to founders@luminik.io.

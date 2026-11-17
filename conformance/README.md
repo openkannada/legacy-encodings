@@ -6,7 +6,7 @@ These tests show how closely a converter follows the specification, as accuracy 
 
 | Set | File | What it checks |
 |---|---|---|
-| Lines | `cases/<layout>.tsv` | 772 lines from public documents: the converter's text against the expected text |
+| Lines | `cases/<layout>.tsv` | 782 lines, 642 from public documents and 140 written for the tests: the converter's text against the expected text |
 | Edge cases | `edge-cases.tsv` | 64 short inputs that reach the 32 rules listed in `tools/edge_cases.py`, from sections 3.3, 5 and 7.2, including the error reports |
 | Font names | `../tables/fonts.json` | 47 font names: layout, legacy flag and Kannada digit flag (section 7.1) |
 | Detection | the lines | the layout found from each whole line, and from its first 8, 16 and 32 codes (section 7.2) |
@@ -17,7 +17,7 @@ These tests show how closely a converter follows the specification, as accuracy 
 |---|---|---|---|---|
 | nudi | 12 read, 95 pending, 102 unchecked | see below | 31 | Karnataka government web pages of 2002 (Rural Development and Panchayat Raj; Finance) |
 | akruti | 125 read | | 5 | Karnataka Acts and the 2002 budget highlights (PDF) |
-| shree-lipi | 130 read | | 36 | Udayavani newspaper web pages, 2003 and 2004 |
+| shree-lipi | 140 written | | | Written for kannadi and encoded with its Shree-Lipi table, with 22 words retyped in the typing habits of the Udayavani newspaper pages of 2003 and 2004 |
 | nudi-b | 190 read | | 15 | 13th Karnataka Legislative Assembly member pages and budget papers (PDF) |
 | kan-eng | 118 read | | 36 | Karnataka budget papers, 2002 to 2011 (PDF) |
 
@@ -27,10 +27,11 @@ Status says how far the expected text can be trusted:
 
 - **verified**: a Kannada reader checked the expected text against the line drawn in its font. No line is verified yet.
 - **read**: the expected text was read against the same codes rendered in the font, glyph by glyph, and matches the line as typed, including the source's own typing errors. A Kannada reader's check is pending.
+- **written**: the line was written for the tests and its codes were made with the layout's table, so the expected text is the text that was written. Some words were then retyped by hand in typing habits seen in real documents; the source column names them.
 - **pending**: in kannadi's 100-line verification set, waiting for a Kannada reader; the expected text is kannadi's output until then.
 - **unchecked**: the expected text is kannadi's output and nobody has reviewed it.
 
-The headline figures count verified and read lines only.
+The headline figures count verified, read and written lines only.
 
 ### Edge cases
 
@@ -85,7 +86,11 @@ python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/a
 
 ## License and use
 
-The lines are short excerpts of works of the Government of Karnataka and of the Udayavani newspaper. They carry no license statement, and neither license of this repository covers them. They are kept, with their sources, for research on and testing of converters, as fair dealing under the Indian Copyright Act, 1957. No page is stored in full. To ask for an excerpt to be removed, open an issue.
+The Nudi, Akruti, Nudi B-Akshara and Kan-Eng lines are short excerpts of works of the Government of Karnataka. Source credit: Government of Karnataka; each line records the archived URL of its source. They carry no license statement, and neither license of this repository covers them. They are kept, with their sources, for research on and testing of converters, as fair dealing under the Indian Copyright Act, 1957. No page is stored in full.
+
+To ask for an excerpt to be removed, write to support@luminik.io or open an issue.
+
+The Shree-Lipi lines were written for kannadi and are under MIT OR Apache-2.0, like the runner, the edge cases and the other files here. No newspaper text is included.
 
 ## Updating
 
