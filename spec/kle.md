@@ -148,7 +148,7 @@ This section is normative. A reader MUST give the same text and the same reports
 
 ### 5.1 Input
 
-The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result. A character with no Windows-1252 code, such as ಕ or U+3000, matches no entry: it is a plain code (section 5.6), written as itself, and reported as unknown unless it is a passing character. Unicode Kannada is passing (section 3.2), so ಕ is written and not reported; U+3000 is white space.
+The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result. A character with no Windows-1252 code, such as ಕ or U+3000, matches no entry: it is a plain code (section 5.6), written as itself, and reported as unknown unless it is a passing character. Both are passing characters (section 3.2).
 
 Text taken from a PDF needs the font's own encoding applied first. Getting codes out of a PDF is out of scope, but 1 pitfall is common enough to note: when Acrobat cannot keep a glyph at an undefined Windows-1252 code, it moves the glyph into a second copy of the font, which a text extractor reports as a separate run. Those runs belong back in the line at the original codes.
 
@@ -218,7 +218,7 @@ The range of the written syllable, including the rejected codes after it, is rep
 
 A code with no entry is written by these rules, after closing the open syllable:
 
-1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and the longest entry at the next position is a `letter` or `base`, or the next character is a Unicode Kannada letter (section 3.2), write the anusvara ಂ U+0C82. That longest entry is found without the white-space refusal of section 5.2. Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
+1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and a syllable starts at the next position, write the anusvara ಂ U+0C82. A syllable starts there when the longest entry at the next position is a `letter` or `base`, found without the white-space refusal of section 5.2, or when the next character is itself a letter character, as Unicode Kannada in a string can be (section 3.2). Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
 2. A passing character (section 3.2): write it.
 3. Anything else: write it as its Windows-1252 character and report it as unknown.
 

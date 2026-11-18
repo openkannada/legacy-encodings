@@ -1,6 +1,6 @@
 # Results
 
-Measured on 17 November 2026 with the cases copied from kannadi e350d5d and the tables and adapter at kannadi c786820. Between those commits, kannadi's tables changed only in their license comment lines, and its test lines only for Shree-Lipi. Rerun on 18 November 2026 with the adapter at kannadi fded282, which passes Unicode Kannada through (section 3.2): the reference reader and kannadi still give the same response to all 3,767 requests and to 16,500 random sequences, and both still conform.
+Measured on 17 November 2026 with the cases copied from kannadi e350d5d and the tables and adapter at kannadi c786820. Between those commits, kannadi's tables changed only in their license comment lines, and its test lines only for Shree-Lipi. Rerun on 18 November 2026 with the adapter at kannadi fded282, which passes Unicode Kannada through (section 3.2): the reference reader and kannadi still give the same response to all 3,767 requests and to 16,500 random sequences, and both still conform. Every input is glyph codes, so the new rule is not exercised.
 
 ## Reference reader and kannadi
 
