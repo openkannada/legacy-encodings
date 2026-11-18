@@ -70,6 +70,8 @@ The **mahaprana pairs** are ಪ and ಫ, ಬ and ಭ, ಡ and ಢ, ದ and ಧ. 
 
 These characters carry no Kannada and pass through a conversion unchanged without being reported: white space (the Unicode White_Space property; among glyph codes, 09 to 0D, 20 and A0), ASCII punctuation (U+0021 to U+002F, U+003A to U+0040, U+005B to U+0060, U+007B to U+007E), U+2010 to U+2027, and U+00A0.
 
+Unicode Kannada is also passed through unchanged and unreported: the Kannada block (U+0C80 to U+0CFF), the dandas (U+0964, U+0965), ZWNJ (U+200C) and ZWJ (U+200D). No layout uses these as glyph codes, so in a string (section 5.1) they can only be text that is already Unicode, such as a word converted earlier next to legacy text.
+
 ### 3.3 Normalization
 
 Each syllable is normalized to Unicode Normalization Form C (NFC) when it is written (section 5.5). Nothing else is normalized: stray marks (section 5.4) and other output are written as they are, so a reader MUST NOT normalize the whole output. In Kannada, NFC joins split vowel signs: U+0CC6 with U+0CD5 becomes ೇ U+0CC7, U+0CC6 with U+0CC2 becomes ೊ U+0CCA, and so on.
@@ -146,7 +148,7 @@ This section is normative. A reader MUST give the same text and the same reports
 
 ### 5.1 Input
 
-The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result. A character with no Windows-1252 code, such as ಕ or U+3000, matches no entry: it is a plain code (section 5.6), written as itself, and reported as unknown unless it is a passing character.
+The input is a sequence of glyph codes. Text taken from a word processor document or a web page is usually already a string: each of its characters stands for the code it has in Windows-1252, and the 5 codes Windows-1252 leaves undefined (81, 8D, 8F, 90, 9D) appear as U+0081, U+008D, U+008F, U+0090 and U+009D. A reader MUST map such a string back to codes through Windows-1252 before the steps below, or apply the steps to the characters directly, which gives the same result. A character with no Windows-1252 code, such as ಕ or U+3000, matches no entry: it is a plain code (section 5.6), written as itself, and reported as unknown unless it is a passing character. Both are passing characters (section 3.2).
 
 Text taken from a PDF needs the font's own encoding applied first. Getting codes out of a PDF is out of scope, but 1 pitfall is common enough to note: when Acrobat cannot keep a glyph at an undefined Windows-1252 code, it moves the glyph into a second copy of the font, which a text extractor reports as a separate run. Those runs belong back in the line at the original codes.
 
@@ -216,7 +218,7 @@ The range of the written syllable, including the rejected codes after it, is rep
 
 A code with no entry is written by these rules, after closing the open syllable:
 
-1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and the longest entry at the next position is a `letter` or `base`, write the anusvara ಂ U+0C82. That longest entry is found without the white-space refusal of section 5.2. Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
+1. An ASCII digit 0 to 9. If the digit is 0, the option **zero as anusvara** is on, the last character written so far is a letter character, and a syllable starts at the next position, write the anusvara ಂ U+0C82. A syllable starts there when the longest entry at the next position is a `letter` or `base`, found without the white-space refusal of section 5.2, or when the next character is itself a letter character, as Unicode Kannada in a string can be (section 3.2). Otherwise, if the option **Kannada digits** is on, write the Kannada digit of the same value; otherwise write the ASCII digit.
 2. A passing character (section 3.2): write it.
 3. Anything else: write it as its Windows-1252 character and report it as unknown.
 

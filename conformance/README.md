@@ -52,7 +52,7 @@ A converter takes part through a small program that reads 1 JSON request per lin
 - `unknown` lists the positions of unknown codes, counting codes from 0. `malformed` lists `[start, end)` ranges of the output text, counting code points from 0.
 - A converter that does not support an operation answers `{"id": ..., "error": "..."}`, and the runner counts it as wrong.
 - The runner compares only the fields above; a response may carry others.
-- Input is always given as glyph codes. The rules of section 5.1 for text given as a string, such as characters with no Windows-1252 code, are not tested yet.
+- Input is always given as glyph codes. The rules for text given as a string, such as characters with no Windows-1252 code and Unicode Kannada passing through (sections 3.2, 5.1 and 5.6), are not tested yet, and the reference reader reads glyph codes only.
 
 2 programs speak the protocol here:
 

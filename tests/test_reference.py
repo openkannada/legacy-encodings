@@ -59,6 +59,12 @@ class Clarifications(unittest.TestCase):
     def test_stray_marks_are_not_normalized(self):
         self.check("nudi", "C9 C3", "\u0cc6\u0cd5", [], [[0, 1], [1, 2]])
 
+    def test_unicode_kannada_passes_through(self):
+        for c in "ಕಂ್\u0964\u0965\u200c\u200d":
+            self.assertTrue(kle.is_passing(c), hex(ord(c)))
+        for c in "\u00c0\u0bae":
+            self.assertFalse(kle.is_passing(c), hex(ord(c)))
+
     def test_unknown_positions_count_codes(self):
         self.check("nudi", "50 C0 68", "ಕh", [2], [])
 
