@@ -79,6 +79,10 @@ class Lines(unittest.TestCase):
             ids = {k.split(" ", 1)[1] for k in json.loads(out.read_text(encoding="utf-8")) if k.startswith("read nudi-")}
             self.assertEqual(ids, {r[0] for r in table[1:3]})
 
+    def test_an_empty_cases_folder_is_an_error(self):
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(SystemExit):
+            run.load_cases(tmp)
+
     def test_documents(self):
         for d, r in self.documents.items():
             with self.subTest(d):

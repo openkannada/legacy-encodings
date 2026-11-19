@@ -78,7 +78,7 @@ class Recorder(PDFPageAggregator):
 
 
 def differences(doc):
-    """Font name -> {code: original code} from glyph names in /Differences."""
+    """Font object id -> {code: original code} from glyph names in /Differences."""
     tables = {}
     for xref in doc.xrefs:
         for oid in xref.get_objids():
@@ -88,7 +88,6 @@ def differences(doc):
                 continue
             if not (isinstance(o, dict) and getattr(o.get("Type"), "name", "") == "Font"):
                 continue
-            base = getattr(o.get("BaseFont"), "name", "")
             enc = resolve1(o.get("Encoding"))
             if not isinstance(enc, dict):
                 continue
@@ -106,7 +105,7 @@ def differences(doc):
                     u = toUnicode(n)
                     m[code] = cp1252_byte(u) if len(u) == 1 else None
                 code += 1
-            tables[base] = m
+            tables[oid] = m
     return tables
 
 
@@ -232,7 +231,7 @@ def main():
             if g["font"] in renumbered:
                 g["code"] = g["tu"]
                 continue
-            m = diffs.get(g["font"])
+            m = diffs.get(g["fid"])
             if m and g["code"] is not None and g["code"] in m:
                 g["code"] = m[g["code"]]
         glyphs = [g for g in dev.glyphs if g["upright"]]

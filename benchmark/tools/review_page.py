@@ -3,7 +3,7 @@
 Usage: review_page.py SAMPLE.tsv LINES_DIR IMAGES_DIR OUT.html
 IMAGES_DIR holds <id>.png, each line drawn with its document's own font (draw.py).
 A reader marks each line Same or Different, types the right text where it differs, and
-downloads the answers as a TSV (id, verdict, correction, note) for `sample.py bars`.
+downloads the answers as a TSV (id, verdict, correction, reader) for `sample.py bars`.
 """
 import base64
 import csv
@@ -38,7 +38,7 @@ input{font:inherit;flex:1;min-width:200px;padding:6px;border:1px solid var(--lin
 </style></head><body>
 <div class="bar row"><strong id="count"></strong><button id="save">Download answers</button><input id="reader" placeholder="Your name (optional)"></div>
 <h1>Does the Unicode text match the line?</h1>
-<p>Each picture is a line from a Karnataka government document, drawn with the font the document used. Below it is the text in Unicode. Press <b>Same</b> if every letter matches, including the document's own spelling mistakes. Press <b>Different</b> if any letter differs, and type the line as you see it. Spaces and punctuation do not matter.</p>
+<p>Each picture is a line from a Karnataka government document, drawn with the font the document used. Below it is the text in Unicode. Press <b>Same</b> if every letter, digit and punctuation mark matches, including the document's own spelling mistakes. Press <b>Different</b> if any of them differs, and type the line as you see it. Spaces do not matter.</p>
 <p class="kn">ಚಿತ್ರದಲ್ಲಿರುವ ಸಾಲು ಮತ್ತು ಅದರ ಕೆಳಗಿನ ಯೂನಿಕೋಡ್ ಪಠ್ಯ ಒಂದೇ ಆಗಿದ್ದರೆ <b>Same</b>, ಯಾವುದೇ ಅಕ್ಷರ ಬೇರೆಯಾಗಿದ್ದರೆ <b>Different</b> ಒತ್ತಿ, ಸರಿಯಾದ ಸಾಲನ್ನು ಬರೆಯಿರಿ.</p>
 <p>Your answers stay in this browser until you press <b>Download answers</b>. Send that file back.</p>
 __ITEMS__

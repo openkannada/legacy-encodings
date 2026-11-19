@@ -6,6 +6,8 @@ RESPONSES is a file written by `conformance/run.py --out`. Lines whose status is
 likely are scored; unresolved lines are counted apart. Intervals come from a bootstrap that
 resamples whole documents (2,000 draws), since lines from 1 document are not independent.
 --label-error widens each interval by the upper bound on wrong expected texts for that layout.
+A percentile bootstrap over few documents is too narrow; layouts with fewer than 20 documents
+are marked, and their intervals should be read as a lower limit on the uncertainty.
 Exits 1 if a scored line has no response.
 """
 import csv
@@ -21,6 +23,7 @@ from normalize import canonical  # noqa: E402
 
 SCORED = ("verified", "confirmed", "likely")
 DRAWS = 2000
+FEW_DOCUMENTS = 20
 
 
 def distance(a, b):
@@ -72,6 +75,7 @@ def main(argv):
             label[k] = float(v) / 100
     rng = random.Random(1)
     exit_code = 0
+    few = []
     print("| Layout | Lines (documents) | Exact | Exact, normalized | Character accuracy | Normalized | Unresolved lines not scored |")
     print("|---|---|---|---|---|---|---|")
     for path in sorted(Path(lines_dir).glob("*.tsv")):
@@ -98,10 +102,15 @@ def main(argv):
         ci = bootstrap(by_doc, rng)
         e = label.get(layout, 0.0)
         cells = [f"{100 * p:.1f}% ({100 * max(0, lo - e):.1f} to {100 * min(1, hi + e):.1f})" for p, (lo, hi) in zip(point, ci)]
-        print(f"| {layout} | {len(items)} ({len(by_doc)}) | " + " | ".join(cells) + f" | {unresolved} |")
+        mark = "*" if len(by_doc) < FEW_DOCUMENTS else ""
+        if mark:
+            few.append(layout)
+        print(f"| {layout} | {len(items)} ({len(by_doc)}){mark} | " + " | ".join(cells) + f" | {unresolved} |")
         if missing:
             print(f"{layout}: {missing} scored lines have no response", file=sys.stderr)
             exit_code = 1
+    if few:
+        print(f"\n*Fewer than {FEW_DOCUMENTS} documents: the interval understates the uncertainty.")
     return exit_code
 
 

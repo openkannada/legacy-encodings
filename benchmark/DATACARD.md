@@ -33,22 +33,22 @@ configs:
 
 # Kannada legacy-font lines from Karnataka government documents
 
-5,098 lines of Kannada typed in legacy fonts (Nudi and Baraha, Nudi B-Akshara, Akruti, Shree-Lipi and Kan-Eng), each as the glyph codes stored in a public Karnataka government PDF and the Unicode text a reader sees. It measures how accurately a converter turns legacy-font text into Unicode, on real documents from 2001 to 2026.
+5,098 lines of Kannada typed in legacy fonts (Nudi and Baraha, Nudi B-Akshara, Akruti, Shree-Lipi and Kan-Eng), each as the glyph codes stored in a public Karnataka government PDF and the Unicode text the line shows, chosen among converter outputs by OCR of the line. It measures how accurately a converter turns legacy-font text into Unicode, on real documents from 2001 to 2026.
 
 ## Why it exists
 
-Karnataka's offices have typed in legacy fonts for 25 years, and many still do: 53 of the 123 Kannada-text PDFs sampled from state sites in November 2026 store their Kannada as legacy font codes. Search engines, screen readers and language models read that text as strings like `PÀ£ÁðlPÀ`. Converters exist, but their published accuracy figures come from round trips of isolated syllables or from their own output. This set gives a shared, independent test on real lines.
+Karnataka's offices have typed in legacy fonts for 25 years, and many still do: 53 of the 123 Kannada-text PDFs sampled from state sites in November 2026 store their Kannada as legacy font codes. Search engines, screen readers and language models read that text as strings like `PÀ£ÁðlPÀ`. Converters exist, but their published accuracy figures come from round trips of isolated syllables or from their own output. This set tests them on real lines, with expected texts the page supports; Kannada readers have not checked them yet.
 
 ## What is in it
 
 | Layout | Lines | Documents | Confirmed | Likely | Unresolved |
 |---|---|---|---|---|---|
-| Nudi and Baraha (`nudi`) | 2,210 | 223 | 1,937 | 16 | 257 |
-| Akruti (`akruti`) | 953 | 25 | 883 | 29 | 41 |
-| Shree-Lipi (`shree-lipi`) | 421 | 8 | 355 | 3 | 63 |
-| Nudi B-Akshara (`nudi-b`) | 1,000 | 36 | 709 | 14 | 277 |
-| Kan-Eng (`kan-eng`) | 514 | 17 | 474 | 3 | 37 |
-| **All** | **5,098** | **275** | **4,358** | **65** | **675** |
+| Nudi and Baraha (`nudi`) | 2,210 | 223 | 1,711 | 213 | 286 |
+| Akruti (`akruti`) | 953 | 25 | 851 | 66 | 36 |
+| Shree-Lipi (`shree-lipi`) | 421 | 8 | 337 | 19 | 65 |
+| Nudi B-Akshara (`nudi-b`) | 1,000 | 36 | 682 | 123 | 195 |
+| Kan-Eng (`kan-eng`) | 514 | 17 | 447 | 24 | 43 |
+| **All** | **5,098** | **275** | **4,028** | **445** | **625** |
 
 Fields of each line: `id`, `status`, `codes` (hexadecimal Windows-1252 glyph codes in drawing order), `expected` (Unicode, NFC, canonical form of the Open Kannada normalization profile), `source` (URL and page), `options`, `document`, `page`, `box` (PDF points), `fonts`, `found_by`. `documents.tsv` describes each document: group, year, URL, archive copy, SHA-256 and license.
 
@@ -61,6 +61,7 @@ Source documents come from Internet Archive and Common Crawl copies of Karnataka
 ## Known limits
 
 - The expected text is one of the converters' outputs. Where all are wrong in a way OCR cannot see, the error stays; the reader sample measures how often.
+- kannadi is a candidate on every line and the only one for Nudi B-Akshara, so its figures are an upper bound until the reader check. Use the normalized figures.
 - Shree-Lipi is rare in government PDFs, so its lines come from few documents.
 - Latin words in bilingual lines are not checked; digits and punctuation are checked loosely.
 - Lines cluster by document; score with intervals that resample documents.

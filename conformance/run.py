@@ -41,6 +41,8 @@ def load_cases(folder=HERE / "cases"):
     """The lines of each layout's TSV file. An optional 6th column lists reading options, such as
     kannada_digits; later columns are ignored."""
     cases = []
+    if not any((Path(folder) / f"{layout}.tsv").exists() for layout in LAYOUTS):
+        raise SystemExit(f"no <layout>.tsv file in {folder}")
     for layout in LAYOUTS:
         path = Path(folder) / f"{layout}.tsv"
         if not path.exists():
@@ -255,7 +257,7 @@ def markdown(rows, fonts_score, edges, failed, ops, verdict):
         lines.append("Detection: not tested.")
     lines.append(f"Edge cases: {len(edges) - len(failed)} of {len(edges)} exact.")
     lines.extend(f"- failed: {f}" for f in failed)
-    shown = {True: "yes", False: "no", None: "not assessed, since --layouts limits the run"}[verdict]
+    shown = {True: "yes", False: "no", None: "not assessed, since --layouts or --cases limits the run"}[verdict]
     lines.append(f"Conforming (section 8): {shown}.")
     return "\n".join(lines)
 

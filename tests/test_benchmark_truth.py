@@ -42,13 +42,45 @@ class Decide(unittest.TestCase):
         d = truth.decide({}, {"outputs": outs}, ocr("ಕುಟು೦ಬ"))
         self.assertEqual((d["tier"], d["expected"]), ("A", "ಕುಟುಂಬ"))
 
+    def test_a_tie_of_explained_candidates_is_never_confirmed(self):
+        # The page has the typed ದ್ದಿ; OCR reads ದ್ಧಿ everywhere, so both outputs explain the page.
+        outs = {"a": "ಅಭಿವೃದ್ದಿ", "b": "ಅಭಿವೃದ್ಧಿ"}
+        renders = {**rendered("ಅಭಿವೃದ್ದಿ", "ಅಭಿವೃದ್ಧಿ"), **rendered("ಅಭಿವೃದ್ಧಿ", "ಅಭಿವೃದ್ಧಿ")}
+        d = truth.decide({"layout": "nudi"}, {"outputs": outs}, ocr("ಅಭಿವೃದ್ಧಿ", renders))
+        self.assertNotEqual(d["tier"], "A")
+
+    def test_an_exact_reading_breaks_a_tie_into_likely(self):
+        page = {"kan_ft_ofl3": "ಅಬಕಡಎ", "kan": "ಅಗಕತಎ"}
+        renders = {
+            "ಅಬಕಡಎ": {"noto-sans": {"kan_ft_ofl3": "ಅಬಕಡಎ", "kan": "ಅಗಕತಎ"}},
+            "ಅಗಕಡಎ": {"noto-sans": {"kan_ft_ofl3": "ಅಬಕಡಎ", "kan": "ಅಗಕತಎ"}},
+        }
+        d = truth.decide({"layout": "nudi"}, {"outputs": {"a": "ಅಗಕಡಎ", "b": "ಅಬಕಡಎ"}}, {"crop": page, "renders": renders})
+        self.assertEqual((d["tier"], d["expected"]), ("B", "ಅಬಕಡಎ"))
+
+    def test_one_engine_reading_exactly_does_not_override_the_other(self):
+        page = {"kan_ft_ofl3": "ಕರಾವಳಿ ಪ್ರದೇಶ", "kan": "ಕರಾವಳಿ ಪದೇಶ"}
+        d = truth.decide({"layout": "nudi"}, {"outputs": {"a": "ಕರಾವಳಿ ಪದೇಶ"}}, {"crop": page, "renders": {}})
+        self.assertNotEqual(d["tier"], "A")
+
+    def test_a_single_candidate_is_confirmed_only_without_unexplained_edits(self):
+        d = truth.decide({"layout": "nudi-b"}, {"outputs": {"a": "ಸಮಾಜ ಕಲ್ಯಾಣ"}}, ocr("ಸಮಾಜ ಕಲ್ಯಾಣ"))
+        self.assertEqual(d["tier"], "A")
+        page = {"kan_ft_ofl3": "ಸಮಾಜ ಕಲ್ಯಾಣ", "kan": "ಸಮಾಜ ಕಲ್ಯಣ"}
+        d = truth.decide({"layout": "nudi-b"}, {"outputs": {"a": "ಸಮಾಜ ಕಲ್ಯಾಣ"}}, {"crop": page, "renders": {}})
+        self.assertEqual(d["tier"], "B")
+        d = truth.decide({"layout": "nudi-b"}, {"outputs": {"a": "ಸಮಾಜ ಕಲ್ಯಾಣ"}}, ocr("ಸಮಾಜ ಕಲ್ಯಣ"))
+        self.assertEqual(d["tier"], "C")
+
     def test_a_stray_glyph_counts_against_its_output(self):
         # OCR skips the unconverted ç; the output without it must still win.
         outs = {"a": "ಪ್ರಿಯ", "b": "ಪಿçಯ"}
         d = truth.decide({}, {"outputs": outs}, ocr("ಪಿಯ", {**rendered("ಪ್ರಿಯ", "ಪ್ರಿಯ"), **rendered("ಪಿçಯ", "ಪಿಯ")}))
         self.assertNotEqual(d["expected"], "ಪಿçಯ")
+        self.assertNotEqual(d["tier"], "A")
         self.assertEqual(truth.stray("ಪು£ರಾ"), 1)
         self.assertEqual(truth.stray("ರೂ.500 ‘ಕನ್ನಡ’"), 0)
+        self.assertEqual(truth.stray("ಕನ್ನಡ ನಾಡು Š", bilingual=False), 1)
 
     def test_a_kept_joiner_leaves_the_line_unresolved(self):
         outs = {"a": "ಪೂರ್ಯಾ", "b": "ಪೂರ‍್ಯಾ"}
@@ -61,6 +93,22 @@ class Decide(unittest.TestCase):
         self.assertEqual(d["expected"], "ಸಂಖ್ಯೆ ೧೨")
         d = truth.decide({"kannada_digits": False}, {"outputs": outs}, ocr("ಸಂಖ್ಯೆ ೧೨"))
         self.assertEqual(d["expected"], "ಸಂಖ್ಯೆ 12")
+
+    def test_latin_is_left_unconverted_outside_bilingual_layouts(self):
+        # In Nudi every ASCII code is a Kannada glyph, so a Latin word is a reading failure.
+        outs = {"a": "vi) ಸಮಾಜ", "b": "ತು) ಸಮಾಜ"}
+        d = truth.decide({"layout": "nudi"}, {"outputs": outs}, ocr("ತು) ಸಮಾಜ"))
+        self.assertEqual((d["tier"], d["expected"]), ("A", "ತು) ಸಮಾಜ"))
+        d = truth.decide({"layout": "nudi"}, {"outputs": {"a": "vi) ಸಮಾಜ"}}, ocr("ತು) ಸಮಾಜ"))
+        self.assertNotEqual(d["tier"], "A")
+        self.assertFalse(truth.ignorable("vi", "ತು", bilingual=False))
+        self.assertEqual(truth.stray("vi) ಸಮಾಜ", bilingual=False), 2)
+        self.assertEqual(truth.stray("vi) ಸಮಾಜ", bilingual=True), 0)
+        # In Nudi B-Akshara the Latin word is real, and the Kannada models cannot read it.
+        d = truth.decide({"layout": "nudi-b"}, {"outputs": {"a": "ಈಗ Papers ತೆಗೆದುಕೊಳ್ಳೋಣ"}}, ocr("ಈಗ ೩೮118 ತೆಗೆದುಕೊಳ್ಳೋಣ"))
+        self.assertEqual(d["tier"], "A")
+        d = truth.decide({"layout": "kan-eng"}, {"outputs": {"a": "ಕರ್ನಾಟಕ Act ಕಾಯ್ದೆ"}}, ocr("ಕರ್ನಾಟಕ ಆಕ್ಟ್ ಕಾಯ್ದೆ"))
+        self.assertEqual(d["tier"], "A")
 
     def test_latin_words_and_punctuation_are_not_compared(self):
         self.assertTrue(truth.ignorable("Papers", "೩೮118"))

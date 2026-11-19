@@ -2,13 +2,15 @@
 
 Usage:
   sample.py draw LINES_DIR OUT.tsv [--per-layout 80] [--seed 20261119]
-  sample.py bars LINES_DIR SAMPLE.tsv [ANSWERS.tsv]
+  sample.py bars SAMPLE.tsv [ANSWERS.tsv]
 
 Strata are layout x status. Each layout gets --per-layout lines: half from `confirmed`, a
 quarter each from `likely` and `unresolved`, moving any shortfall to the other statuses.
-`bars` prints, per stratum and per layout, the share of wrong expected texts the sample can
-rule out: with ANSWERS (id, verdict right|wrong) it uses the readers' verdicts; without, it
-assumes they find no error, which gives the best error bars the sample can reach.
+`bars` prints, per stratum, the share of wrong expected texts with a Wilson interval, and per
+layout a stratified estimate with an approximate, conservative upper bound (normal approximation,
+no finite-population correction, p(1-p) taken at its largest over each stratum's interval). With
+ANSWERS (id, verdict right|wrong) it counts answered lines only; without, it assumes readers find
+no error, which gives the best error bars the sample can reach.
 """
 import csv
 import math
@@ -68,33 +70,42 @@ def wilson(k, n):
     return max(0.0, c - h), min(1.0, c + h)
 
 
-def bars(rows, sample, answers):
-    sizes = Counter((r["layout"], r["status"]) for r in rows)
-    drawn = defaultdict(list)
+def bars(sample, answers=None):
+    """Error-rate table per stratum and an approximate, conservative upper bound per layout.
+
+    Stratum sizes come from the sample file, as drawn, so later status changes do not shift them.
+    With answers, only answered lines count; without, every sampled line counts as right.
+    """
+    strata = {}
     for r in sample:
-        drawn[(r["layout"], r["status"])].append(r["id"])
-    out = ["| Layout | Status | Lines | Sampled | Wrong | Error rate (95% CI) |", "|---|---|---|---|---|---|"]
-    per_layout = defaultdict(lambda: [0.0, 0.0, 0])
-    for (layout, status), n_h in sorted(sizes.items()):
-        ids = drawn.get((layout, status), [])
+        s = strata.setdefault((r["layout"], r["status"]), {"N": int(r["stratum_lines"]), "ids": []})
+        s["ids"].append(r["id"])
+    out = ["| Layout | Status | Lines | Sampled | Answered | Wrong | Error rate (95% CI) |", "|---|---|---|---|---|---|---|"]
+    per_layout = defaultdict(lambda: [0.0, 0.0, 0, 0])
+    for (layout, status), s in sorted(strata.items()):
+        ids = [i for i in s["ids"] if i in answers] if answers else s["ids"]
         n = len(ids)
-        wrong = sum(answers.get(i) == "wrong" for i in ids) if answers else 0
+        wrong = sum(answers[i] == "wrong" for i in ids) if answers else 0
         lo, hi = wilson(wrong, n)
-        out.append(f"| {layout} | {status} | {n_h} | {n} | {wrong if answers else '0 (assumed)'} | "
-                   f"{100 * wrong / n if n else 0:.1f}% ({100 * lo:.1f}% to {100 * hi:.1f}%) |")
-        if status in ("confirmed", "likely") and n:
-            p = wrong / n
-            # Stratified estimate over the scored statuses; the variance term uses the Wilson upper bound
-            # so a stratum with no observed error still widens the interval.
-            per_layout[layout][0] += n_h * p
-            per_layout[layout][1] += n_h * n_h * hi * (1 - hi) / n
-            per_layout[layout][2] += n_h
+        out.append(f"| {layout} | {status} | {s['N']} | {len(s['ids'])} | {n if answers else '0 (none yet)'} | "
+                   f"{wrong if answers else '0 (assumed)'} | {100 * wrong / n if n else 0:.1f}% ({100 * lo:.1f}% to {100 * hi:.1f}%) |")
+        if status in ("confirmed", "likely"):
+            agg = per_layout[layout]
+            agg[2] += s["N"]
+            if not n:
+                agg[3] += s["N"]
+                continue
+            # p(1-p) at its largest over the Wilson interval, so a stratum with no error seen still widens the bound.
+            spread = 0.25 if lo <= 0.5 <= hi else max(lo * (1 - lo), hi * (1 - hi))
+            agg[0] += s["N"] * wrong / n
+            agg[1] += s["N"] * s["N"] * spread / n
     out.append("")
-    out.append("| Layout | Scored lines (confirmed + likely) | Estimated wrong expected texts | 95% upper bound |")
+    out.append("| Layout | Scored lines (confirmed + likely) | Estimated wrong expected texts | Approximate 95% upper bound |")
     out.append("|---|---|---|---|")
-    for layout, (num, var, total) in sorted(per_layout.items()):
+    for layout, (num, var, total, unseen) in sorted(per_layout.items()):
         p = num / total
-        upper = min(1.0, p + Z * math.sqrt(var) / total)
+        # Lines in strata with no answered line are counted as wrong.
+        upper = min(1.0, p + Z * math.sqrt(var) / total + unseen / total)
         out.append(f"| {layout} | {total} | {100 * p:.1f}% | {100 * upper:.1f}% |")
     return "\n".join(out)
 
@@ -110,11 +121,11 @@ def main(argv):
                 f.write("\t".join(map(str, row)) + "\n")
         print(len(picked), "lines drawn", file=sys.stderr)
     elif argv[0] == "bars":
-        sample = list(csv.DictReader(open(argv[2], encoding="utf-8"), delimiter="\t"))
-        answers = {}
-        if len(argv) > 3:
-            answers = {r["id"]: r["verdict"] for r in csv.DictReader(open(argv[3], encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_NONE)}
-        print(bars(load(argv[1]), sample, answers))
+        sample = list(csv.DictReader(open(argv[1], encoding="utf-8"), delimiter="\t"))
+        answers = None
+        if len(argv) > 2:
+            answers = {r["id"]: r["verdict"] for r in csv.DictReader(open(argv[2], encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_NONE)}
+        print(bars(sample, answers))
     else:
         print(__doc__, file=sys.stderr)
         return 2
