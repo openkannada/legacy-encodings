@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """Runs the conformance cases against a converter and reports its accuracy.
 
-  run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts] -- COMMAND [ARGS...]
+  run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts]
+         [--layouts ID,ID] -- COMMAND [ARGS...]
 
 COMMAND speaks the line protocol in conformance/README.md on stdin and stdout.
 --out saves every response, so 2 converters can be compared with --compare.
 The exit code is 0 when the converter conforms (section 8 of the specification), else 1.
---no-detect and --no-fonts leave out the operations a converter does not offer.
+--no-detect and --no-fonts leave out the operations a converter does not offer, and
+--layouts limits the lines and edge cases to the layouts it reads.
+Text is compared exactly and also after both sides are put in the canonical form of the
+Kannada text normalization profile (reference/normalize.py).
 
   run.py --compare A.json B.json
 """
@@ -20,6 +24,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+sys.path.insert(0, str(ROOT / "reference"))
+
+from normalize import canonical  # noqa: E402
+
 LAYOUTS = ["nudi", "akruti", "shree-lipi", "nudi-b", "kan-eng"]
 SNIPPETS = [8, 16, 32]
 CHECKED = ("verified", "read", "written")
@@ -147,13 +155,16 @@ def summarize(cases, responses, fonts):
             sel = [c for c in cases if c["layout"] == layout and (statuses is None or c["status"] in statuses)]
             if not sel:
                 continue
-            exact = errors = chars = clean = detected = 0
+            exact = errors = chars = clean = detected = same = norm_errors = 0
             snip = {n: [0, 0] for n in SNIPPETS}
             for c in sel:
                 r = answer(responses, "read", c["id"])
                 text = r["text"] if isinstance(r["text"], str) else ""
                 exact += r["text"] == c["expected"]
                 errors += distance(text, c["expected"])
+                want = canonical(c["expected"])
+                same += canonical(text) == want
+                norm_errors += distance(canonical(text), want)
                 chars += len(c["expected"])
                 clean += r["unknown"] == [] and r["malformed"] == []
                 if ("detect", c["id"]) in responses:
@@ -168,6 +179,8 @@ def summarize(cases, responses, fonts):
                 "lines": len(sel),
                 "exact": exact,
                 "char_accuracy": max(0.0, 1 - errors / chars),
+                "exact_normalized": same,
+                "char_accuracy_normalized": max(0.0, 1 - norm_errors / chars),
                 "clean": clean,
                 "detected": detected,
                 "snippets": {n: tuple(v) for n, v in snip.items()},
@@ -200,8 +213,8 @@ def snippet(score):
 
 def markdown(rows, fonts_score, edges, failed, ops):
     lines = [
-        "| Layout | Lines | Exact | Character accuracy | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Layout | Lines | Exact | Exact, normalized | Character accuracy | Normalized | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     checked = {r["layout"]: r["lines"] for r in rows if r["group"] == "checked"}
     for r in rows:
@@ -210,8 +223,14 @@ def markdown(rows, fonts_score, edges, failed, ops):
         name = r["layout"] + (", all statuses" if r["group"] == "all" else "")
         s = r["snippets"]
         lines.append(
-            f"| {name} | {r['lines']} | {r['exact']} ({pct(r['exact'], r['lines'])}) | {100 * r['char_accuracy']:.2f}% "
-            f"| {r['clean']} | {pct(r['detected'], r['lines'])} | {snippet(s[8])} | {snippet(s[16])} | {snippet(s[32])} |"
+            f"| {name} | {r['lines']} | {r['exact']} ({pct(r['exact'], r['lines'])}) "
+            f"| {r['exact_normalized']} ({pct(r['exact_normalized'], r['lines'])}) | {100 * r['char_accuracy']:.2f}% "
+            f"| {100 * r['char_accuracy_normalized']:.2f}% "
+            + (
+                f"| {r['clean']} | {pct(r['detected'], r['lines'])} | {snippet(s[8])} | {snippet(s[16])} | {snippet(s[32])} |"
+                if "detect" in ops
+                else f"| {r['clean']} | not tested | | | |"
+            )
         )
     lines.append("")
     if "font" in ops:
@@ -251,6 +270,10 @@ def main(argv):
     cases = load_cases()
     edges = load_edge_cases()
     edges = [e for e in edges if e["request"]["op"] in ops]
+    if "--layouts" in opts:
+        keep = set(opts[opts.index("--layouts") + 1].split(","))
+        cases = [c for c in cases if c["layout"] in keep]
+        edges = [e for e in edges if e["request"].get("layout") in keep | {None}]
     responses = run(command, requests(cases, fonts, edges, ops), timeout)
     if out:
         saved = {f"{op} {rid}": {k: v for k, v in r.items() if k != "id"} for (op, rid), r in responses.items()}

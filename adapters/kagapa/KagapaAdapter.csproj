@@ -1,0 +1,14 @@
+<!-- SPDX-FileCopyrightText: 2026 The Open Kannada Authors -->
+<!-- SPDX-License-Identifier: MIT OR Apache-2.0 -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <!-- KagapaSdk: a checkout of https://github.com/kagapa-blr/KannadaAsciiUnicodeSDK (MIT). -->
+  <ItemGroup>
+    <ProjectReference Include="$(KagapaSdk)/Kannada.AsciiUnicode/Kannada.AsciiUnicode.csproj" />
+  </ItemGroup>
+</Project>

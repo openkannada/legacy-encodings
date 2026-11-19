@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 /out/
 adapters/kannadi/target/
+adapters/kagapa/bin/
+adapters/kagapa/obj/
