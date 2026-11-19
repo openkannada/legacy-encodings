@@ -15,6 +15,7 @@ Draft 0.1.0. The repository is private while the draft is reviewed. [PROPOSAL.md
 | [tools/tables.py](tools/tables.py) | Copies the tables from kannadi, builds the JSON and checks every table rule |
 | [conformance/](conformance/) | 782 test lines (642 from public documents, 140 written for the tests), 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
 | [reference/kle.py](reference/kle.py) | A reference reader in Python, written from the specification |
+| [benchmark/](benchmark/) | 5,098 lines from 275 Karnataka government PDFs, with expected texts chosen by OCR of each line as its own font draws it, a reader review page and a data card |
 | [adapters/kannadi](adapters/kannadi) | kannadi behind the conformance protocol |
 
 ## Using the tables

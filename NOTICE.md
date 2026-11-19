@@ -13,6 +13,8 @@ Copyright 2026 The Open Kannada Authors
 | `conformance/` runner, differential tester, edge cases, `cases/SOURCE.json` and `cases/shree-lipi.tsv` | MIT OR Apache-2.0 |
 | `conformance/cases/{nudi,akruti,nudi-b,kan-eng}.tsv` | Short excerpts of third-party documents, not covered by either license (see below) |
 | `adapters/` | MIT OR Apache-2.0 |
+| `benchmark/tools/`, `benchmark/documents.tsv`, `benchmark/plan.tsv`, `benchmark/review/sample.tsv` | MIT OR Apache-2.0 |
+| `benchmark/lines/*.tsv`, `benchmark/review/index.html` | Short excerpts of third-party documents, not covered by either license (see below) |
 
 Code examples in the prose documents may also be used under MIT OR Apache-2.0. [REUSE.toml](REUSE.toml) gives the license of every file. If you redistribute this work, keep this notice and the license files.
 
@@ -27,10 +29,11 @@ No code or table was copied from other converters. In particular, nothing from a
 | Material | Where | License | Credit |
 |---|---|---|---|
 | Short excerpts of Karnataka government web pages (2002), Karnataka Acts (2001 to 2003), budget papers (2002 to 2014) and Legislative Assembly member pages | `conformance/cases/{nudi,akruti,nudi-b,kan-eng}.tsv` | No license stated; not covered by this repository's licenses ([LICENSES/LicenseRef-Excerpts.txt](LICENSES/LicenseRef-Excerpts.txt)) | Government of Karnataka; each line records its source URL |
+| Short excerpts of 275 Karnataka government PDFs of 2001 to 2026 (Legislature, Gazette, Acts, budget papers, district portals, KPSC, KTBS), as glyph codes, and the review page's line images drawn from those codes | `benchmark/lines/*.tsv`, `benchmark/review/index.html` | No license stated; not covered by this repository's licenses ([LICENSES/LicenseRef-Excerpts.txt](LICENSES/LicenseRef-Excerpts.txt)) | Government of Karnataka; each line records its source URL, and `benchmark/documents.tsv` its archive copy |
 
 The Shree-Lipi lines in `conformance/cases/shree-lipi.tsv` were written for kannadi and encoded with its table. No newspaper text is included.
 
-Used, not included: the Rust crates in `adapters/kannadi/Cargo.lock`, fetched by Cargo under their own permissive licenses, and jsonschema, installed by the test command.
+Used, not included: the converters, OCR models and fonts the benchmark tools call (see `benchmark/README.md`); none of their code or data is stored here. Each expected text in `benchmark/lines` is the Kannada text of the line, chosen among the converters' outputs by OCR, and no file says which converter gave which text. The Rust crates in `adapters/kannadi/Cargo.lock`, fetched by Cargo under their own permissive licenses, and jsonschema, installed by the test command.
 
 ## Removal requests
 
