@@ -2,14 +2,15 @@
 """Runs the conformance cases against a converter and reports its accuracy.
 
   run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts]
-         [--layouts ID,ID] -- COMMAND [ARGS...]
+         [--layouts ID,ID] [--cases DIR] -- COMMAND [ARGS...]
 
 COMMAND speaks the line protocol in conformance/README.md on stdin and stdout.
 --out saves every response, so 2 converters can be compared with --compare.
 The exit code is 0 when the converter conforms (section 8 of the specification), else 1.
 --no-detect and --no-fonts leave out the operations a converter does not offer, and
 --layouts limits the lines and edge cases to the layouts it reads; such a run is not
-assessed for conformance and exits with 1.
+assessed for conformance and exits with 1. --cases reads the lines from another folder of
+<layout>.tsv files, such as benchmark/lines; such a run is not assessed either.
 Text is compared exactly and also after both sides are put in the canonical form of the
 Kannada text normalization profile (reference/normalize.py).
 
@@ -31,18 +32,26 @@ from normalize import canonical  # noqa: E402
 
 LAYOUTS = ["nudi", "akruti", "shree-lipi", "nudi-b", "kan-eng"]
 SNIPPETS = [8, 16, 32]
-CHECKED = ("verified", "read", "written")
+# Statuses whose expected text was checked; confirmed and likely are the benchmark's (benchmark/README.md).
+CHECKED = ("verified", "read", "written", "confirmed", "likely")
 KEYS = {"read": ("text", "unknown", "malformed"), "detect": ("layout",), "font": ("layout", "legacy", "kannada_digits")}
 
 
-def load_cases():
+def load_cases(folder=HERE / "cases"):
+    """The lines of each layout's TSV file. An optional 6th column lists reading options, such as
+    kannada_digits; later columns are ignored."""
     cases = []
     for layout in LAYOUTS:
-        text = (HERE / "cases" / f"{layout}.tsv").read_text(encoding="utf-8")
-        for line in text.splitlines():
-            if line.strip() and not line.startswith("#"):
-                cid, status, codes, expected, source = line.split("\t")
-                cases.append({"id": cid, "layout": layout, "status": status, "codes": codes, "expected": expected, "source": source})
+        path = Path(folder) / f"{layout}.tsv"
+        if not path.exists():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.strip() and not line.startswith("#") and not line.startswith("id\t"):
+                cols = line.split("\t")
+                cid, status, codes, expected, source = cols[:5]
+                options = cols[5].split(",") if len(cols) > 5 and cols[5] else []
+                cases.append({"id": cid, "layout": layout, "status": status, "codes": codes, "expected": expected,
+                              "source": source, "options": options})
     return cases
 
 
@@ -66,7 +75,10 @@ def requests(cases, fonts, edges, ops):
     for e in edges:
         yield e["request"]
     for c in cases:
-        yield {"id": c["id"], "op": "read", "layout": c["layout"], "codes": c["codes"]}
+        req = {"id": c["id"], "op": "read", "layout": c["layout"], "codes": c["codes"]}
+        if c["options"]:
+            req["options"] = {"zero_as_anusvara": True, "kannada_digits": "kannada_digits" in c["options"]}
+        yield req
         if "detect" in ops:
             yield {"id": c["id"], "op": "detect", "codes": c["codes"]}
             codes = c["codes"].split()
@@ -270,11 +282,11 @@ def main(argv):
     timeout = float(opts[opts.index("--timeout") + 1]) if "--timeout" in opts else 30
     ops = ("read",) + (() if "--no-detect" in opts else ("detect",)) + (() if "--no-fonts" in opts else ("font",))
     fonts = json.loads((ROOT / "tables" / "fonts.json").read_text(encoding="utf-8"))
-    cases = load_cases()
+    cases = load_cases(opts[opts.index("--cases") + 1]) if "--cases" in opts else load_cases()
     edges = load_edge_cases()
     edges = [e for e in edges if e["request"]["op"] in ops]
-    partial = "--layouts" in opts
-    if partial:
+    partial = "--layouts" in opts or "--cases" in opts
+    if "--layouts" in opts:
         keep = set(opts[opts.index("--layouts") + 1].split(","))
         unknown = keep - set(LAYOUTS)
         if unknown:

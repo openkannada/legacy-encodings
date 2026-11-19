@@ -21,6 +21,8 @@ path = [
   "conformance/cases/akruti.tsv",
   "conformance/cases/nudi-b.tsv",
   "conformance/cases/kan-eng.tsv",
+  "benchmark/lines/*.tsv",
+  "benchmark/review/index.html",
 ]
 SPDX-FileCopyrightText = "Government of Karnataka"
 SPDX-License-Identifier = "LicenseRef-Excerpts"

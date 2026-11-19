@@ -49,3 +49,7 @@ jobs:
       - run: uv run --no-project --python 3.12 python conformance/run.py --markdown --out kannadi.json -- adapters/kannadi/target/release/kle-kannadi-adapter
       - run: uv run --no-project --python 3.12 python conformance/run.py --compare ref.json kannadi.json
       - run: uv run --no-project --python 3.12 python conformance/differential.py --count 1000 --seed 1 -- python reference/adapter.py -- adapters/kannadi/target/release/kle-kannadi-adapter
+      # A --cases run is not assessed for conformance, so run.py exits 1; score.py fails if a line has no response.
+      - run: |
+          uv run --no-project --python 3.12 python conformance/run.py --cases benchmark/lines --no-detect --no-fonts --out bench.json -- adapters/kannadi/target/release/kle-kannadi-adapter > /dev/null || true
+          uv run --no-project --python 3.12 python benchmark/tools/score.py benchmark/lines bench.json

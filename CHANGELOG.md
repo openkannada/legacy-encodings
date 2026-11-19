@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `benchmark/`: 5,098 lines in the 5 layouts from 275 public Karnataka government PDFs of 2001 to 2026, from Internet Archive and Common Crawl copies and the district portals. Each line keeps its glyph codes, page, box and fonts; its expected text is the converter output that 2 OCR models, neither trained on legacy fonts, support when they read the line drawn with the PDF's own font. 4,358 lines are confirmed, 65 likely and 675 unresolved. A stratified sample of 400 lines and an offline review page wait for Kannada readers. The tools that made it are in `benchmark/tools`, with `score.py` for intervals that resample documents.
+- `run.py --cases DIR` runs another folder of line files, such as `benchmark/lines`, with an optional 6th column of reading options; `confirmed` and `likely` count as checked statuses.
+
 - The runner also compares text in the canonical form of kannadi's Kannada text normalization profile (`reference/normalize.py`, tested against the profile's vectors), and reports exact and normalized figures side by side. Section 8 says the normalized figure does not count towards conformance. `--layouts` limits a run to the layouts a converter reads.
 - Adapters for KaGaPa's KannadaAsciiUnicodeSDK (`adapters/kagapa`), Sanka (`adapters/sanka`) and Sanchaya's kannada-font-converter (`adapters/sanchaya`), all run locally from a checkout.
 - The Kuvempu Tantramsha fonts of Kannada University (sanchaya/kuvempu-fonts) are in the Nudi layout or have no Kannada, so they need no new layout (sources/README.md).
