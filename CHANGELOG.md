@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- The runner also compares text in the canonical form of kannadi's Kannada text normalization profile (`reference/normalize.py`, tested against the profile's vectors), and reports exact and normalized figures side by side. Section 8 says the normalized figure does not count towards conformance. `--layouts` limits a run to the layouts a converter reads.
+- Adapters for KaGaPa's KannadaAsciiUnicodeSDK (`adapters/kagapa`), Sanka (`adapters/sanka`) and Sanchaya's kannada-font-converter (`adapters/sanchaya`), all run locally from a checkout.
+- The Kuvempu Tantramsha fonts of Kannada University (sanchaya/kuvempu-fonts) are in the Nudi layout or have no Kannada, so they need no new layout (sources/README.md).
+- `--layouts` with an unknown id is an error, and a run limited by it is not assessed for conformance.
+- `sources/`: the Nudi table checked against Appendix A of the 2003 Unicode proposal L2/03-068 (76 of the 79 code points Unicode assigned as proposed agree; F3 nukta and F1 ೄ are missing from the table, and 73, which the proposal uses for the avagraha, is the mahaprana stroke) and against the characters the KGP keyboard types in jquery.ime (76 of 78 read; the same 2 gaps).
 - Unicode Kannada passes through a conversion unreported (section 3.2): the Kannada block, the dandas, ZWNJ and ZWJ, which no layout uses as glyph codes. Section 5.1 no longer gives ಕ as an unknown character, and a zero before a Unicode Kannada letter becomes ಂ (section 5.6). This matches kannadi from fded282. Input given as glyph codes is unaffected, so the conformance results do not change.
 - Licenses: tables, schema, tools, tests, the reference reader, the conformance runner and the adapters are under MIT OR Apache-2.0, and the prose under CC BY 4.0, with "The Open Kannada Authors" as copyright holder. `NOTICE.md` names the license of every directory, `REUSE.toml` that of every file, and `TRADEMARKS.md` says how the names may be used.
 - The Shree-Lipi conformance lines are 140 lines written for kannadi and encoded with its table, in place of 130 lines of Udayavani newspaper pages. A new status, `written`, marks them, and the headline figures count it with `verified` and `read`. Cases copied from kannadi e350d5d.

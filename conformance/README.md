@@ -54,10 +54,15 @@ A converter takes part through a small program that reads 1 JSON request per lin
 - The runner compares only the fields above; a response may carry others.
 - Input is always given as glyph codes. The rules for text given as a string, such as characters with no Windows-1252 code and Unicode Kannada passing through (sections 3.2, 5.1 and 5.6), are not tested yet, and the reference reader reads glyph codes only.
 
-2 programs speak the protocol here:
+5 programs speak the protocol here:
 
 - `reference/adapter.py`, the reference reader in Python (`reference/kle.py`), written from the specification;
-- `adapters/kannadi`, the kannadi library at the commit the tables come from.
+- `adapters/kannadi`, the kannadi library at the commit the tables come from;
+- `adapters/kagapa`, KaGaPa's KannadaAsciiUnicodeSDK (C#, MIT), built from a checkout of it (`adapters/kagapa/README.md`);
+- `adapters/sanka/adapter.mjs`, Sanka's converter (JavaScript, MIT), loaded from a build of it;
+- `adapters/sanchaya/adapter.mjs`, Sanchaya's kannada-font-converter (JavaScript, GPL-3.0), loaded from a checkout of it. It reads 15 font types; `SANCHAYA_FONTS` chooses which reads each layout.
+
+KaGaPa's SDK and Sanka read only Nudi and Baraha text and report no unknown glyphs or malformed syllables. Run them with `--layouts nudi --no-detect --no-fonts`, and Sanchaya's with the layouts it reads, on your own machine: no text is sent anywhere. None of the 3 reports unknown glyphs or malformed syllables.
 
 ## Running it
 
@@ -67,7 +72,7 @@ cargo build --release --manifest-path adapters/kannadi/Cargo.toml
 python3 conformance/run.py --markdown -- adapters/kannadi/target/release/kle-kannadi-adapter
 ```
 
-The exit code is 0 when the converter conforms (section 8 of the specification) and 1 otherwise. A converter that does not detect layouts or read font names is run with `--no-detect` or `--no-fonts`, which leave those operations out of the run and of the verdict. `--timeout SECONDS` (default 30) bounds the wait for each response. `--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
+The exit code is 0 when the converter conforms (section 8 of the specification) and 1 otherwise. A converter that does not detect layouts or read font names is run with `--no-detect` or `--no-fonts`, which leave those operations out of the run and of the verdict. `--layouts nudi,akruti` limits the lines and edge cases to the layouts a converter reads. `--timeout SECONDS` (default 30) bounds the wait for each response. `--out FILE` saves every response; `run.py --compare A B` lists the responses that differ between 2 saved runs. `differential.py` compares 2 converters on random code sequences built from each layout's entries:
 
 ```bash
 python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/adapter.py -- adapters/kannadi/target/release/kle-kannadi-adapter
@@ -76,6 +81,7 @@ python3 conformance/differential.py --count 2000 --seed 1 -- python3 reference/a
 ## Figures reported
 
 - **Exact**: lines whose text equals the expected text.
+- **Exact, normalized** and **Normalized** (character accuracy): the same, after both texts are put in the canonical form of the [Kannada text normalization profile](https://github.com/openkannada/kannadi/blob/main/NORMALIZATION.md), with `reference/normalize.py`. It passes the profile's canonical test vectors, copied in `normalization-vectors.json`. Joiners that change nothing, and other spellings that render the same, then do not count as errors.
 - **Character accuracy**: 1 minus the Levenshtein distance between output and expected text, summed over the lines, divided by the expected length, in code points.
 - **Clean**: lines with no unknown codes and no malformed ranges.
 - **Layout found**: lines whose detected layout is the right one, from the whole line and from its first 8, 16 and 32 codes. A snippet figure counts only the lines longer than the snippet, and says how many.

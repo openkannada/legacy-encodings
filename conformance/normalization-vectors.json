@@ -1,0 +1,752 @@
+[
+  {
+    "id": "c-nfc-ii",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಕೀ",
+    "expected": "ಕೀ",
+    "input_codepoints": ["U+0C95", "U+0CBF", "U+0CD5"],
+    "expected_codepoints": ["U+0C95", "U+0CC0"],
+    "note": "2-part vowel sign"
+  },
+  {
+    "id": "c-nfc-ee",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಕೇ",
+    "expected": "ಕೇ",
+    "input_codepoints": ["U+0C95", "U+0CC6", "U+0CD5"],
+    "expected_codepoints": ["U+0C95", "U+0CC7"],
+    "note": "2-part vowel sign"
+  },
+  {
+    "id": "c-nfc-o",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಕೊ",
+    "expected": "ಕೊ",
+    "input_codepoints": ["U+0C95", "U+0CC6", "U+0CC2"],
+    "expected_codepoints": ["U+0C95", "U+0CCA"],
+    "note": "2-part vowel sign"
+  },
+  {
+    "id": "c-nfc-oo",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಕೋ",
+    "expected": "ಕೋ",
+    "input_codepoints": ["U+0C95", "U+0CC6", "U+0CC2", "U+0CD5"],
+    "expected_codepoints": ["U+0C95", "U+0CCB"],
+    "note": "3-part vowel sign"
+  },
+  {
+    "id": "c-nfc-ai",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಕೈ",
+    "expected": "ಕೈ",
+    "input_codepoints": ["U+0C95", "U+0CC6", "U+0CD6"],
+    "expected_codepoints": ["U+0C95", "U+0CC8"],
+    "note": "2-part vowel sign"
+  },
+  {
+    "id": "c-nfc-nukta-virama",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "ಜ಼್",
+    "expected": "ಜ಼್",
+    "input_codepoints": ["U+0C9C", "U+0CCD", "U+0CBC"],
+    "expected_codepoints": ["U+0C9C", "U+0CBC", "U+0CCD"],
+    "note": "the nukta comes before the virama"
+  },
+  {
+    "id": "c-vowel-uu",
+    "form": "canonical",
+    "rules": ["C2"],
+    "input": "ಉಾರು",
+    "expected": "ಊರು",
+    "input_codepoints": ["U+0C89", "U+0CBE", "U+0CB0", "U+0CC1"],
+    "expected_codepoints": ["U+0C8A", "U+0CB0", "U+0CC1"],
+    "note": "Unicode Table 12-32"
+  },
+  {
+    "id": "c-vowel-au",
+    "form": "canonical",
+    "rules": ["C2"],
+    "input": "ಒೌ",
+    "expected": "ಔ",
+    "input_codepoints": ["U+0C92", "U+0CCC"],
+    "expected_codepoints": ["U+0C94"],
+    "note": "Unicode Table 12-32"
+  },
+  {
+    "id": "c-vowel-rr",
+    "form": "canonical",
+    "rules": ["C2"],
+    "input": "ಋಾ",
+    "expected": "ೠ",
+    "input_codepoints": ["U+0C8B", "U+0CBE"],
+    "expected_codepoints": ["U+0CE0"],
+    "note": "Unicode Table 12-32"
+  },
+  {
+    "id": "c-nukta-after-sign",
+    "form": "canonical",
+    "rules": ["C3"],
+    "input": "ಜೀ಼ರೋ",
+    "expected": "ಜ಼ೀರೋ",
+    "input_codepoints": ["U+0C9C", "U+0CC0", "U+0CBC", "U+0CB0", "U+0CCB"],
+    "expected_codepoints": ["U+0C9C", "U+0CBC", "U+0CC0", "U+0CB0", "U+0CCB"],
+    "note": "the nukta follows its consonant"
+  },
+  {
+    "id": "c-nukta-after-parts",
+    "form": "canonical",
+    "rules": ["C1", "C3"],
+    "input": "ಜೇ಼",
+    "expected": "ಜ಼ೇ",
+    "input_codepoints": ["U+0C9C", "U+0CC6", "U+0CD5", "U+0CBC"],
+    "expected_codepoints": ["U+0C9C", "U+0CBC", "U+0CC7"],
+    "note": "NFC first, then the nukta moves"
+  },
+  {
+    "id": "c-nukta-twice",
+    "form": "canonical",
+    "rules": ["C4"],
+    "input": "ಜ಼ೀ಼",
+    "expected": "ಜ಼ೀ",
+    "input_codepoints": ["U+0C9C", "U+0CBC", "U+0CC0", "U+0CBC"],
+    "expected_codepoints": ["U+0C9C", "U+0CBC", "U+0CC0"],
+    "note": "the second nukta repeats the first"
+  },
+  {
+    "id": "c-repeated-virama",
+    "form": "canonical",
+    "rules": ["C4"],
+    "input": "ಕ್್ಕ",
+    "expected": "ಕ್ಕ",
+    "input_codepoints": ["U+0C95", "U+0CCD", "U+0CCD", "U+0C95"],
+    "expected_codepoints": ["U+0C95", "U+0CCD", "U+0C95"],
+    "note": ""
+  },
+  {
+    "id": "c-repeated-aa",
+    "form": "canonical",
+    "rules": ["C4"],
+    "input": "ಅಥವಾಾ",
+    "expected": "ಅಥವಾ",
+    "input_codepoints": ["U+0C85", "U+0CA5", "U+0CB5", "U+0CBE", "U+0CBE"],
+    "expected_codepoints": ["U+0C85", "U+0CA5", "U+0CB5", "U+0CBE"],
+    "note": ""
+  },
+  {
+    "id": "c-repeated-anusvara",
+    "form": "canonical",
+    "rules": ["C4"],
+    "input": "ಕಂಂ",
+    "expected": "ಕಂ",
+    "input_codepoints": ["U+0C95", "U+0C82", "U+0C82"],
+    "expected_codepoints": ["U+0C95", "U+0C82"],
+    "note": ""
+  },
+  {
+    "id": "c-different-signs-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಕಕ",
+    "expected": "ಕಕ",
+    "input_codepoints": ["U+0C95", "U+0C95"],
+    "expected_codepoints": ["U+0C95", "U+0C95"],
+    "note": "2 letters, not marks"
+  },
+  {
+    "id": "c-zwnj-before-virama",
+    "form": "canonical",
+    "rules": ["C5"],
+    "input": "ಮ\u200c್ಯೂಸಿಯಂ",
+    "expected": "ಮ್ಯೂಸಿಯಂ",
+    "input_codepoints": ["U+0CAE", "U+200C", "U+0CCD", "U+0CAF", "U+0CC2", "U+0CB8", "U+0CBF", "U+0CAF", "U+0C82"],
+    "expected_codepoints": ["U+0CAE", "U+0CCD", "U+0CAF", "U+0CC2", "U+0CB8", "U+0CBF", "U+0CAF", "U+0C82"],
+    "note": "renders as the conjunct"
+  },
+  {
+    "id": "c-zwj-before-virama",
+    "form": "canonical",
+    "rules": ["C5"],
+    "input": "ಕೆಪ\u200d್ಲರ್",
+    "expected": "ಕೆಪ್ಲರ್",
+    "input_codepoints": ["U+0C95", "U+0CC6", "U+0CAA", "U+200D", "U+0CCD", "U+0CB2", "U+0CB0", "U+0CCD"],
+    "expected_codepoints": ["U+0C95", "U+0CC6", "U+0CAA", "U+0CCD", "U+0CB2", "U+0CB0", "U+0CCD"],
+    "note": "renders as the conjunct"
+  },
+  {
+    "id": "c-ra-zwnj-before-virama",
+    "form": "canonical",
+    "rules": ["C5"],
+    "input": "ರ\u200c್ಯಾಲಿ",
+    "expected": "ರ\u200d್ಯಾಲಿ",
+    "input_codepoints": ["U+0CB0", "U+200C", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+200D", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "note": "renders as ರ with a subscript, no arkavattu"
+  },
+  {
+    "id": "c-ra-zwj-virama-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ರ\u200d್ಯಾಲಿ",
+    "expected": "ರ\u200d್ಯಾಲಿ",
+    "input_codepoints": ["U+0CB0", "U+200D", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+200D", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "note": "Unicode's spelling of the non-arkavattu ರ"
+  },
+  {
+    "id": "c-ra-in-cluster",
+    "form": "canonical",
+    "rules": ["C5"],
+    "input": "ಕ್ರ\u200c್ಯ",
+    "expected": "ಕ್ರ್ಯ",
+    "input_codepoints": ["U+0C95", "U+0CCD", "U+0CB0", "U+200C", "U+0CCD", "U+0CAF"],
+    "expected_codepoints": ["U+0C95", "U+0CCD", "U+0CB0", "U+0CCD", "U+0CAF"],
+    "note": "a ರ inside a cluster forms no arkavattu"
+  },
+  {
+    "id": "c-non-reph",
+    "form": "canonical",
+    "rules": ["C6"],
+    "input": "ನೆದರ್\u200dಲ್ಯಾಂಡ್ಸ್",
+    "expected": "ನೆದರ\u200d್ಲ್ಯಾಂಡ್ಸ್",
+    "input_codepoints": ["U+0CA8", "U+0CC6", "U+0CA6", "U+0CB0", "U+0CCD", "U+200D", "U+0CB2", "U+0CCD", "U+0CAF", "U+0CBE", "U+0C82", "U+0CA1", "U+0CCD", "U+0CB8", "U+0CCD"],
+    "expected_codepoints": ["U+0CA8", "U+0CC6", "U+0CA6", "U+0CB0", "U+200D", "U+0CCD", "U+0CB2", "U+0CCD", "U+0CAF", "U+0CBE", "U+0C82", "U+0CA1", "U+0CCD", "U+0CB8", "U+0CCD"],
+    "note": "HarfBuzz renders both orders alike"
+  },
+  {
+    "id": "c-non-reph-month",
+    "form": "canonical",
+    "rules": ["C6"],
+    "input": "ಡಿಸೆಂಬರ್\u200dನ",
+    "expected": "ಡಿಸೆಂಬರ\u200d್ನ",
+    "input_codepoints": ["U+0CA1", "U+0CBF", "U+0CB8", "U+0CC6", "U+0C82", "U+0CAC", "U+0CB0", "U+0CCD", "U+200D", "U+0CA8"],
+    "expected_codepoints": ["U+0CA1", "U+0CBF", "U+0CB8", "U+0CC6", "U+0C82", "U+0CAC", "U+0CB0", "U+200D", "U+0CCD", "U+0CA8"],
+    "note": ""
+  },
+  {
+    "id": "c-ra-explicit-virama-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಡಿಸೆಂಬರ್\u200cನ",
+    "expected": "ಡಿಸೆಂಬರ್\u200cನ",
+    "input_codepoints": ["U+0CA1", "U+0CBF", "U+0CB8", "U+0CC6", "U+0C82", "U+0CAC", "U+0CB0", "U+0CCD", "U+200C", "U+0CA8"],
+    "expected_codepoints": ["U+0CA1", "U+0CBF", "U+0CB8", "U+0CC6", "U+0C82", "U+0CAC", "U+0CB0", "U+0CCD", "U+200C", "U+0CA8"],
+    "note": "visible virama on ರ"
+  },
+  {
+    "id": "c-explicit-zwj",
+    "form": "canonical",
+    "rules": ["C7"],
+    "input": "ರಾಜ್\u200dಕುಮಾರ್",
+    "expected": "ರಾಜ್\u200cಕುಮಾರ್",
+    "input_codepoints": ["U+0CB0", "U+0CBE", "U+0C9C", "U+0CCD", "U+200D", "U+0C95", "U+0CC1", "U+0CAE", "U+0CBE", "U+0CB0", "U+0CCD"],
+    "expected_codepoints": ["U+0CB0", "U+0CBE", "U+0C9C", "U+0CCD", "U+200C", "U+0C95", "U+0CC1", "U+0CAE", "U+0CBE", "U+0CB0", "U+0CCD"],
+    "note": "ZWJ after a virama renders as ZWNJ"
+  },
+  {
+    "id": "c-explicit-double",
+    "form": "canonical",
+    "rules": ["C7"],
+    "input": "ಡೇವಿಡ್\u200c\u200cಸನ್",
+    "expected": "ಡೇವಿಡ್\u200cಸನ್",
+    "input_codepoints": ["U+0CA1", "U+0CC7", "U+0CB5", "U+0CBF", "U+0CA1", "U+0CCD", "U+200C", "U+200C", "U+0CB8", "U+0CA8", "U+0CCD"],
+    "expected_codepoints": ["U+0CA1", "U+0CC7", "U+0CB5", "U+0CBF", "U+0CA1", "U+0CCD", "U+200C", "U+0CB8", "U+0CA8", "U+0CCD"],
+    "note": ""
+  },
+  {
+    "id": "c-explicit-mixed",
+    "form": "canonical",
+    "rules": ["C7"],
+    "input": "ನ್\u200d\u200cನ",
+    "expected": "ನ್\u200cನ",
+    "input_codepoints": ["U+0CA8", "U+0CCD", "U+200D", "U+200C", "U+0CA8"],
+    "expected_codepoints": ["U+0CA8", "U+0CCD", "U+200C", "U+0CA8"],
+    "note": ""
+  },
+  {
+    "id": "c-explicit-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಕನ್\u200cನಡ",
+    "expected": "ಕನ್\u200cನಡ",
+    "input_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+200C", "U+0CA8", "U+0CA1"],
+    "expected_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+200C", "U+0CA8", "U+0CA1"],
+    "note": ""
+  },
+  {
+    "id": "c-stray-word-end",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಆಫ್\u200c ಇಂಡಿಯಾ",
+    "expected": "ಆಫ್ ಇಂಡಿಯಾ",
+    "input_codepoints": ["U+0C86", "U+0CAB", "U+0CCD", "U+200C", "U+0020", "U+0C87", "U+0C82", "U+0CA1", "U+0CBF", "U+0CAF", "U+0CBE"],
+    "expected_codepoints": ["U+0C86", "U+0CAB", "U+0CCD", "U+0020", "U+0C87", "U+0C82", "U+0CA1", "U+0CBF", "U+0CAF", "U+0CBE"],
+    "note": "no consonant follows"
+  },
+  {
+    "id": "c-stray-zwj-end",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಆಫ್\u200d.",
+    "expected": "ಆಫ್.",
+    "input_codepoints": ["U+0C86", "U+0CAB", "U+0CCD", "U+200D", "U+002E"],
+    "expected_codepoints": ["U+0C86", "U+0CAB", "U+0CCD", "U+002E"],
+    "note": ""
+  },
+  {
+    "id": "c-stray-after-sign",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಪ್ರಶಸ್ತಿ\u200c",
+    "expected": "ಪ್ರಶಸ್ತಿ",
+    "input_codepoints": ["U+0CAA", "U+0CCD", "U+0CB0", "U+0CB6", "U+0CB8", "U+0CCD", "U+0CA4", "U+0CBF", "U+200C"],
+    "expected_codepoints": ["U+0CAA", "U+0CCD", "U+0CB0", "U+0CB6", "U+0CB8", "U+0CCD", "U+0CA4", "U+0CBF"],
+    "note": ""
+  },
+  {
+    "id": "c-stray-between-vowels",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಸಿ\u200cಇಒ",
+    "expected": "ಸಿಇಒ",
+    "input_codepoints": ["U+0CB8", "U+0CBF", "U+200C", "U+0C87", "U+0C92"],
+    "expected_codepoints": ["U+0CB8", "U+0CBF", "U+0C87", "U+0C92"],
+    "note": ""
+  },
+  {
+    "id": "c-stray-between-consonants",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಜವಾಹರ\u200cಲಾಲ್",
+    "expected": "ಜವಾಹರಲಾಲ್",
+    "input_codepoints": ["U+0C9C", "U+0CB5", "U+0CBE", "U+0CB9", "U+0CB0", "U+200C", "U+0CB2", "U+0CBE", "U+0CB2", "U+0CCD"],
+    "expected_codepoints": ["U+0C9C", "U+0CB5", "U+0CBE", "U+0CB9", "U+0CB0", "U+0CB2", "U+0CBE", "U+0CB2", "U+0CCD"],
+    "note": "no virama, so nothing to join"
+  },
+  {
+    "id": "c-stray-word-start",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": " \u200cಕನ್ನಡ",
+    "expected": " ಕನ್ನಡ",
+    "input_codepoints": ["U+0020", "U+200C", "U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "expected_codepoints": ["U+0020", "U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "note": ""
+  },
+  {
+    "id": "c-stray-before-vowel",
+    "form": "canonical",
+    "rules": ["C8"],
+    "input": "ಕ್\u200cಅ",
+    "expected": "ಕ್ಅ",
+    "input_codepoints": ["U+0C95", "U+0CCD", "U+200C", "U+0C85"],
+    "expected_codepoints": ["U+0C95", "U+0CCD", "U+0C85"],
+    "note": "a vowel letter cannot join"
+  },
+  {
+    "id": "c-stray-then-nfc",
+    "form": "canonical",
+    "rules": ["C1", "C8"],
+    "input": "ಕಿ\u200cೕ",
+    "expected": "ಕೀ",
+    "input_codepoints": ["U+0C95", "U+0CBF", "U+200C", "U+0CD5"],
+    "expected_codepoints": ["U+0C95", "U+0CC0"],
+    "note": "removing the joiner lets NFC compose"
+  },
+  {
+    "id": "c-kept-before-sign",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಮ\u200cೂಲಕ",
+    "expected": "ಮ\u200cೂಲಕ",
+    "input_codepoints": ["U+0CAE", "U+200C", "U+0CC2", "U+0CB2", "U+0C95"],
+    "expected_codepoints": ["U+0CAE", "U+200C", "U+0CC2", "U+0CB2", "U+0C95"],
+    "note": "some fonts draw a different shape"
+  },
+  {
+    "id": "c-old-letters-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಅಱಿವು ಬಾೞ್ ಅವೝ",
+    "expected": "ಅಱಿವು ಬಾೞ್ ಅವೝ",
+    "input_codepoints": ["U+0C85", "U+0CB1", "U+0CBF", "U+0CB5", "U+0CC1", "U+0020", "U+0CAC", "U+0CBE", "U+0CDE", "U+0CCD", "U+0020", "U+0C85", "U+0CB5", "U+0CDD"],
+    "expected_codepoints": ["U+0C85", "U+0CB1", "U+0CBF", "U+0CB5", "U+0CC1", "U+0020", "U+0CAC", "U+0CBE", "U+0CDE", "U+0CCD", "U+0020", "U+0C85", "U+0CB5", "U+0CDD"],
+    "note": "distinct letters"
+  },
+  {
+    "id": "c-archaic-shrii-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "೜ ಕನ್ನಡ",
+    "expected": "೜ ಕನ್ನಡ",
+    "input_codepoints": ["U+0CDC", "U+0020", "U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "expected_codepoints": ["U+0CDC", "U+0020", "U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "note": "U+0CDC, Unicode 17.0"
+  },
+  {
+    "id": "c-persian-joiner-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "می\u200cخواهم",
+    "expected": "می\u200cخواهم",
+    "input_codepoints": ["U+0645", "U+06CC", "U+200C", "U+062E", "U+0648", "U+0627", "U+0647", "U+0645"],
+    "expected_codepoints": ["U+0645", "U+06CC", "U+200C", "U+062E", "U+0648", "U+0627", "U+0647", "U+0645"],
+    "note": "not Kannada"
+  },
+  {
+    "id": "c-latin-joiner-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "a\u200cb",
+    "expected": "a\u200cb",
+    "input_codepoints": ["U+0061", "U+200C", "U+0062"],
+    "expected_codepoints": ["U+0061", "U+200C", "U+0062"],
+    "note": "not Kannada"
+  },
+  {
+    "id": "c-zero-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "ಬೆ೦ಗಳೂರು",
+    "expected": "ಬೆ೦ಗಳೂರು",
+    "input_codepoints": ["U+0CAC", "U+0CC6", "U+0CE6", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "expected_codepoints": ["U+0CAC", "U+0CC6", "U+0CE6", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "note": "a legacy rule"
+  },
+  {
+    "id": "c-nfc-exclusion",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "क़",
+    "expected": "क़",
+    "input_codepoints": ["U+0958"],
+    "expected_codepoints": ["U+0915", "U+093C"],
+    "note": "Devanagari QA: NFC decomposes it"
+  },
+  {
+    "id": "c-other-script-marks-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "क॑॑",
+    "expected": "क॑॑",
+    "input_codepoints": ["U+0915", "U+0951", "U+0951"],
+    "expected_codepoints": ["U+0915", "U+0951", "U+0951"],
+    "note": "not Kannada"
+  },
+  {
+    "id": "l-zero-inside",
+    "form": "legacy",
+    "rules": ["L1"],
+    "input": "ಬೆ೦ಗಳೂರು",
+    "expected": "ಬೆಂಗಳೂರು",
+    "input_codepoints": ["U+0CAC", "U+0CC6", "U+0CE6", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "expected_codepoints": ["U+0CAC", "U+0CC6", "U+0C82", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "note": ""
+  },
+  {
+    "id": "l-zero-word-end",
+    "form": "legacy",
+    "rules": ["L1"],
+    "input": "ಸ್ವಯ೦ ಸೇವಕ",
+    "expected": "ಸ್ವಯಂ ಸೇವಕ",
+    "input_codepoints": ["U+0CB8", "U+0CCD", "U+0CB5", "U+0CAF", "U+0CE6", "U+0020", "U+0CB8", "U+0CC7", "U+0CB5", "U+0C95"],
+    "expected_codepoints": ["U+0CB8", "U+0CCD", "U+0CB5", "U+0CAF", "U+0C82", "U+0020", "U+0CB8", "U+0CC7", "U+0CB5", "U+0C95"],
+    "note": ""
+  },
+  {
+    "id": "l-zero-before-digit",
+    "form": "legacy",
+    "rules": [],
+    "input": "ಕೊಠಡಿ೦೧",
+    "expected": "ಕೊಠಡಿ೦೧",
+    "input_codepoints": ["U+0C95", "U+0CCA", "U+0CA0", "U+0CA1", "U+0CBF", "U+0CE6", "U+0CE7"],
+    "expected_codepoints": ["U+0C95", "U+0CCA", "U+0CA0", "U+0CA1", "U+0CBF", "U+0CE6", "U+0CE7"],
+    "note": "a number after a word"
+  },
+  {
+    "id": "l-zero-number",
+    "form": "legacy",
+    "rules": [],
+    "input": "೧೦೦",
+    "expected": "೧೦೦",
+    "input_codepoints": ["U+0CE7", "U+0CE6", "U+0CE6"],
+    "expected_codepoints": ["U+0CE7", "U+0CE6", "U+0CE6"],
+    "note": ""
+  },
+  {
+    "id": "l-zero-alone",
+    "form": "legacy",
+    "rules": [],
+    "input": "ಕ ೦",
+    "expected": "ಕ ೦",
+    "input_codepoints": ["U+0C95", "U+0020", "U+0CE6"],
+    "expected_codepoints": ["U+0C95", "U+0020", "U+0CE6"],
+    "note": ""
+  },
+  {
+    "id": "l-latin-o",
+    "form": "legacy",
+    "rules": ["L2"],
+    "input": "ಹೊoದಿದೆ",
+    "expected": "ಹೊಂದಿದೆ",
+    "input_codepoints": ["U+0CB9", "U+0CCA", "U+006F", "U+0CA6", "U+0CBF", "U+0CA6", "U+0CC6"],
+    "expected_codepoints": ["U+0CB9", "U+0CCA", "U+0C82", "U+0CA6", "U+0CBF", "U+0CA6", "U+0CC6"],
+    "note": ""
+  },
+  {
+    "id": "l-latin-zero",
+    "form": "legacy",
+    "rules": ["L2"],
+    "input": "ಡಿ0ಟಿ",
+    "expected": "ಡಿಂಟಿ",
+    "input_codepoints": ["U+0CA1", "U+0CBF", "U+0030", "U+0C9F", "U+0CBF"],
+    "expected_codepoints": ["U+0CA1", "U+0CBF", "U+0C82", "U+0C9F", "U+0CBF"],
+    "note": ""
+  },
+  {
+    "id": "l-latin-o-word-end",
+    "form": "legacy",
+    "rules": [],
+    "input": "ಮಾo",
+    "expected": "ಮಾo",
+    "input_codepoints": ["U+0CAE", "U+0CBE", "U+006F"],
+    "expected_codepoints": ["U+0CAE", "U+0CBE", "U+006F"],
+    "note": "no Kannada letter follows"
+  },
+  {
+    "id": "l-reph-i",
+    "form": "legacy",
+    "rules": ["L3"],
+    "input": "ಆಥರ್ಿಕ",
+    "expected": "ಆರ್ಥಿಕ",
+    "input_codepoints": ["U+0C86", "U+0CA5", "U+0CB0", "U+0CCD", "U+0CBF", "U+0C95"],
+    "expected_codepoints": ["U+0C86", "U+0CB0", "U+0CCD", "U+0CA5", "U+0CBF", "U+0C95"],
+    "note": ""
+  },
+  {
+    "id": "l-reph-aa",
+    "form": "legacy",
+    "rules": ["L3"],
+    "input": "ಸಕರ್ಾರ",
+    "expected": "ಸರ್ಕಾರ",
+    "input_codepoints": ["U+0CB8", "U+0C95", "U+0CB0", "U+0CCD", "U+0CBE", "U+0CB0"],
+    "expected_codepoints": ["U+0CB8", "U+0CB0", "U+0CCD", "U+0C95", "U+0CBE", "U+0CB0"],
+    "note": ""
+  },
+  {
+    "id": "l-reph-cluster",
+    "form": "legacy",
+    "rules": ["L3"],
+    "input": "ಕ್ಷರ್ಿ",
+    "expected": "ರ್ಕ್ಷಿ",
+    "input_codepoints": ["U+0C95", "U+0CCD", "U+0CB7", "U+0CB0", "U+0CCD", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+0CCD", "U+0C95", "U+0CCD", "U+0CB7", "U+0CBF"],
+    "note": "the arkavattu goes before the whole cluster"
+  },
+  {
+    "id": "l-reph-no-consonant",
+    "form": "legacy",
+    "rules": [],
+    "input": "ರ್ಿ",
+    "expected": "ರ್ಿ",
+    "input_codepoints": ["U+0CB0", "U+0CCD", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+0CCD", "U+0CBF"],
+    "note": "nothing to move over"
+  },
+  {
+    "id": "l-reph-correct",
+    "form": "legacy",
+    "rules": [],
+    "input": "ಸರ್ಕಾರ",
+    "expected": "ಸರ್ಕಾರ",
+    "input_codepoints": ["U+0CB8", "U+0CB0", "U+0CCD", "U+0C95", "U+0CBE", "U+0CB0"],
+    "expected_codepoints": ["U+0CB8", "U+0CB0", "U+0CCD", "U+0C95", "U+0CBE", "U+0CB0"],
+    "note": ""
+  },
+  {
+    "id": "l-includes-canonical",
+    "form": "legacy",
+    "rules": ["C8", "L1"],
+    "input": "ಬೆ೦ಗಳೂರು\u200c",
+    "expected": "ಬೆಂಗಳೂರು",
+    "input_codepoints": ["U+0CAC", "U+0CC6", "U+0CE6", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1", "U+200C"],
+    "expected_codepoints": ["U+0CAC", "U+0CC6", "U+0C82", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "note": ""
+  },
+  {
+    "id": "l-old-letters-kept",
+    "form": "legacy",
+    "rules": [],
+    "input": "ಅಱಿವು",
+    "expected": "ಅಱಿವು",
+    "input_codepoints": ["U+0C85", "U+0CB1", "U+0CBF", "U+0CB5", "U+0CC1"],
+    "expected_codepoints": ["U+0C85", "U+0CB1", "U+0CBF", "U+0CB5", "U+0CC1"],
+    "note": ""
+  },
+  {
+    "id": "l-reph-nukta-cluster",
+    "form": "legacy",
+    "rules": ["L3"],
+    "input": "ಜ಼್ಕರ್ಿ",
+    "expected": "ರ್ಜ಼್ಕಿ",
+    "input_codepoints": ["U+0C9C", "U+0CBC", "U+0CCD", "U+0C95", "U+0CB0", "U+0CCD", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+0CCD", "U+0C9C", "U+0CBC", "U+0CCD", "U+0C95", "U+0CBF"],
+    "note": "a nukta inside the cluster"
+  },
+  {
+    "id": "s-llla",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "ಬಾೞ್",
+    "expected": "ಬಾಳ್",
+    "input_codepoints": ["U+0CAC", "U+0CBE", "U+0CDE", "U+0CCD"],
+    "expected_codepoints": ["U+0CAC", "U+0CBE", "U+0CB3", "U+0CCD"],
+    "note": ""
+  },
+  {
+    "id": "s-rra",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "ಅಱಿವು",
+    "expected": "ಅರಿವು",
+    "input_codepoints": ["U+0C85", "U+0CB1", "U+0CBF", "U+0CB5", "U+0CC1"],
+    "expected_codepoints": ["U+0C85", "U+0CB0", "U+0CBF", "U+0CB5", "U+0CC1"],
+    "note": ""
+  },
+  {
+    "id": "s-nakaara-pollu",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "ಅವೝ",
+    "expected": "ಅವನ್",
+    "input_codepoints": ["U+0C85", "U+0CB5", "U+0CDD"],
+    "expected_codepoints": ["U+0C85", "U+0CB5", "U+0CA8", "U+0CCD"],
+    "note": ""
+  },
+  {
+    "id": "s-nakaara-pollu-before-consonant",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "ಅವೝಕಂಡ",
+    "expected": "ಅವನ್ಕಂಡ",
+    "input_codepoints": ["U+0C85", "U+0CB5", "U+0CDD", "U+0C95", "U+0C82", "U+0CA1"],
+    "expected_codepoints": ["U+0C85", "U+0CB5", "U+0CA8", "U+0CCD", "U+0C95", "U+0C82", "U+0CA1"],
+    "note": "the joiner modernize() adds is folded too"
+  },
+  {
+    "id": "s-anusvara-above-right",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "ಕೳ",
+    "expected": "ಕಂ",
+    "input_codepoints": ["U+0C95", "U+0CF3"],
+    "expected_codepoints": ["U+0C95", "U+0C82"],
+    "note": ""
+  },
+  {
+    "id": "s-archaic-shrii",
+    "form": "search",
+    "rules": ["S1"],
+    "input": "೜",
+    "expected": "ಶ್ರೀ",
+    "input_codepoints": ["U+0CDC"],
+    "expected_codepoints": ["U+0CB6", "U+0CCD", "U+0CB0", "U+0CC0"],
+    "note": ""
+  },
+  {
+    "id": "s-explicit-virama",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "ಕನ್\u200cನಡ",
+    "expected": "ಕನ್ನಡ",
+    "input_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+200C", "U+0CA8", "U+0CA1"],
+    "expected_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "note": ""
+  },
+  {
+    "id": "s-non-reph",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "ರ\u200d್ಯಾಲಿ",
+    "expected": "ರ್ಯಾಲಿ",
+    "input_codepoints": ["U+0CB0", "U+200D", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+0CCD", "U+0CAF", "U+0CBE", "U+0CB2", "U+0CBF"],
+    "note": ""
+  },
+  {
+    "id": "s-before-sign",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "ಮ\u200cೂಲಕ",
+    "expected": "ಮೂಲಕ",
+    "input_codepoints": ["U+0CAE", "U+200C", "U+0CC2", "U+0CB2", "U+0C95"],
+    "expected_codepoints": ["U+0CAE", "U+0CC2", "U+0CB2", "U+0C95"],
+    "note": ""
+  },
+  {
+    "id": "s-zwsp",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "ಕಾಂಗ್ರೆಸ್\u200bನಿಂದ",
+    "expected": "ಕಾಂಗ್ರೆಸ್ನಿಂದ",
+    "input_codepoints": ["U+0C95", "U+0CBE", "U+0C82", "U+0C97", "U+0CCD", "U+0CB0", "U+0CC6", "U+0CB8", "U+0CCD", "U+200B", "U+0CA8", "U+0CBF", "U+0C82", "U+0CA6"],
+    "expected_codepoints": ["U+0C95", "U+0CBE", "U+0C82", "U+0C97", "U+0CCD", "U+0CB0", "U+0CC6", "U+0CB8", "U+0CCD", "U+0CA8", "U+0CBF", "U+0C82", "U+0CA6"],
+    "note": ""
+  },
+  {
+    "id": "s-shy",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "ಕನ್ನ\u00adಡ",
+    "expected": "ಕನ್ನಡ",
+    "input_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+00AD", "U+0CA1"],
+    "expected_codepoints": ["U+0C95", "U+0CA8", "U+0CCD", "U+0CA8", "U+0CA1"],
+    "note": ""
+  },
+  {
+    "id": "s-shy-latin-kept",
+    "form": "search",
+    "rules": [],
+    "input": "co\u00adoperate",
+    "expected": "co\u00adoperate",
+    "input_codepoints": ["U+0063", "U+006F", "U+00AD", "U+006F", "U+0070", "U+0065", "U+0072", "U+0061", "U+0074", "U+0065"],
+    "expected_codepoints": ["U+0063", "U+006F", "U+00AD", "U+006F", "U+0070", "U+0065", "U+0072", "U+0061", "U+0074", "U+0065"],
+    "note": "not Kannada"
+  },
+  {
+    "id": "s-invisible-run",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "\u200b\u200bಕ",
+    "expected": "ಕ",
+    "input_codepoints": ["U+200B", "U+200B", "U+0C95"],
+    "expected_codepoints": ["U+0C95"],
+    "note": "the whole run next to Kannada goes"
+  },
+  {
+    "id": "s-nukta",
+    "form": "search",
+    "rules": ["S3"],
+    "input": "ಜ಼ೀರೋ",
+    "expected": "ಜೀರೋ",
+    "input_codepoints": ["U+0C9C", "U+0CBC", "U+0CC0", "U+0CB0", "U+0CCB"],
+    "expected_codepoints": ["U+0C9C", "U+0CC0", "U+0CB0", "U+0CCB"],
+    "note": ""
+  },
+  {
+    "id": "s-includes-legacy",
+    "form": "search",
+    "rules": ["L1"],
+    "input": "ಬೆ೦ಗಳೂರು",
+    "expected": "ಬೆಂಗಳೂರು",
+    "input_codepoints": ["U+0CAC", "U+0CC6", "U+0CE6", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "expected_codepoints": ["U+0CAC", "U+0CC6", "U+0C82", "U+0C97", "U+0CB3", "U+0CC2", "U+0CB0", "U+0CC1"],
+    "note": ""
+  }
+]

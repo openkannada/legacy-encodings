@@ -294,6 +294,8 @@ A **conforming reader**:
 3. gives the expected answer for every font-name example in `tables/fonts.json`, if it reads font names;
 4. finds the right layout for every whole line of `conformance/cases/` whose status is verified, read or written, if it detects layouts from text.
 
+Conformance compares text exactly. The runner also reports how many lines agree after the output and the expected text are both put in the canonical form of the Kannada text normalization profile (`NORMALIZATION.md` in kannadi), which removes joiners that change nothing, settles the joiners that do, and joins split vowel signs. That figure shows how close a converter is to correct text a reader would see as the same. It does not count towards conformance.
+
 A converter that does not conform SHOULD still publish its figures from `conformance/run.py`, with the version of this specification and the kannadi commit in `conformance/cases/SOURCE.json` it was measured against. The cases, the protocol a converter speaks to the runner, and the figures reported are described in `conformance/README.md`.
 
 ## 9. Writing legacy text

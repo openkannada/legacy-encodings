@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Runs the conformance cases against a converter and reports its accuracy.
 
-  run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts] -- COMMAND [ARGS...]
+  run.py [--out FILE] [--markdown] [--timeout SECONDS] [--no-detect] [--no-fonts]
+         [--layouts ID,ID] -- COMMAND [ARGS...]
 
 COMMAND speaks the line protocol in conformance/README.md on stdin and stdout.
 --out saves every response, so 2 converters can be compared with --compare.
 The exit code is 0 when the converter conforms (section 8 of the specification), else 1.
---no-detect and --no-fonts leave out the operations a converter does not offer.
+--no-detect and --no-fonts leave out the operations a converter does not offer, and
+--layouts limits the lines and edge cases to the layouts it reads; such a run is not
+assessed for conformance and exits with 1.
+Text is compared exactly and also after both sides are put in the canonical form of the
+Kannada text normalization profile (reference/normalize.py).
 
   run.py --compare A.json B.json
 """
@@ -20,6 +25,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+sys.path.insert(0, str(ROOT / "reference"))
+
+from normalize import canonical  # noqa: E402
+
 LAYOUTS = ["nudi", "akruti", "shree-lipi", "nudi-b", "kan-eng"]
 SNIPPETS = [8, 16, 32]
 CHECKED = ("verified", "read", "written")
@@ -147,13 +156,17 @@ def summarize(cases, responses, fonts):
             sel = [c for c in cases if c["layout"] == layout and (statuses is None or c["status"] in statuses)]
             if not sel:
                 continue
-            exact = errors = chars = clean = detected = 0
+            exact = errors = chars = clean = detected = same = norm_errors = norm_chars = 0
             snip = {n: [0, 0] for n in SNIPPETS}
             for c in sel:
                 r = answer(responses, "read", c["id"])
                 text = r["text"] if isinstance(r["text"], str) else ""
                 exact += r["text"] == c["expected"]
                 errors += distance(text, c["expected"])
+                want = canonical(c["expected"])
+                same += canonical(text) == want
+                norm_errors += distance(canonical(text), want)
+                norm_chars += len(want)
                 chars += len(c["expected"])
                 clean += r["unknown"] == [] and r["malformed"] == []
                 if ("detect", c["id"]) in responses:
@@ -168,6 +181,8 @@ def summarize(cases, responses, fonts):
                 "lines": len(sel),
                 "exact": exact,
                 "char_accuracy": max(0.0, 1 - errors / chars),
+                "exact_normalized": same,
+                "char_accuracy_normalized": max(0.0, 1 - norm_errors / norm_chars),
                 "clean": clean,
                 "detected": detected,
                 "snippets": {n: tuple(v) for n, v in snip.items()},
@@ -198,10 +213,10 @@ def snippet(score):
     return f"{pct(*score)} of {score[1]}"
 
 
-def markdown(rows, fonts_score, edges, failed, ops):
+def markdown(rows, fonts_score, edges, failed, ops, verdict):
     lines = [
-        "| Layout | Lines | Exact | Character accuracy | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Layout | Lines | Exact | Exact, normalized | Character accuracy | Normalized | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |",
+        "|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     checked = {r["layout"]: r["lines"] for r in rows if r["group"] == "checked"}
     for r in rows:
@@ -210,8 +225,14 @@ def markdown(rows, fonts_score, edges, failed, ops):
         name = r["layout"] + (", all statuses" if r["group"] == "all" else "")
         s = r["snippets"]
         lines.append(
-            f"| {name} | {r['lines']} | {r['exact']} ({pct(r['exact'], r['lines'])}) | {100 * r['char_accuracy']:.2f}% "
-            f"| {r['clean']} | {pct(r['detected'], r['lines'])} | {snippet(s[8])} | {snippet(s[16])} | {snippet(s[32])} |"
+            f"| {name} | {r['lines']} | {r['exact']} ({pct(r['exact'], r['lines'])}) "
+            f"| {r['exact_normalized']} ({pct(r['exact_normalized'], r['lines'])}) | {100 * r['char_accuracy']:.2f}% "
+            f"| {100 * r['char_accuracy_normalized']:.2f}% "
+            + (
+                f"| {r['clean']} | {pct(r['detected'], r['lines'])} | {snippet(s[8])} | {snippet(s[16])} | {snippet(s[32])} |"
+                if "detect" in ops
+                else f"| {r['clean']} | not tested | | | |"
+            )
         )
     lines.append("")
     if "font" in ops:
@@ -222,7 +243,8 @@ def markdown(rows, fonts_score, edges, failed, ops):
         lines.append("Detection: not tested.")
     lines.append(f"Edge cases: {len(edges) - len(failed)} of {len(edges)} exact.")
     lines.extend(f"- failed: {f}" for f in failed)
-    lines.append(f"Conforming (section 8): {'yes' if conforming(rows, fonts_score, edges, failed, ops) else 'no'}.")
+    shown = {True: "yes", False: "no", None: "not assessed, since --layouts limits the run"}[verdict]
+    lines.append(f"Conforming (section 8): {shown}.")
     return "\n".join(lines)
 
 
@@ -251,17 +273,28 @@ def main(argv):
     cases = load_cases()
     edges = load_edge_cases()
     edges = [e for e in edges if e["request"]["op"] in ops]
+    partial = "--layouts" in opts
+    if partial:
+        keep = set(opts[opts.index("--layouts") + 1].split(","))
+        unknown = keep - set(LAYOUTS)
+        if unknown:
+            print(f"unknown layout {', '.join(sorted(unknown))}; use {', '.join(LAYOUTS)}", file=sys.stderr)
+            return 2
+        cases = [c for c in cases if c["layout"] in keep]
+        edges = [e for e in edges if e["request"].get("layout") in keep | {None}]
     responses = run(command, requests(cases, fonts, edges, ops), timeout)
     if out:
         saved = {f"{op} {rid}": {k: v for k, v in r.items() if k != "id"} for (op, rid), r in responses.items()}
         Path(out).write_text(json.dumps(saved, ensure_ascii=False, indent=0, sort_keys=True) + "\n", encoding="utf-8")
     rows, fonts_score = summarize(cases, responses, fonts)
     failed = edge_failures(edges, responses)
+    # Section 8 covers every layout, so a run limited by --layouts is not assessed.
+    verdict = None if partial else conforming(rows, fonts_score, edges, failed, ops)
     if "--markdown" in opts:
-        print(markdown(rows, fonts_score, edges, failed, ops))
+        print(markdown(rows, fonts_score, edges, failed, ops, verdict))
     else:
-        print(json.dumps({"rows": rows, "fonts": fonts_score, "edge_cases": [len(edges) - len(failed), len(edges)], "conforming": conforming(rows, fonts_score, edges, failed, ops)}, indent=1))
-    return 0 if conforming(rows, fonts_score, edges, failed, ops) else 1
+        print(json.dumps({"rows": rows, "fonts": fonts_score, "edge_cases": [len(edges) - len(failed), len(edges)], "conforming": verdict}, indent=1))
+    return 0 if verdict else 1
 
 
 if __name__ == "__main__":

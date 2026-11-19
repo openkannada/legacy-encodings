@@ -6,14 +6,14 @@ Measured on 17 November 2026 with the cases copied from kannadi e350d5d and the 
 
 The Python reference reader (`reference/kle.py`), written from the specification, and kannadi give the same response to every request: 3,767 of 3,767, counting text, unknown positions, malformed ranges, detected layouts and font answers. On random code sequences with random options (`differential.py`, 5 seeds of 3,000 sequences per layout), 82,500 of 82,500 responses are the same. Both conform to section 8.
 
-| Layout | Lines | Exact | Character accuracy | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |
-|---|---|---|---|---|---|---|---|---|
-| nudi | 12 | 12 (100.0%) | 100.00% | 12 | 100.0% | 100.0% of 12 | 100.0% of 12 | 100.0% of 12 |
-| nudi, all statuses | 209 | 209 (100.0%) | 100.00% | 208 | 100.0% | 99.0% of 209 | 100.0% of 209 | 100.0% of 209 |
-| akruti | 125 | 125 (100.0%) | 100.00% | 125 | 100.0% | 93.5% of 124 | 99.2% of 119 | 100.0% of 105 |
-| shree-lipi | 140 | 140 (100.0%) | 100.00% | 140 | 100.0% | 95.7% of 140 | 100.0% of 140 | 100.0% of 125 |
-| nudi-b | 190 | 190 (100.0%) | 100.00% | 190 | 100.0% | 81.5% of 189 | 95.4% of 173 | 99.0% of 96 |
-| kan-eng | 118 | 118 (100.0%) | 100.00% | 118 | 100.0% | 83.1% of 118 | 95.9% of 97 | 97.4% of 39 |
+| Layout | Lines | Exact | Exact, normalized | Character accuracy | Normalized | Clean | Layout found, whole line | First 8 codes | First 16 codes | First 32 codes |
+|---|---|---|---|---|---|---|---|---|---|---|
+| nudi | 12 | 12 (100.0%) | 12 (100.0%) | 100.00% | 100.00% | 12 | 100.0% | 100.0% of 12 | 100.0% of 12 | 100.0% of 12 |
+| nudi, all statuses | 209 | 209 (100.0%) | 209 (100.0%) | 100.00% | 100.00% | 208 | 100.0% | 99.0% of 209 | 100.0% of 209 | 100.0% of 209 |
+| akruti | 125 | 125 (100.0%) | 125 (100.0%) | 100.00% | 100.00% | 125 | 100.0% | 93.5% of 124 | 99.2% of 119 | 100.0% of 105 |
+| shree-lipi | 140 | 140 (100.0%) | 140 (100.0%) | 100.00% | 100.00% | 140 | 100.0% | 95.7% of 140 | 100.0% of 140 | 100.0% of 125 |
+| nudi-b | 190 | 190 (100.0%) | 190 (100.0%) | 100.00% | 100.00% | 190 | 100.0% | 81.5% of 189 | 95.4% of 173 | 99.0% of 96 |
+| kan-eng | 118 | 118 (100.0%) | 118 (100.0%) | 100.00% | 100.00% | 118 | 100.0% | 83.1% of 118 | 95.9% of 97 | 97.4% of 39 |
 
 A snippet column counts the lines longer than the snippet.
 
@@ -42,6 +42,8 @@ From a whole line, the layout is right for all 782 lines. From the first 8 codes
 
 At 16 codes, 13 snippets are wrong, 11 of them read as Akruti; at 32 codes, 2 are. Shree-Lipi is right from the first 8 codes for 134 of its 140 lines. With the newspaper lines this file used before, it was right for 128 of 130; the written lines begin with other syllables, and 4 of the 6 misses read as Akruti. The bilingual layouts are the hard ones: a few of their syllables often also read cleanly as Akruti.
 
+"Exact, normalized" and "Normalized" compare both texts in the canonical form of the Kannada text normalization profile. For kannadi and the reference reader they equal the exact figures, since kannadi writes canonical text.
+
 ## Other converters
 
-Not measured yet. Any converter can be measured by writing a small program for the protocol in [README.md](README.md).
+Any converter can be measured by writing a small program for the protocol in [README.md](README.md). Adapters for KaGaPa's KannadaAsciiUnicodeSDK and for Sanka are in `adapters/`; their figures are not published here.
