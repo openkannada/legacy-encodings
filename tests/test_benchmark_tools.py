@@ -14,6 +14,8 @@ sys.path.insert(0, str(ROOT / "benchmark" / "tools"))
 
 import sample  # noqa: E402
 import score  # noqa: E402
+import tesseract  # noqa: E402
+from unittest import mock  # noqa: E402
 
 HEADER = "id\tstatus\tcodes\texpected\tsource\toptions\tdocument\tpage\tbox\tfonts\tfound_by\n"
 
@@ -66,15 +68,61 @@ class Bars(unittest.TestCase):
         out = sample.bars(self.sample(40), {"nudi-0000": "wrong", "nudi-0001": "right"})
         self.assertIn("| nudi | confirmed | 1000 | 40 | 2 | 1 | 50.0%", out)
 
+    def upper(self, out):
+        return float(out.splitlines()[-1].split("|")[4].strip().rstrip("%"))
+
     def test_no_answers_gives_the_best_case(self):
         out = sample.bars(self.sample(40))
         self.assertIn("0.0% (0.0% to 8.8%)", out)
+        self.assertTrue(8.0 < self.upper(out) < 9.0)
+
+    def test_an_answers_file_with_no_rows_bounds_nothing(self):
+        self.assertEqual(self.upper(sample.bars(self.sample(40), {})), 100.0)
 
     def test_a_stratum_with_no_answer_counts_as_wrong(self):
         rows = self.sample(2) + [{"id": "nudi-9999", "layout": "nudi", "status": "likely", "stratum_lines": "1000", "stratum_sampled": "1"}]
         out = sample.bars(rows, {"nudi-0000": "right", "nudi-0001": "right"})
-        upper = float(out.splitlines()[-1].split("|")[4].strip().rstrip("%"))
-        self.assertGreaterEqual(upper, 50.0)
+        self.assertGreaterEqual(self.upper(out), 50.0)
+
+
+class Tesseract(unittest.TestCase):
+    def read(self, stdout, code=0, n=3):
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(tesseract.subprocess, "run") as run:
+            run.return_value = mock.Mock(stdout=stdout, returncode=code)
+            return tesseract.read_images([f"{i}.png" for i in range(n)], "kan", Path(tmp, "list.txt"), "tessdata")
+
+    def test_1_reading_per_image(self):
+        self.assertEqual(self.read("ಕ\n\fಖ\n\fಗ\n"), ["ಕ", "ಖ", "ಗ"])
+
+    def test_a_missing_page_drops_the_line(self):
+        self.assertIsNone(self.read("ಕ\n\fಖ\n"))
+        self.assertIsNone(self.read("ಕ\n\fಖ\n\fಗ\n", code=1))
+
+    def test_resume_drops_a_cut_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            log = Path(tmp, "ocr.jsonl")
+            log.write_text('{"line_id": "a"}\n{"line_id": "b"}\n{"line_id": "c", "cr', encoding="utf-8")
+            self.assertEqual(tesseract.resume(log), {"a", "b"})
+            self.assertEqual(log.read_text().count("\n"), 2)
+            self.assertEqual(tesseract.resume(Path(tmp, "none.jsonl")), set())
+
+
+def pdf_with_2_fonts():
+    """A 1-page PDF with 2 fonts of the same name and different Differences lists."""
+    objs = ["<< /Type /Catalog /Pages 2 0 R >>",
+            "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 100 100] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> >>",
+            "<< /Type /Font /Subtype /TrueType /BaseFont /Nudi01e /Encoding << /Differences [65 /c80] >> >>",
+            "<< /Type /Font /Subtype /TrueType /BaseFont /Nudi01e /Encoding << /Differences [65 /c90] >> >>"]
+    out, offsets = b"%PDF-1.4\n", []
+    for n, body in enumerate(objs, 1):
+        offsets.append(len(out))
+        out += f"{n} 0 obj {body} endobj\n".encode()
+    xref = len(out)
+    out += f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode()
+    out += b"".join(f"{o:010d} 00000 n \n".encode() for o in offsets)
+    out += f"trailer << /Size {len(objs) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+    return out
 
 
 @unittest.skipUnless(importlib.util.find_spec("pdfminer") and importlib.util.find_spec("fontTools"), "needs pdfminer.six and fontTools")
@@ -104,6 +152,12 @@ class LineBuilding(unittest.TestCase):
     def test_a_gap_becomes_1_space(self):
         gs = [self.glyph(0x50, 10), self.glyph(0xC0, 15), self.glyph(0x50, 30)]
         self.assertEqual(self.x.line_codes(gs), [0x50, 0xC0, 0x20, 0x50])
+
+    def test_differences_are_kept_per_font_object(self):
+        from pdfminer.pdfdocument import PDFDocument
+        from pdfminer.pdfparser import PDFParser
+        doc = PDFDocument(PDFParser(io.BytesIO(pdf_with_2_fonts())))
+        self.assertEqual(self.x.differences(doc), {4: {65: 80}, 5: {65: 90}})
 
     def test_content_detection_needs_a_hidden_or_kannada_font_name(self):
         for name, ok in (("CIDFont+F1", True), ("SHREE-KAN7-0850", True), ("SHREE-DEV-0706E", False),

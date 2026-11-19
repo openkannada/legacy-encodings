@@ -44,11 +44,11 @@ Karnataka's offices have typed in legacy fonts for 25 years, and many still do: 
 | Layout | Lines | Documents | Confirmed | Likely | Unresolved |
 |---|---|---|---|---|---|
 | Nudi and Baraha (`nudi`) | 2,210 | 223 | 1,711 | 213 | 286 |
-| Akruti (`akruti`) | 953 | 25 | 851 | 66 | 36 |
+| Akruti (`akruti`) | 953 | 25 | 853 | 66 | 34 |
 | Shree-Lipi (`shree-lipi`) | 421 | 8 | 337 | 19 | 65 |
 | Nudi B-Akshara (`nudi-b`) | 1,000 | 36 | 682 | 123 | 195 |
 | Kan-Eng (`kan-eng`) | 514 | 17 | 447 | 24 | 43 |
-| **All** | **5,098** | **275** | **4,028** | **445** | **625** |
+| **All** | **5,098** | **275** | **4,030** | **445** | **623** |
 
 Fields of each line: `id`, `status`, `codes` (hexadecimal Windows-1252 glyph codes in drawing order), `expected` (Unicode, NFC, canonical form of the Open Kannada normalization profile), `source` (URL and page), `options`, `document`, `page`, `box` (PDF points), `fonts`, `found_by`. `documents.tsv` describes each document: group, year, URL, archive copy, SHA-256 and license.
 

@@ -5,11 +5,11 @@ A test set of 5,098 lines of Kannada typed in legacy fonts, taken from 275 publi
 | Layout | Lines | Documents | Confirmed | Likely | Unresolved |
 |---|---|---|---|---|---|
 | Nudi and Baraha (`nudi`) | 2,210 | 223 | 1,711 | 213 | 286 |
-| Akruti (`akruti`) | 953 | 25 | 851 | 66 | 36 |
+| Akruti (`akruti`) | 953 | 25 | 853 | 66 | 34 |
 | Shree-Lipi (`shree-lipi`) | 421 | 8 | 337 | 19 | 65 |
 | Nudi B-Akshara (`nudi-b`) | 1,000 | 36 | 682 | 123 | 195 |
 | Kan-Eng (`kan-eng`) | 514 | 17 | 447 | 24 | 43 |
-| **All** | **5,098** | **275** | **4,028** | **445** | **625** |
+| **All** | **5,098** | **275** | **4,030** | **445** | **623** |
 
 ## Files
 
@@ -34,7 +34,7 @@ Columns of `lines/<layout>.tsv`:
 ## Status
 
 - **verified**: a Kannada reader checked the expected text against the line image. None yet; see [Reader check](#reader-check).
-- **confirmed**: OCR evidence supports exactly 1 converter output, with nothing unexplained, and counts against every other. Outputs that differ only in a zero after a letter count as 1 output, written with ಂ (section 5.6).
+- **confirmed**: OCR evidence supports exactly 1 converter output, with nothing unexplained, and counts against every other. Where all converters agree, as on most lines, it means only that OCR found nothing unexplained in their shared output. Outputs that differ only in a zero after a letter count as 1 output, written with ಂ (section 5.6).
 - **likely**: the OCR evidence leans to 1 output, with 1 difference left unexplained, or a tie broken by an exact reading, by closeness to the OCR readings or by the digits the font draws.
 - **unresolved**: no output is supported over the others, or none matches the page. The expected text is the best guess and waits for a reader.
 
@@ -64,7 +64,7 @@ On 96% to 99% of the confirmed and likely lines of each layout, at least 1 of th
 2. **The candidates.** kannadi, KaGaPa's KannadaAsciiUnicodeSDK, Sanka and Sanchaya's kannada-font-converter each convert the codes (`tools/candidates.py`), for the layouts each one reads. Their outputs are compared in canonical form, without white space or joiners.
 3. **OCR.** 2 Tesseract models read the line image: `kan_ft_ofl3` from [kannada-ocr](https://github.com/openkannada/kannada-ocr), trained on Wikisource lines and OFL fonts and never on legacy fonts, and Tesseract's own `kan`. Neither knows any legacy table.
 4. **Explained differences.** The same 2 models also read each candidate rendered in 4 Unicode fonts: Noto Sans Kannada, Noto Serif Kannada, and the regular and bold Unicode releases of the Nudi design most of these documents use (`tools/ocr.py`). A difference between a candidate and the OCR reading of the page counts against the candidate only when the model does not make the same difference reading that candidate's own rendering. That separates OCR habits, such as reading ದ್ದಿ as ದ್ಧಿ, from real differences on the page.
-5. **What does not count.** Swaps between digits or punctuation marks, zero against ಂ (they look alike), punctuation read as up to 2 stray characters, and, in Nudi B-Akshara and Kan-Eng, Latin words of 2 letters or more, which the Kannada models cannot read. What always counts, once per model: a Latin letter or a symbol outside ASCII written against a Kannada letter, and any Latin letter in Nudi, Akruti or Shree-Lipi, whose ASCII codes are all Kannada glyphs. These are glyphs a converter left unconverted, which OCR skips on the page and on the rendering alike.
+5. **What does not count.** Swaps between digits or punctuation marks, zero against ಂ (they look alike), punctuation read as up to 2 stray characters, and, in Nudi B-Akshara and Kan-Eng, Latin words of 2 letters or more, which the Kannada models cannot read. What always counts, once per model: a Latin letter or a symbol outside ASCII written against a Kannada letter, and any Latin letter or symbol outside ASCII and the Kannada block (other than quotation marks, dashes and the like) in Nudi, Akruti or Shree-Lipi, whose codes are all Kannada glyphs or punctuation. Joiners never count here. These are glyphs a converter left unconverted, which OCR skips on the page and on the rendering alike.
 6. **Status.** Outputs that differ only in a zero after a letter count as 1 candidate, written with ಂ (section 5.6). The candidate with the fewest unexplained differences wins. It is confirmed if it has none and every other candidate has some; likely if it has exactly 1 and the others more, or if it ties with no unexplained difference and wins on an exact reading by a model, then on closeness to the readings, then on the digit script the font draws; unresolved otherwise. A tie is never confirmed. If the agreeing outputs differ in a joiner the profile keeps, such as ರ‍್ಯ against ರ್ಯ, which draw differently, the line is unresolved, since OCR keys drop joiners.
 
 ## Parallel text

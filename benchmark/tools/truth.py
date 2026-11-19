@@ -90,6 +90,8 @@ def stray(text, bilingual=True):
     are all Kannada glyphs, every such character."""
     n = 0
     for i, c in enumerate(text):
+        if c in JOINERS:
+            continue
         if (c.isascii() and c.isalpha()) or (not c.isascii() and not "\u0c80" <= c <= "\u0cff" and c not in TYPOGRAPHIC):
             near = text[max(0, i - 1): i] + text[i + 1: i + 2]
             n += not bilingual or any(is_kannada_letter(x) for x in near)
@@ -137,7 +139,7 @@ def decide(line, cand, ocr):
     # Texts that differ only in a zero after a letter look alike and count as 1 candidate.
     groups = {}
     for name, text in sorted(outs.items()):
-        groups.setdefault(as_anusvara(key(text)), []).append(text)
+        groups.setdefault(key(as_anusvara(canonical(text))), []).append(text)
     scored = []
     for texts in groups.values():
         text = min(texts, key=misfit)
@@ -154,7 +156,7 @@ def decide(line, cand, ocr):
         # font's digits break it, and never into confirmed.
         tied = [r for r in rivals if r["total"] == best["total"]]
         tier = "B" if best["total"] == 0 and all(r["order"] > best["order"] for r in tied) else "C"
-    if len({as_anusvara(canonical(t)) for t in best["texts"]}) > 1:
+    if len({"".join(as_anusvara(canonical(t)).split()) for t in best["texts"]}) > 1:
         # The outputs differ only in a joiner the profile keeps, which changes the drawing but not the OCR key.
         tier = "C"
     agree = sorted(n for n, v in outs.items() if v in best["texts"])

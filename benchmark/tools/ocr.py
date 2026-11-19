@@ -9,13 +9,13 @@ Resumable: lines already in OUT are skipped.
 import hashlib
 import json
 import os
-import subprocess
 import sys
 from multiprocessing import Pool
 from pathlib import Path
 
 import numpy as np
 from paths import WORK, kannada_ocr  # noqa: E402
+from tesseract import read_images, resume
 from PIL import Image
 
 OCR = kannada_ocr()
@@ -36,18 +36,6 @@ if os.environ.get("NUDI_UNI"):
     FACES["nudi-uni"] = FontFace(Path(os.environ["NUDI_UNI"]) / "NUDI UNI 01E.ttf", "NUDI UNI 01E")
     FACES["nudi-uni-bold"] = FontFace(Path(os.environ["NUDI_UNI"]) / "NUDI UNI 01E BOLD.ttf", "NUDI UNI 01E BOLD")
 RENDERS = WORK / "renders"
-
-
-def tess(pngs, engine, listing):
-    """Reads each image with 1 Tesseract run, so the model loads once per line and engine."""
-    listing.write_text("\n".join(str(Path(p).resolve()) for p in pngs) + "\n")
-    p = subprocess.run(["tesseract", str(listing), "-", "--tessdata-dir", TESSDATA, "-l", engine, "--psm", "7"],
-                       capture_output=True, text=True, timeout=600, env=dict(os.environ, OMP_THREAD_LIMIT="1"))
-    pages = p.stdout.split("\f")
-    # Tesseract stops at an image it cannot read; then the readings no longer line up with the images.
-    if p.returncode != 0 or len(pages) != len(pngs):
-        return None
-    return [t.strip() for t in pages]
 
 
 def render_png(text, face, tag):
@@ -74,11 +62,12 @@ def work(args):
             if png:
                 jobs.append(("render", (text, face), png))
     listing = RENDERS / f"{row['line_id']}.txt"
-    reads = {e: tess([j[2] for j in jobs], e, listing) for e in ENGINES}
+    reads = {e: read_images([j[2] for j in jobs], e, listing, TESSDATA) for e in ENGINES}
     listing.unlink()
     for _, _, png in jobs[1:]:
         png.unlink()
     if any(r is None for r in reads.values()):
+        print("Tesseract could not read every image of", row["line_id"], "; line left out", file=sys.stderr, flush=True)
         return None
     out = {"line_id": row["line_id"], "crop": {e: reads[e][0] for e in ENGINES}, "renders": {t: {f: None for f in FACES} for t in texts}}
     for n, (kind, key, png) in enumerate(jobs):
@@ -90,16 +79,7 @@ def work(args):
 def main():
     cands, imagedir, dest = sys.argv[1:4]
     RENDERS.mkdir(parents=True, exist_ok=True)
-    done = set()
-    if Path(dest).exists():
-        good = []
-        for line in open(dest):
-            try:
-                done.add(json.loads(line)["line_id"])
-                good.append(line if line.endswith("\n") else line + "\n")
-            except ValueError:
-                pass  # a line cut short when an earlier run was stopped
-        Path(dest).write_text("".join(good))
+    done = resume(dest)
     rows = [json.loads(l) for l in open(cands)]
     todo = [(r, imagedir) for r in rows if r["line_id"] not in done]
     with open(dest, "a") as f, Pool(int(os.environ.get("OCR_JOBS", "6"))) as pool:

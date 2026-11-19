@@ -82,6 +82,17 @@ class Decide(unittest.TestCase):
         self.assertEqual(truth.stray("ರೂ.500 ‘ಕನ್ನಡ’"), 0)
         self.assertEqual(truth.stray("ಕನ್ನಡ ನಾಡು Š", bilingual=False), 1)
 
+    def test_a_joiner_all_outputs_share_is_not_a_stray_glyph(self):
+        outs = {"a": "ಪೂರ\u200d್ಯಾ ಕೆಲಸ", "b": "ಪೂರ\u200d್ಯಾ ಕೆಲಸ"}
+        d = truth.decide({"layout": "nudi"}, {"outputs": outs}, ocr("ಪೂರ್ಯಾ ಕೆಲಸ"))
+        self.assertEqual(d["tier"], "A")
+        self.assertEqual(truth.stray("ಪೂರ\u200d್ಯಾ", bilingual=False), 0)
+
+    def test_outputs_that_differ_only_in_spacing_agree(self):
+        outs = {"a": "ಕನ್ನಡ ನಾಡು", "b": "ಕನ್ನಡ  ನಾಡು"}
+        d = truth.decide({"layout": "nudi"}, {"outputs": outs}, ocr("ಕನ್ನಡ ನಾಡು"))
+        self.assertEqual(d["tier"], "A")
+
     def test_a_kept_joiner_leaves_the_line_unresolved(self):
         outs = {"a": "ಪೂರ್ಯಾ", "b": "ಪೂರ‍್ಯಾ"}
         d = truth.decide({}, {"outputs": outs}, ocr("ಪೂರ್ಯಾ"))

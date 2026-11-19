@@ -83,12 +83,12 @@ def bars(sample, answers=None):
     out = ["| Layout | Status | Lines | Sampled | Answered | Wrong | Error rate (95% CI) |", "|---|---|---|---|---|---|---|"]
     per_layout = defaultdict(lambda: [0.0, 0.0, 0, 0])
     for (layout, status), s in sorted(strata.items()):
-        ids = [i for i in s["ids"] if i in answers] if answers else s["ids"]
+        ids = [i for i in s["ids"] if i in answers] if answers is not None else s["ids"]
         n = len(ids)
-        wrong = sum(answers[i] == "wrong" for i in ids) if answers else 0
+        wrong = sum(answers[i] == "wrong" for i in ids) if answers is not None else 0
         lo, hi = wilson(wrong, n)
-        out.append(f"| {layout} | {status} | {s['N']} | {len(s['ids'])} | {n if answers else '0 (none yet)'} | "
-                   f"{wrong if answers else '0 (assumed)'} | {100 * wrong / n if n else 0:.1f}% ({100 * lo:.1f}% to {100 * hi:.1f}%) |")
+        out.append(f"| {layout} | {status} | {s['N']} | {len(s['ids'])} | {n if answers is not None else '0 (none yet)'} | "
+                   f"{wrong if answers is not None else '0 (assumed)'} | {100 * wrong / n if n else 0:.1f}% ({100 * lo:.1f}% to {100 * hi:.1f}%) |")
         if status in ("confirmed", "likely"):
             agg = per_layout[layout]
             agg[2] += s["N"]
