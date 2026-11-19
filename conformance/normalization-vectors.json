@@ -420,6 +420,26 @@
     "note": "a legacy rule"
   },
   {
+    "id": "c-nfc-exclusion",
+    "form": "canonical",
+    "rules": ["C1"],
+    "input": "क़",
+    "expected": "क़",
+    "input_codepoints": ["U+0958"],
+    "expected_codepoints": ["U+0915", "U+093C"],
+    "note": "Devanagari QA: NFC decomposes it"
+  },
+  {
+    "id": "c-other-script-marks-kept",
+    "form": "canonical",
+    "rules": [],
+    "input": "क॑॑",
+    "expected": "क॑॑",
+    "input_codepoints": ["U+0915", "U+0951", "U+0951"],
+    "expected_codepoints": ["U+0915", "U+0951", "U+0951"],
+    "note": "not Kannada"
+  },
+  {
     "id": "l-zero-inside",
     "form": "legacy",
     "rules": ["L1"],
@@ -570,6 +590,16 @@
     "note": ""
   },
   {
+    "id": "l-reph-nukta-cluster",
+    "form": "legacy",
+    "rules": ["L3"],
+    "input": "ಜ಼್ಕರ್ಿ",
+    "expected": "ರ್ಜ಼್ಕಿ",
+    "input_codepoints": ["U+0C9C", "U+0CBC", "U+0CCD", "U+0C95", "U+0CB0", "U+0CCD", "U+0CBF"],
+    "expected_codepoints": ["U+0CB0", "U+0CCD", "U+0C9C", "U+0CBC", "U+0CCD", "U+0C95", "U+0CBF"],
+    "note": "a nukta inside the cluster"
+  },
+  {
     "id": "s-llla",
     "form": "search",
     "rules": ["S1"],
@@ -688,6 +718,16 @@
     "input_codepoints": ["U+0063", "U+006F", "U+00AD", "U+006F", "U+0070", "U+0065", "U+0072", "U+0061", "U+0074", "U+0065"],
     "expected_codepoints": ["U+0063", "U+006F", "U+00AD", "U+006F", "U+0070", "U+0065", "U+0072", "U+0061", "U+0074", "U+0065"],
     "note": "not Kannada"
+  },
+  {
+    "id": "s-invisible-run",
+    "form": "search",
+    "rules": ["S2"],
+    "input": "\u200b\u200bಕ",
+    "expected": "ಕ",
+    "input_codepoints": ["U+200B", "U+200B", "U+0C95"],
+    "expected_codepoints": ["U+0C95"],
+    "note": "the whole run next to Kannada goes"
   },
   {
     "id": "s-nukta",
