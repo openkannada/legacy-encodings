@@ -54,14 +54,15 @@ A converter takes part through a small program that reads 1 JSON request per lin
 - The runner compares only the fields above; a response may carry others.
 - Input is always given as glyph codes. The rules for text given as a string, such as characters with no Windows-1252 code and Unicode Kannada passing through (sections 3.2, 5.1 and 5.6), are not tested yet, and the reference reader reads glyph codes only.
 
-4 programs speak the protocol here:
+5 programs speak the protocol here:
 
 - `reference/adapter.py`, the reference reader in Python (`reference/kle.py`), written from the specification;
 - `adapters/kannadi`, the kannadi library at the commit the tables come from;
 - `adapters/kagapa`, KaGaPa's KannadaAsciiUnicodeSDK (C#, MIT), built from a checkout of it (`adapters/kagapa/README.md`);
-- `adapters/sanka/adapter.mjs`, Sanka's converter (JavaScript, MIT), loaded from a build of it.
+- `adapters/sanka/adapter.mjs`, Sanka's converter (JavaScript, MIT), loaded from a build of it;
+- `adapters/sanchaya/adapter.mjs`, Sanchaya's kannada-font-converter (JavaScript, GPL-3.0), loaded from a checkout of it. It reads 15 font types; `SANCHAYA_FONTS` chooses which reads each layout.
 
-The last 2 read only Nudi and Baraha text and report no unknown glyphs or malformed syllables. Run them with `--layouts nudi --no-detect --no-fonts`, on your own machine: no text is sent anywhere.
+KaGaPa's SDK and Sanka read only Nudi and Baraha text and report no unknown glyphs or malformed syllables. Run them with `--layouts nudi --no-detect --no-fonts`, and Sanchaya's with the layouts it reads, on your own machine: no text is sent anywhere. None of the 3 reports unknown glyphs or malformed syllables.
 
 ## Running it
 

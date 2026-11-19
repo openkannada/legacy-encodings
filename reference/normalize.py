@@ -29,12 +29,26 @@ def is_vowel_sign(c):
     return ("ಾ" <= c <= "ೌ" and c not in "೅೉") or c in "ೕೖೢೣ"
 
 
+# Vedic marks used with Kannada, as kannadi's chars.rs lists them.
+VEDIC = (
+    ("\u0951", "\u0954"),
+    ("\u1cd0", "\u1cd2"),
+    ("\u1cd4", "\u1ce8"),
+    ("\u1ced", "\u1ced"),
+    ("\u1cf4", "\u1cf4"),
+    ("\u1cf7", "\u1cf9"),
+)
+
+
 def is_mark(c):
+    """A mark as kannadi's chars.rs classes it: vowel signs, the virama, the nukta, the
+    signs U+0C81 to U+0C83 and U+0CF1 to U+0CF3, and Vedic marks."""
     return (
         is_vowel_sign(c)
         or c in (VIRAMA, NUKTA)
-        or "ಀ" <= c <= "ಃ"
-        or "ೱ" <= c <= "ೳ"
+        or "\u0c81" <= c <= "\u0c83"
+        or "\u0cf1" <= c <= "\u0cf3"
+        or any(a <= c <= b for a, b in VEDIC)
     )
 
 
@@ -97,7 +111,7 @@ def one_pass(chars):
         prev = out[-1] if out else None
         if (prev, c) in VOWEL_PARTS:
             out[-1] = VOWEL_PARTS[(prev, c)]
-        elif prev == c and is_mark(c):
+        elif prev == c and is_kannada(c) and is_mark(c):
             pass
         elif c == NUKTA:
             place_nukta(out)

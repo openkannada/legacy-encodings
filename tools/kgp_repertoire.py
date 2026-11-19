@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "reference"))
 
 import kle  # noqa: E402
 
-KA = [0x50]
+KA = [0x50, 0xC0]
 KANNADA = re.compile(r"[ಀ-೿]")
 # A rule is a JS array of 2 or 3 single-quoted strings; the output is the last one.
 RULE = re.compile(r"\[\s*'((?:[^'\\]|\\.)*)'\s*(?:,\s*'((?:[^'\\]|\\.)*)'\s*)?,\s*'((?:[^'\\]|\\.)*)'\s*\]")
@@ -44,7 +44,9 @@ def readable_chars(doc: dict) -> set[str]:
     inputs += [KA + a + b + c for a in signs for b in signs for c in signs]
     chars = set()
     for codes in inputs:
-        chars |= set(KANNADA.findall(kle.read(codes, table).text))
+        result = kle.read(codes, table)
+        if result.clean:
+            chars |= set(KANNADA.findall(result.text))
     digits = kle.read([ord(d) for d in "0123456789"], table, kannada_digits=True).text
     return chars | set(KANNADA.findall(digits))
 

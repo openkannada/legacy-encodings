@@ -42,6 +42,9 @@ def extract(pdf: Path) -> list[tuple[int, str, str, int]]:
     rows, started = [], False
     for number, page in enumerate(doc, 1):
         lines = page.get_text().splitlines()
+        # Appendix B is a code chart grid, which the text layer does not keep in order.
+        if any(line.strip().startswith("APPENDIX B") for line in lines):
+            break
         if not started:
             if not any(line.strip() == "APPENDIX A" for line in lines):
                 continue
@@ -53,10 +56,18 @@ def extract(pdf: Path) -> list[tuple[int, str, str, int]]:
             if not m or i + 2 >= len(lines):
                 i += 1
                 continue
-            glyph, name = lines[i + 1].strip(), lines[i + 2].strip()
+            glyph, name = lines[i + 1].strip(" \t"), lines[i + 2].strip()
             if glyph and not CODE.match(lines[i + 1]) and not NAME.match(glyph):
-                codes = " ".join(f"{b:02X}" for b in glyph.encode("cp1252"))
-                rows.append((0x0C00 + int(m.group(1), 16), name, codes, number))
+                try:
+                    codes = " ".join(f"{b:02X}" for b in glyph.encode("cp1252"))
+                except UnicodeEncodeError as e:
+                    raise SystemExit(f"page {number}, U+0C{m.group(1)}: {glyph!r} is not Windows-1252") from e
+                cp = 0x0C00 + int(m.group(1), 16)
+                earlier = [r for r in rows if r[0] == cp]
+                if earlier and earlier[0][2] != codes:
+                    raise SystemExit(f"U+{cp:04X} has 2 glyphs: {earlier[0][2]} and {codes}")
+                if not earlier:
+                    rows.append((cp, name, codes, number))
             i += 3
     return rows
 
@@ -65,7 +76,8 @@ def write_source(rows):
     lines = [
         "# Kannada code points and their glyphs in Nudi 01 k, from Appendix A of L2/03-068.",
         "# https://www.unicode.org/L2/L2003/03068-kannada.pdf, sha256 " + SHA256,
-        "# Written by tools/l2_03_068.py extract. Names are as the proposal prints them.",
+        "# Written by tools/l2_03_068.py extract: 1 row per code point. Names are as the",
+        "# proposal prints them. Appendix B, a code chart grid, is not read.",
         "codepoint\tname\tcodes\tpage",
     ]
     lines += [f"U+{cp:04X}\t{name}\t{codes}\t{page}" for cp, name, codes, page in rows]
