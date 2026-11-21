@@ -1,10 +1,10 @@
 # Kannada Legacy Encodings
 
-Years of Kannada documents, from government orders and Acts to budget papers, were typed in fonts such as Nudi and Baraha that draw Kannada shapes at the codes of Latin letters. Copy the text out of such a PDF and you get `PÀ£ÁðlPÀ` instead of ಕರ್ನಾಟಕ, which no search engine, screen reader or language model can read. Converters exist, but each keeps its own tables and rules, and none publishes a verified test set, so nobody can tell which one is right.
+Years of Kannada documents, from government orders and Acts to budget papers, were typed in fonts such as Nudi and Baraha that draw Kannada shapes at the codes of Latin letters. Copy the text out of such a PDF and you get `PÀ£ÁðlPÀ` instead of ಕರ್ನಾಟಕ, which search engines, screen readers and language models cannot read as Kannada. Converters exist, but each keeps its own tables and rules, and none I know of publishes a test set that checks its output against the page, so nobody can tell which one is right.
 
-This repository is an open specification for those encodings: 1 glyph table per layout, the exact steps that turn glyph codes back into Unicode, and a conformance suite that measures any converter on the same lines. It covers Nudi, Baraha's ANSI fonts, Akruti, Shree-Lipi, Nudi B-Akshara and Kan-Eng.
+This repository is an open specification for those encodings: 1 glyph table per layout, the exact steps that turn glyph codes back into Unicode, and a conformance suite that measures any converter on the same lines. It covers 5 layouts: Nudi (which Baraha's ANSI fonts share), Akruti, Shree-Lipi, Nudi B-Akshara and Kan-Eng.
 
-Draft 0.1.0, open for review. [PROPOSAL.md](PROPOSAL.md) explains why it exists and what is still to decide. To convert documents rather than implement a converter, use [kannadi](https://github.com/openkannada/kannadi), which passes this conformance suite.
+Draft 0.1.0, open for review. [PROPOSAL.md](PROPOSAL.md) explains why it exists and what is still to decide. To convert documents rather than implement a converter, use [kannadi](https://github.com/openkannada/kannadi), which is checked against this conformance suite.
 
 ## Quick start
 

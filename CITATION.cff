@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use the Kannada Legacy Encodings specification, tables or benchmark, please cite them as below."
 title: "Kannada Legacy Encodings: an open specification and conformance suite for legacy Kannada font text"
-abstract: "An open specification, glyph tables and conformance tests for converting text typed in the legacy Kannada font layouts Nudi, Baraha ANSI, Akruti, Shree-Lipi, Nudi B-Akshara and Kan-Eng to Unicode, with a reference reader and a benchmark of 5,098 lines from 275 Karnataka government PDFs."
+abstract: "An open specification, glyph tables and conformance tests for converting text typed in 5 legacy Kannada font layouts (Nudi, shared by Baraha's ANSI fonts, Akruti, Shree-Lipi, Nudi B-Akshara and Kan-Eng) to Unicode, with a reference reader and a benchmark of 5,098 lines from 275 Karnataka government PDFs."
 type: software
 authors:
   - family-names: Subrahmanya
