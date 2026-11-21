@@ -1,8 +1,35 @@
 # Kannada Legacy Encodings
 
-An open specification, glyph tables and conformance tests for converting text typed in legacy Kannada fonts (Nudi, Baraha's ANSI fonts, Akruti, Shree-Lipi, Nudi B-Akshara, Kan-Eng) to Unicode.
+Years of Kannada documents, from government orders and Acts to budget papers, were typed in fonts such as Nudi and Baraha that draw Kannada shapes at the codes of Latin letters. Copy the text out of such a PDF and you get `PÀ£ÁðlPÀ` instead of ಕರ್ನಾಟಕ, which search engines, screen readers and language models cannot read as Kannada. Converters exist, but each keeps its own tables and rules, and none I know of publishes a test set that checks its output against the page, so nobody can tell which one is right.
 
-Draft 0.1.0. The repository is private while the draft is reviewed. [PROPOSAL.md](PROPOSAL.md) explains why it exists and what is still to decide.
+This repository is an open specification for those encodings: 1 glyph table per layout, the exact steps that turn glyph codes back into Unicode, and a conformance suite that measures any converter on the same lines. It covers 5 layouts: Nudi (which Baraha's ANSI fonts share), Akruti, Shree-Lipi, Nudi B-Akshara and Kan-Eng.
+
+Draft 0.1.0, open for review. [PROPOSAL.md](PROPOSAL.md) explains why it exists and what is still to decide. To convert documents rather than implement a converter, use [kannadi](https://github.com/openkannada/kannadi), which is checked against this conformance suite.
+
+## Quick start
+
+The reference reader needs only Python 3.12 or later:
+
+```bash
+git clone https://github.com/openkannada/legacy-encodings
+cd legacy-encodings
+python3 - <<'EOF'
+import sys; sys.path.insert(0, "reference")
+import kle
+
+tables = kle.load_tables()
+codes = list("PÀ£ÁðlPÀ gÁdå¥ÀvÀæ".encode("cp1252"))  # text copied from a Nudi PDF
+layout = kle.detect(codes, tables)
+print(layout, kle.read(codes, tables[layout]).text)  # nudi ಕರ್ನಾಟಕ ರಾಜ್ಯಪತ್ರ
+EOF
+```
+
+To measure your own converter, wrap it in a small program that answers the JSON-lines protocol in [conformance/README.md](conformance/README.md), then run the suite against it:
+
+```bash
+echo '{"id": 1, "op": "read", "layout": "nudi", "codes": "50 C0 A3 C1 F0 6C 50 C0"}' | python3 reference/adapter.py
+python3 conformance/run.py --markdown -- python3 reference/adapter.py   # swap in your adapter
+```
 
 ## Contents
 
@@ -36,7 +63,7 @@ and list the change in [CHANGELOG.md](CHANGELOG.md).
 
 ## Proposing changes
 
-Open a GitHub issue for a change to the specification, a table entry, a new layout or a new test line. A table change needs evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources (section 10 of the specification). Bugs and sample documents go in issues too; send documents that cannot be public to support@luminik.io.
+Open a GitHub issue for a change to the specification, a table entry, a new layout or a new test line. A table change needs evidence: the font file or a rendering of its glyphs, and lines from public documents that use the codes, with their sources (section 10 of the specification). Bugs and sample documents go in issues too; send documents that cannot be public to support@luminik.io. Report security problems as [SECURITY.md](SECURITY.md) says.
 
 Every commit needs a `Signed-off-by` line (`git commit -s`) under the [Developer Certificate of Origin](https://developercertificate.org/); see [CONTRIBUTING.md](CONTRIBUTING.md).
 
