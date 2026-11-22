@@ -2,7 +2,7 @@
 
 An open specification for the legacy fonts Kannada documents were typed in, such as Nudi and Baraha, which draw Kannada shapes at the codes of Latin letters: copy the text out of such a PDF and you get `PÀ£ÁðlPÀ` instead of ಕರ್ನಾಟಕ, which search engines, screen readers and language models cannot read as Kannada.
 
-It gives 1 glyph table per layout for 5 layouts, the exact steps that turn glyph codes back into Unicode, and tests that measure any converter on the same lines, including a benchmark of 5,098 lines from 275 Karnataka government PDFs. [kannadi](https://github.com/openkannada/kannadi), the converter the tables come from, reads 96.9% of the benchmark's 2,210 Nudi and Baraha lines exactly, counting lines whose expected text is still unresolved.
+It gives 1 glyph table per layout for 5 layouts, the exact steps that turn glyph codes back into Unicode, and tests that measure any converter on the same lines, including a benchmark of 5,098 lines from 275 Karnataka government PDFs. The reference reader and [kannadi](https://github.com/openkannada/kannadi), the converter the tables come from, give the same answer on all 3,767 conformance requests.
 
 Draft 0.1.0. [PROPOSAL.md](PROPOSAL.md) explains why it exists and what is still to decide. To convert documents, use [kannadi](https://github.com/openkannada/kannadi) or [openkannada.org/nudi-to-unicode](https://openkannada.org/nudi-to-unicode/).
 
@@ -21,18 +21,16 @@ The second line prints `nudi ಕರ್ನಾಟಕ ರಾಜ್ಯಪತ್ರ`.
 
 ## Results
 
-kannadi on the [benchmark](benchmark/README.md), text compared in the canonical form of the normalization profile ([benchmark/RESULTS.md](benchmark/RESULTS.md)):
+The benchmark set, by layout. The expected text of each line is the converter output that OCR of the line, drawn with the PDF's own font, supports; a 400-line sample waits for Kannada readers ([Limitations](benchmark/README.md#limitations)).
 
-| Layout | Lines | Documents | Exact, all lines | Exact, confirmed and likely lines |
-|---|---:|---:|---:|---:|
-| Nudi and Baraha | 2,210 | 223 | 96.9% | 99.9% of 1,924 |
-| Akruti | 953 | 25 | 99.9% | 99.9% of 919 |
-| Shree-Lipi | 421 | 8 | 100.0% | 100.0% of 356 |
-| Nudi B-Akshara | 1,000 | 36 | 100.0% | 100.0% of 805 |
-| Kan-Eng | 514 | 17 | 100.0% | 100.0% of 471 |
-| **All** | **5,098** | **275** | | |
-
-The expected text of each line is the converter output that OCR of the line, drawn with the PDF's own font, supports: 4,030 lines are confirmed, 445 likely and 623 unresolved. kannadi is a candidate on every line and the only one for Nudi B-Akshara, so its figures are an upper bound until Kannada readers check the 400-line sample ([Limitations](benchmark/README.md#limitations)).
+| Layout | Lines | Documents | Confirmed | Likely | Unresolved |
+|---|---:|---:|---:|---:|---:|
+| Nudi and Baraha | 2,210 | 223 | 1,711 | 213 | 286 |
+| Akruti | 953 | 25 | 853 | 66 | 34 |
+| Shree-Lipi | 421 | 8 | 337 | 19 | 65 |
+| Nudi B-Akshara | 1,000 | 36 | 682 | 123 | 195 |
+| Kan-Eng | 514 | 17 | 447 | 24 | 43 |
+| **All** | **5,098** | **275** | **4,030** | **445** | **623** |
 
 On the conformance suite, the reference reader and kannadi give the same response to all 3,767 requests and to 82,500 random code sequences, and both conform to section 8 of the specification: 782 test lines (642 from public documents, 140 written for the tests), 64 edge cases and 47 font names ([conformance/RESULTS.md](conformance/RESULTS.md)).
 
@@ -47,7 +45,7 @@ On the conformance suite, the reference reader and kannadi give the same respons
 | [tools/tables.py](tools/tables.py) | Copies the tables from kannadi, builds the JSON and checks every table rule |
 | [conformance/](conformance/) | 782 test lines (642 from public documents, 140 written for the tests), 64 edge cases, the runner and its protocol, and [measured results](conformance/RESULTS.md) |
 | [reference/kle.py](reference/kle.py) | A reference reader in Python, written from the specification |
-| [benchmark/](benchmark/) | 5,098 lines from 275 Karnataka government PDFs, with expected texts chosen by OCR of each line as its own font draws it, a reader review page, a data card and [kannadi's results](benchmark/RESULTS.md) |
+| [benchmark/](benchmark/) | 5,098 lines from 275 Karnataka government PDFs, with expected texts chosen by OCR of each line as its own font draws it, a reader review page and a data card |
 | [adapters/kannadi](adapters/kannadi) | kannadi behind the conformance protocol |
 
 ## Using the tables
