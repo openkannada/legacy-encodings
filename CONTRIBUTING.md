@@ -2,6 +2,8 @@
 
 Changes to the specification, a table entry, a new layout or a new test line start as a GitHub issue; see [Proposing changes](README.md#proposing-changes). A table change starts in [kannadi](https://github.com/openkannada/kannadi), with its evidence, and is copied here with `tools/tables.py sync`.
 
+The [Open Kannada contributing guide](https://github.com/openkannada/.github/blob/main/CONTRIBUTING.md) covers what all Open Kannada repositories share; this file adds what is specific to the specification.
+
 Before asking for review, run:
 
 ```bash

@@ -24,7 +24,7 @@ A small open specification, **Kannada Legacy Encodings (KLE)**, with 4 parts, in
 
 1. **Specification** (`spec/kle.md`): what a layout table is; the exact steps that turn drawing-order glyph codes into Unicode syllables; how unknown and malformed output is reported; how the layout is found from a font name or from the text alone; how writing back works.
 2. **Tables** (`tables/`): 1 table per layout, as hand-edited TSV and generated JSON with a JSON Schema. They are generated from kannadi's data tables at a pinned commit, so there is 1 source of truth, and every change is listed with its evidence.
-3. **Conformance tests** (`conformance/`, next pull request): the test lines from public documents with their sources, a runner that drives any converter through a line-based JSON protocol and reports accuracy, a reference reader in Python written only from the specification, and an adapter for kannadi.
+3. **Conformance tests** (`conformance/`): the test lines from public documents with their sources, a runner that drives any converter through a line-based JSON protocol and reports accuracy, a reference reader in Python written only from the specification, and an adapter for kannadi.
 4. **Detection** (section 7 of the specification): the font-name rules as data, and a documented scoring method for unknown text, with its accuracy measured on the test lines, including short snippets.
 
 ### Who it is for
@@ -35,7 +35,7 @@ A small open specification, **Kannada Legacy Encodings (KLE)**, with 4 parts, in
 
 ### Why a specification and tables as well as a library
 
-A library helps people who can use that language. Tables and a test set help every converter, including ones built into word processors, OCR pipelines and web tools. The reading rules are small (section 5 is about 2 pages), so a faithful reader in another language is a few hundred lines; the Python reference reader in the next pull request will show how small.
+A library helps people who can use that language. Tables and a test set help every converter, including ones built into word processors, OCR pipelines and web tools. The reading rules are small (section 5 is about 2 pages), so a faithful reader in another language is a few hundred lines; the Python reference reader, `reference/kle.py`, shows how small.
 
 ## Design choices
 
@@ -72,10 +72,11 @@ Alternatives considered:
 
 | Step | Content | State |
 |---|---|---|
-| 1 | Proposal, specification draft, schema, generated tables, font rules | Pull request 1 |
-| 2 | Conformance cases, runner, Python reference reader, kannadi adapter, detection accuracy | Pull request 2 |
-| 3 | Kannada reader's check of the test lines; writing-back cases | After this proposal is settled |
-| 4 | Make the repository public; tell converter authors and KAGAPA | Once the open decisions are settled |
+| 1 | Proposal, specification draft, schema, generated tables, font rules | Merged in pull request 1 |
+| 2 | Conformance cases, runner, Python reference reader, kannadi adapter, detection accuracy | Merged in pull request 2 |
+| 3 | A benchmark of 5,098 lines from 275 Karnataka government PDFs, with a 400-line sample for Kannada readers (`benchmark/`) | Merged in pull request 7 |
+| 4 | Kannada reader's check of the test lines and the benchmark sample; writing-back cases | After this proposal is settled |
+| 5 | Make the repository public; tell converter authors and KAGAPA | Once the open decisions are settled |
 
 ## Open decisions
 
